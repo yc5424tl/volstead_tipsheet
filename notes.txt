@@ -1,0 +1,40 @@
+Table One/Two
+    Names***
+    Hours Worked***
+    Payout Type [Service/Support]
+    Total Tip Hours***
+    Total Tip Pool (Report Total)
+    Hourly Tip Wage
+    Staff Tips
+
+
+Cash Entry by Denomination
+
+ 100 =
+   50 =
+   20 =
+   10 =
+     5 =
+     1 =
+     Q =
+
+Grand Total
+
+
+Show Date on Site
+
+CLASS
+
+Shift
+    Date
+    Employee List
+    Tip Hours
+
+Employee
+     Name
+     Position Type
+     In-Time
+     Out-Time
+     Hours Worked
+     Tip Hours
+     Tip Total

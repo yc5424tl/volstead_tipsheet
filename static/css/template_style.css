@@ -1,0 +1,53 @@
+body {
+    background-color: darkslategray;
+}
+
+div > .form-group.row.role-hours {
+    border: 1pt solid white;
+    border-collapse: collapse;
+    margin-top: 0;
+    margin-bottom: 0;
+    padding-top: 8pt;
+    align-content: center;
+    justify-content: center;
+    color: white;
+}
+
+#banner-image {
+    width: 100%;
+    margin: auto;
+}
+
+#work-hours-div {
+    background-color: black;
+    color: white;
+}
+
+/*font-family: 'Niconne', cursive;*/
+/*font-family: 'Italianno', cursive;*/
+/*font-family: 'Clicker Script', cursive;*/
+/*font-family: 'Bilbo Swash Caps', cursive;*/
+/*font-family: 'Euphoria Script', cursive;*/
+/*font-family: 'Meddon', cursive;*/
+
+#image-div {
+    font-family: 'Italianno', cursive;
+    font-size: 20pt;]
+
+    /*font-family: 'Italianno', cursive;*/
+    /*font-family: 'Clicker Script', cursive;*/
+    /*font-family: 'Bilbo Swash Caps', cursive;*/
+    /*font-family: 'Euphoria Script', cursive;*/
+    /*font-family: 'Meddon', cursive;*/
+}
+
+#title-div > p {
+    font-size: 20pt;
+    font-family: 'Niconna', cursive;
+    color: blue;
+}
+
+
+form {
+    color: white;
+}

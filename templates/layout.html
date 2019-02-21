@@ -1,0 +1,51 @@
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    {% block head %}
+
+        <title>Volstead's Vault {% block title %}{% endblock %}</title>
+
+        {% block metas %}
+            <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        {% endblock %}
+
+        {% block styles %}
+            <link href="{{ bootstrap_find_resource('css/bootstrap.css', cdn='bootstrap') }}" rel="stylesheet">
+            <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+                  rel="stylesheet"
+                  integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+                  crossorigin="anonymous">
+            <link rel=stylesheet href={{ url_for('.static', filename='css/template_style.css') }}>
+            <link href="https://fonts.googleapis.com/css?family=Bilbo+Swash+Caps|Clicker+Script|Euphoria+Script|Italianno|Meddon|Niconne" rel="stylesheet">
+        {% endblock %}
+
+        {% block scripts %}
+            <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+            <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+        {% endblock %}
+
+    {% endblock %}
+</head>
+
+
+<body class="body">
+    <div class="container">
+        <div class="row">
+            <div class="col-12" id="image-div">
+                <img class="img-fluid" id="banner-image" src="{{ url_for('static', filename='img/faded-white-v.jpg') }}">
+            </div>
+            <div class="col-12" id="title-div">
+                <p>Voltead's Emporium<o>
+            </div>
+            <div class="content">
+                {% block content %}{% endblock %}
+            </div>
+        </div>
+    </div>
+
+</body>
+
+</html>

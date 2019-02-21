@@ -1,0 +1,72 @@
+
+{% extends "layout.html" %}
+
+{% block styles %}{{ super() }}{% endblock %}
+
+{% block content %}
+
+    <div class="row">
+
+        <div class="col-lg-3 col-md-2 col-sm-1"></div>
+
+        <div class="col-lg-6 col-md-8 col-sm-10">
+            <form>
+                <div class="row">
+                    <div id="work-hours-div" class="col-12">
+                        {% for emp in employees %}
+                            <div class="form-group row role-hours">
+                                <label for="{{ emp }}" class="col-4 col-form-label">{{ emp }}</label>
+                                <div class="col-4">
+    {#                                <input type="number" class="form-control" id="{{ emp }}" placeholder="0">#}
+                                    <select title="Tip Hours">
+        {#                                {% for x in range(0, 9, 1/2) %}#}
+                                        {% for x in float_range[0] %}
+                                            <option value={{ x }}>{{ x }}</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+
+                                <div class="form-group col-4">
+                                    <div class="form-check">
+                                        <label class="radio-inline form-check-label" for="tip-ratio-full">
+                                            <input class="form-check-input" name={{ emp }}+'-radio' type="radio" id="tip-ratio-full" value=1.0>Service (x1.0)
+                                        </label>
+                                    </div>
+                                    <div class="form-check">
+                                        <label class="radio-inline form-check-label" for="tip-ratio-partial">
+                                            <input class="form-check-input" name={{ emp }}+'-radio' type="radio" id="tip-ratio-partial" value=0.65>Support (x0.65)
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+
+                    <div id="cash-total-div" class="col-12">
+                        {% for denom in denoms %}
+                            <div class="form-group row">
+                                <label for="{{ denom }}" class="col-auto col-form-label">{{ denom }}</label>
+                                <div class="col-auto">
+                                    <input type="number" class="form-control" id="{{ denom }}" placeholder="Dollar Amount for all {{ denom }}'s">
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+
+                    <div id="report-tips-total" class="col-12">
+                        <div class="form-group row">
+                            <label for="report-tips" class="col-auto col-form-label">Total Tips from Daily Report</label>
+                            <div class="col-auto">
+                                <input type="number" class="form-control" id="report-tips" placeholder="Ex. 1337.88">
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </form>
+        </div>
+
+
+        <div class="col-lg-3 col-md-2 col-sm-1"></div>
+    </div>
+{% endblock %}

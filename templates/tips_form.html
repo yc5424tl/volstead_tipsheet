@@ -1,0 +1,78 @@
+
+{% extends "layout.html" %}
+
+{% block content %}
+
+    <div class="col-lg-3 col-md-2 col-sm-1"></div>
+
+    <div class="col-lg-6 col-md-8 col-sm-10">
+
+        <div class="row">
+
+            <div class="col-12">
+                <table id="cash-table" class="table table-bordered table-responsive">
+                    <thead>
+                        <tr>
+                            <td>Denomination</td>
+                            <td>Subtotal></td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for denom in denoms %}
+                            <tr>
+                                <td class="denom-title">{{ denom }}</td>
+                                <td>
+                                    <input placeholder={{ denom }}"'s subtotal" type="number" class="form-control">
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+
+
+            <div class="col-12">
+                <table id="shift-table" class="table table-bordered table-responsive">
+                    <thead>
+                        <tr>
+                            <td>Employee</td>
+                            <td>Hours Worked</td>
+                            <td>Tip-Share</td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for emp in employees %}
+                            <td>{{ emp }}</td>
+                            <td>
+                                <select title="Select Hours" class="custom-select">
+                                    {% x for x in range(0, 9, 0.5) %}
+                                        <option value={{ x }}>"{{ x }}"</option>
+                                    {% endfor %}
+                                </select>
+                            </td>
+                            <td>
+                                <select title=None >
+                                    {% if employees[emp] == "F" %}
+                                        <option value=1.0 selected>Service</option>
+                                        <option value=0.65>Support</option>
+                                    {% else %}
+                                        <option value=1.0>Service</option>
+                                        <option value=0.65 selected>Support</option>
+                                    {% endif %}
+                                </select>
+
+                            </td>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+
+        </div>
+
+
+
+    </div>
+
+    <div class="col-lg-3 col-md-2 col-sm-1"></div>
+
+{% endblock %}
