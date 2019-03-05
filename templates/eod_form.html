@@ -10,15 +10,15 @@
         <div class="col-lg-3 col-md-2 col-sm-1"></div>
 
         <div class="col-lg-6 col-md-8 col-sm-10">
-            <form>
+            <form action="{{ url_for('front_page') }}" method="post">
                 <div class="row">
                     <div id="work-hours-div" class="col-12">
                         {% for emp in employees %}
-                            <div class="form-group row role-hours">
-                                <label for="{{ emp }}" class="col-4 col-form-label">{{ emp }}</label>
+                            <div class="form-group row role-hours" id={{ emp }}>
+                                <label for={{ emp }}-hours class="col-4 col-form-label">{{ emp }}</label>
                                 <div class="col-4">
     {#                                <input type="number" class="form-control" id="{{ emp }}" placeholder="0">#}
-                                    <select title="Tip Hours">
+                                    <select title="Tip Hours" class="select-hours" id={{ emp }}-hours name={{ emp }}-hours>
         {#                                {% for x in range(0, 9, 1/2) %}#}
                                         {% for x in float_range[0] %}
                                             <option value={{ x }}>{{ x }}</option>
@@ -27,18 +27,37 @@
                                 </div>
 
                                 <div class="form-group col-4">
-                                    <div class="form-check">
-                                        <label class="radio-inline form-check-label" for="tip-ratio-full">
-                                            <input class="form-check-input" name={{ emp }}+'-radio' type="radio" id="tip-ratio-full" value=1.0>Service (x1.0)
-                                        </label>
-                                    </div>
-                                    <div class="form-check">
-                                        <label class="radio-inline form-check-label" for="tip-ratio-partial">
-                                            <input class="form-check-input" name={{ emp }}+'-radio' type="radio" id="tip-ratio-partial" value=0.65>Support (x0.65)
-                                        </label>
-                                    </div>
+                                    {% if employees[emp] == 'F' %}
+
+                                        <div class="form-check">
+                                            <label class="radio-inline form-check-label" for="tip-ratio-full">
+                                                <input class="form-check-input" name={{ emp }}-radio type="radio" id={{ emp }}-radio value=1.0 checked>Service (x1.0)
+                                            </label>
+                                        </div>
+                                        <div class="form-check">
+                                            <label class="radio-inline form-check-label" for="tip-ratio-partial">
+                                                <input class="form-check-input" name={{ emp }}-radio type="radio" id={{ emp }}-radio value=0.65>Support (x0.65)
+                                            </label>
+                                        </div>
+
+                                    {% else %}
+
+                                        <div class="form-check">
+                                            <label class="radio-inline form-check-label" for="tip-ratio-full">
+                                                <input class="form-check-input" name={{ emp }}-radio type="radio" id={{ emp }}-full value=1.0>Service (x1.0)
+                                            </label>
+                                        </div>
+                                        <div class="form-check">
+                                            <label class="radio-inline form-check-label" for="tip-ratio-partial">
+                                                <input class="form-check-input" name={{ emp }}-radio type="radio" id={{ emp }}-partial value=0.65 checked>Support (x0.65)
+                                            </label>
+                                        </div>
+
+                                    {% endif %}
+
                                 </div>
                             </div>
+
                         {% endfor %}
                     </div>
 
@@ -62,6 +81,9 @@
                         </div>
                     </div>
 
+                </div>
+                <div>
+                    <button type="submit">MAGIC BUTTON ??!</button>
                 </div>
             </form>
         </div>

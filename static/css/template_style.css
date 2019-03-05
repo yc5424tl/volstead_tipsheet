@@ -1,5 +1,5 @@
 body {
-    background-color: darkslategray;
+    background-color: black;
 }
 
 div > .form-group.row.role-hours {
@@ -10,7 +10,7 @@ div > .form-group.row.role-hours {
     padding-top: 8pt;
     align-content: center;
     justify-content: center;
-    color: white;
+    color: red;
 }
 
 #banner-image {
@@ -20,8 +20,10 @@ div > .form-group.row.role-hours {
 
 #work-hours-div {
     background-color: black;
-    color: white;
+    color: red;
 }
+
+
 
 /*font-family: 'Niconne', cursive;*/
 /*font-family: 'Italianno', cursive;*/
@@ -49,5 +51,17 @@ div > .form-group.row.role-hours {
 
 
 form {
-    color: white;
+    color: #46b8da;
+}
+
+
+.select-hours, .select-hours > option {
+    color: black;
+}
+
+select {
+    color:black;
+}
+option {
+    color: darkgreen;
 }
