@@ -59,11 +59,7 @@ def front_page():
         return render_template('eod_form.html', denoms=denoms, employees=employees, float_range=float_range)
 
 
-# class ReportsView(MethodView):
-#
-#     def __init__(self, template_name):
-#         self._template_name = template_name
-#         self._rf = request.form
+
 
 if __name__ == '__main__':
     app.jinja_env.auto_reload = True
