@@ -1,12 +1,36 @@
-@media all and (max-width: 567px) {}
-@media all and (max-width: 991px) {}
-@media all and (min-width: 992px) {}
-@media all and (min-width:768px) and (max-width:991px) {}
-@media all and (min-width:540px) and (max-width: 1199px) {}
+/*@media all and (max-width: 567px) {}*/
+/*@media all and (max-width: 991px) {}*/
+/*@media all and (min-width: 992px) {}*/
+/*@media all and (min-width:768px) and (max-width:991px) {}*/
+/*@media all and (min-width:540px) and (max-width: 1199px) {}*/
+
+
+* html {
+    margin: auto;
+    padding: 1em;
+}
+
+/*html * {*/
+    /*margin: 0;*/
+    /*padding: 0;*/
+    /*font-size: 14pt;*/
+    /*font-family: "Andale Mono", monospace;*/
+
+
+
+/*div {*/
+    /*margin: auto;*/
+    /*padding: 0;*/
+    /*!*align-content: center;*!*/
+    /*!*text-align: center;*!*/
+    /*justify-content: center;*/
+    /*width: 100%;*/
+/*}*/
 
 body {
     background-color: black;
-    margin: 0;
+    /*margin: 0;*/
+    /*padding: 0;*/
 }
 
 div > .form-group.row.role-hours {
@@ -15,40 +39,44 @@ div > .form-group.row.role-hours {
     margin-top: 0;
     margin-bottom: 0;
     padding-top: 8pt;
-    align-content: center;
-    justify-content: center;
-    color: red;
+    /*align-content: center;*/
+    /*justify-content: center;*/
+    color: #46b8da;
 }
 
 #banner-image {
     width: 100%;
-    margin: auto;
-    opacity: 0.7;
-    border-bottom-left-radius: 1em;
-    border-bottom-right-radius: 1em;
+    height: auto;
+    margin: 0;
+    /*opacity: 0.7;*/
+    border-bottom-left-radius: 5em;
+    border-bottom-right-radius: 5em;
     background-color: white;
     border: white 1pt inset;
+    /*display: block;*/
+    padding: 0;
 }
 
-#content-row{
+#content-row {
     margin-top: 5vh;
 }
 
 #work-hours-div {
     background-color: black;
-    color: red;
+    color: #46b8da;
 }
 
 .col-2.col-form-label.denom-label {
     background-color: #46b8da;
     color: black;
-    font-size: large;
+    font-size: medium;
 }
 .cash-row {
     border: white 1pt solid;
     margin-top: 0;
     margin-bottom: 0;
     border-collapse: collapse;
+    border-radius: 3pt;
 }
 
 #cash-total-div {
@@ -60,9 +88,9 @@ div > .form-group.row.role-hours {
     margin-top: 5em;
     border: 1pt white solid;
     border-radius: 3pt;
-    align-content: center;
-    text-align: center;
-    padding: 0;
+    /*align-content: center;*/
+    /*text-align: center;*/
+    /*padding: 0;*/
 }
 
 
@@ -75,8 +103,11 @@ div > .form-group.row.role-hours {
 /*font-family: 'Meddon', cursive;*/
 
 #image-div {
-    font-family: 'Italianno', cursive;
-    font-size: 20pt;]
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    margin: 0;
+    padding: 0;
 
     /*font-family: 'Italianno', cursive;*/
     /*font-family: 'Clicker Script', cursive;*/
@@ -85,11 +116,11 @@ div > .form-group.row.role-hours {
     /*font-family: 'Meddon', cursive;*/
 }
 
-#title-div > p {
-    font-size: 20pt;
-    font-family: 'Niconna', cursive;
-    color: blue;
-}
+/*#title-div > p {*/
+    /*font-size: 20pt;*/
+    /*font-family: 'Niconna', cursive;*/
+    /*color: blue;*/
+/*}*/
 
 
 form {
@@ -104,12 +135,27 @@ form {
 select {
     color:black;
 }
-option {
-    color: darkgreen;
-}
+/*option {*/
+    /*color: darkgreen;*/
+/*}*/
 
 input {
-    height: 100%;
-    width: auto;
+    height: auto;
+    width: 100%;
+    /*margin: 0;*/
+}
+
+#button-div {
+    align-content: center;
+    text-align: center;
+    width: 100%;
     margin: 0;
+    display: flex;
+    justify-content: center;
+}
+
+#submit-button {
+
+    margin: 0 auto;
+    display: block;
 }
