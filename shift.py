@@ -1,3 +1,5 @@
+import datetime
+
 from employee import Employee
 
 
@@ -11,6 +13,14 @@ class Shift(object):
         self._tip_wage = 0.0
         self._cc_wage = 0.0
         self._start_date = None
+
+    @property
+    def start_date(self):
+        return self._start_date
+
+    @start_date.setter
+    def start_date(self, new_date: datetime.date):
+        self._start_date = new_date.strftime('%A %B %d %Y')
 
     @property
     def staff(self) -> [Employee]:

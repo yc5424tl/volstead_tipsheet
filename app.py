@@ -1,5 +1,3 @@
-import threading
-from os import environ
 
 from flask import Flask, render_template, request, copy_current_request_context
 from flask_bootstrap import Bootstrap
@@ -71,7 +69,6 @@ def front_page():
     def get_emp_tips(emps: [Employee], tip_wage: float):
         for emp in emps:
             emp._tip_total = emp.tip_hours * tip_wage
-
 
     if request.method == 'GET':
         return render_template('eod_form.html',
