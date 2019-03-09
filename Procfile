@@ -1,2 +1,2 @@
 
-web: gunicorn app:volstead_tipsheet.py
+web:gunicorn volstead_tipsheet:app
