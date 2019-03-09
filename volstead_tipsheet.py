@@ -1,4 +1,5 @@
 import threading
+from os import environ
 
 from flask import Flask, render_template, request, copy_current_request_context
 from flask_bootstrap import Bootstrap
@@ -14,6 +15,7 @@ app = Flask(__name__)
 Bootstrap(app)
 app.config.from_object(Config)
 db = SQLAlchemy(app)
+app.run(host='0.0.0.0', port=environ.get('PORT'))
 
 denominations = {'100.00': 0.0, '50.00': 0.0, '20.00': 0.0, '10.00': 0.0, '5.00': 0.0, '1.00': 0.0, '0.25': 0.0}
 
