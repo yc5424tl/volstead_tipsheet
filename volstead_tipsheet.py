@@ -68,9 +68,8 @@ def front_page():
 
     def get_emp_tips(emps: [Employee], tip_wage: float):
         for emp in emps:
-            print(emp.name + ' TIP HOURS: ' + str(emp.tip_hours))
             emp._tip_total = emp.tip_hours * tip_wage
-            print('CASH TIP: ' + str(emp.tip_total))
+
 
     if request.method == 'GET':
         return render_template('eod_form.html',
@@ -81,39 +80,20 @@ def front_page():
     if request.method == 'POST':
 
         rf = request.form
-
-        # staff = request.args['employees']
         shift = Shift(employees, denominations)
-
         analyze_hours(shift, rf)
-
         total_cash = get_cash_subtotal(shift, rf)
-        print('TOTAL CASH: ' + str(total_cash))
-
         shift._tip_wage = get_tip_wage(shift.tip_hours, total_cash)
-        print('TIP WAGE: ' + str(shift.tip_wage))
-
         get_emp_tips(shift.staff, shift.tip_wage)
-
         shift._report_total = float(rf['report-tips'])
-
-        for emp in shift.staff:
-            details = emp.shift_details
-            print(details)
 
         if shift.report_total > 0:
             shift.cc_wage = round(shift.report_total / shift.tip_hours, 2)
-            print('CC WAGE = ' + str(shift.cc_wage))
-
             for emp in shift.staff:
                 emp._cc_tips = round(shift.cc_wage * emp.tip_hours)
-                print(emp.name + ' CC TIPS: ' + str(emp.cc_tips))
 
         today = datetime.date.today()
         yesterday = today - datetime.timedelta(days=1)
-        # print('Today is ' + today.isoformat())
-        # print('Today is ' + today.strftime('%A %B %d, %Y'))
-        print('Shift Start Date: ' + yesterday.strftime('%A %B %d %Y'))
         shift._start_date = yesterday.strftime('%A %B %d %Y')
 
         return render_template('report.html',
@@ -138,30 +118,9 @@ def validate_cash_inputs(denomination_list, request_form):
 
     return True
 
-# def analyze_hours(shift: Shift, rf: request.form):
-#     for emp in shift.staff:
-#         if emp.role == TipShare.SUPPORT:
-#             emp.shift_hours = float(rf[emp+'-hours'])
-#             emp.tip_hours = emp.shift_hours * 0.65
-#             shift.tip_hours += emp.tip_hours
-#         elif emp.role == TipShare.SERVICE:
-#             emp.shift_hours = float(rf[emp+'-hours'])
-#             emp.tip_hours = emp.shift_hours
-#             shift.tip_hours += emp.tip_hours
-
-
-# def get_cash_subtotal(shift: Shift, rf: request.form) -> float:
-#     cash_subtotal = 0.0
-#     for denom in shift.cash_subtotals:
-#         shift.cash_subtotals[denom] = float(rf[denom])
-#         cash_subtotal += shift.cash_subtotals[denom]
-#     return cash_subtotal
-
-
-
 
 if __name__ == '__main__':
     app.jinja_env.auto_reload = True
     app.config['TEMPLATES_AUTO_RELOAD'] = True
-app.run()
+    app.run()
 
