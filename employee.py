@@ -9,19 +9,14 @@ class TipShare(Enum):
 
 class Employee(object):
 
-    # def __init__(self, name: str,
-    #              role: TipShare,
-    #              shift_hours: float,
-    #              tip_hours: float,
-    #              tip_total: float) -> ClassVar:
-
     def __init__(self, name: str, role: TipShare) -> ClassVar:
 
         self._name = name
         self._role = role
-        self._shift_hours = 0.0
-        self._tip_hours = 0.0
-        self._tip_total = 0.0
+        self._shift_hours = 0.00
+        self._tip_hours = 0.00
+        self._tip_total = 0.00
+        self._cc_tips = 0.00
 
     @property
     def name(self):
@@ -50,10 +45,10 @@ class Employee(object):
 
     @property
     def tip_hours(self):
-        if self._role == 'SERVICE':
+        if self._role == TipShare.SERVICE:
             self._tip_hours = self._shift_hours
             return self._tip_hours
-        if self._role == 'SUPPORT':
+        if self._role == TipShare.SUPPORT:
             self._tip_hours = round(self._shift_hours * 0.65, 2)
             return self._tip_hours
 
@@ -65,7 +60,16 @@ class Employee(object):
     def tip_total(self, tip_wage):
         self._tip_total = round(tip_wage * self._tip_hours, 2)
 
+    @property
+    def cc_tips(self):
+        return self._cc_tips
+
+    @cc_tips.setter
+    def cc_tips(self, cc_wage):
+        self._cc_tips = round(cc_wage * self._tip_hours, 2)
+
+    @property
     def shift_details(self):
         details = "NAME: %s  SHIFT: %d hours  ROLE: %s  TIP-HOURS: %d hours  TOTAL-TIPS: $%d " \
-                  % (self._name, self._shift_hours, self._role, self._tip_hours, self._tip_total)
+                  % (self.name, self.shift_hours, self.role, self.tip_hours, self.tip_total)
         return details

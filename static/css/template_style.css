@@ -4,6 +4,13 @@
 /*@media all and (min-width:768px) and (max-width:991px) {}*/
 /*@media all and (min-width:540px) and (max-width: 1199px) {}*/
 
+td, tr, thead {
+    color: white;
+    font-size: 14pt;
+    text-align: center;
+    align-content: center;
+    margin: auto;
+}
 
 * html {
     margin: auto;

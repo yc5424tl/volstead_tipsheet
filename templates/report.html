@@ -1,0 +1,64 @@
+
+{% extends "layout.html" %}
+
+{% block styles %}{{ super() }}{% endblock %}
+
+{% block content %}
+
+    <div class="row" id="report-content-row">
+        <div class="col-md-2 col-sm-1"></div>
+        <div class="col-md-8 col-sm-10">
+            <div class="col-12" id="shift-date">
+                {{ shift.start_date }}
+            </div>
+            {# TIP HOURS -- TIP WAGE -- CC WAGE #}
+            <div class="col-4 report-details">TIP HOURS: {{ shift.tip_hours }}</div>
+            <div class="col-4 report-details">CC WAGE: {{ shift.cc_wage }}</div>
+            <div class="col-4 report-details">TIP WAGE: {{ shift.tip_wage }}</div>
+            <div class="col-12" id="report-tips">
+                <table>
+                    <thead>
+                        <tr>
+                            <td>CC ONLY TOTALS</td>
+                        </tr>
+                        <tr>
+                            <td>EMPLOYEE</td>
+                            <td>TOTAL</td>
+                        </tr>
+                    </thead>
+                      {% for emp in employees %}
+                        {% if emp.tip_hours > 0 %}
+                            <tr>
+                                <td>{{ emp.name }}</td>
+                                <td>{{ emp.cc_tips }}</td>
+                            </tr>
+                        {% endif %}
+                    {% endfor %}
+                </table>
+            </div>
+            <div class="col-12">
+                <table>
+                    <thead>
+                        <tr>
+                            <td>CASH TOTALS</td>
+                        </tr>
+                        <tr>
+                            <td>EMPLOYEE</td>
+                            <td>TOTAL</td>
+                        </tr>
+                    </thead>
+                      {% for emp in employees %}
+                        {% if emp.tip_hours > 0 %}
+                            <tr>
+                                <td>{{ emp.name }}</td>
+                                <td>{{ emp.tip_total }}</td>
+                            </tr>
+                        {% endif %}
+                    {% endfor %}
+                </table>
+            </div>
+        </div>
+        <div class="col-md-2 col-sm-1"></div>
+    </div>
+
+{% endblock %}

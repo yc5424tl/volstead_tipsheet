@@ -7,3 +7,4 @@ class Config(object):
     DEBUG = True
     SQLALCHEMY_DATABASE_URI = None
     SQLALCHEMY_TRACK_MODIFICATIONS = True
+    SERVER_NAME = 'localhost:5000'

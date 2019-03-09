@@ -3,13 +3,14 @@ from employee import Employee
 
 class Shift(object):
 
-    def __init__(self, staff: [Employee], report_total: float, cash_subtotals: {str: float}):
+    def __init__(self, staff: [Employee], cash_subtotals: {str: float}):
         self._staff = staff
-        self._report_total = report_total
+        self._report_total = 0.0
         self._cash_subtotals = cash_subtotals
         self._tip_hours = 0.0
         self._tip_wage = 0.0
         self._cc_wage = 0.0
+        self._start_date = None
 
     @property
     def staff(self) -> [Employee]:
@@ -44,17 +45,17 @@ class Shift(object):
         self._tip_hours = new_tip_hours
 
     @property
-    def tip_wage(self) -> float:
+    def tip_wage(self):
         return self._tip_wage
 
     @tip_wage.setter
-    def tip_wage(self, new_tip_wage) -> None:
+    def tip_wage(self, new_tip_wage: float):
         self._tip_wage = new_tip_wage
 
     @property
-    def cc_wage(self) -> float:
+    def cc_wage(self):
         return self._cc_wage
 
     @cc_wage.setter
-    def cc_wage(self, new_cc_wage) -> None:
+    def cc_wage(self, new_cc_wage):
         self._cc_wage = new_cc_wage
