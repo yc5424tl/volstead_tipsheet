@@ -8,7 +8,7 @@
 import datetime
 from flask import Flask, copy_current_request_context, request, render_template
 from flask_bootstrap import Bootstrap
-from flask_sqlalchemy import SQLAlchemy
+# from flask_sqlalchemy import SQLAlchemy
 from numpy import linspace
 
 from config import Config
@@ -19,7 +19,7 @@ import os
 app = Flask(__name__)
 Bootstrap(app)
 app.config.from_object(Config)
-db = SQLAlchemy(app)
+# db = SQLAlchemy(app)
 
 denominations = {'100.00': 0.0, '50.00': 0.0, '20.00': 0.0, '10.00': 0.0, '5.00': 0.0, '1.00': 0.0, '0.25': 0.0}
 
@@ -83,7 +83,6 @@ def front_page():
                                float_range=shift_hours_range)
 
     if request.method == 'POST':
-
         rf = request.form
         shift = Shift(employees, denominations)
         analyze_hours(shift, rf)
@@ -127,6 +126,6 @@ def validate_cash_inputs(denomination_list, request_form):
 if __name__ == '__main__':
     port = int(os.environ.get("PORT", 5000))
     app.jinja_env.auto_reload = True
-    app.config['TEMPLATES_AUTO_RELOAD'] = True
+    # app.config['TEMPLATES_AUTO_RELOAD'] = True
     app.run(host='0.0.0.0', port=port)
 
