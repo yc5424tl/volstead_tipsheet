@@ -1,11 +1,17 @@
 
-from flask import Flask, render_template, request, copy_current_request_context
+# from flask import Flask, render_template, request, copy_current_request_context
+# from flask_bootstrap import Bootstrap
+# from flask_sqlalchemy import SQLAlchemy
+# from config import Config
+# from numpy import linspace
+# import datetime
+import datetime
+from flask import Flask, copy_current_request_context, request, render_template
 from flask_bootstrap import Bootstrap
 from flask_sqlalchemy import SQLAlchemy
-from config import Config
 from numpy import linspace
-import datetime
 
+from config import Config
 from employee import Employee, TipShare
 from shift import Shift
 import os
