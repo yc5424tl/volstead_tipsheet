@@ -4,12 +4,16 @@
 /*@media all and (min-width:768px) and (max-width:991px) {}*/
 /*@media all and (min-width:540px) and (max-width: 1199px) {}*/
 
+body {
+    background-color: black;
+}
+
 td, tr, thead, table {
     color: #46b8da;
     font-size: 14pt;
     text-align: center;
     align-content: center;
-    margin: auto;
+    margin: 0 auto;
     border: 1pt solid white;
     border-collapse: collapse;
     width: 100%;
@@ -18,7 +22,7 @@ td, tr, thead, table {
 
 h2 {
     margin: auto;
-    display: inline-block;
+    display: block;
     background-color: #46b8da;
     color: black;
     align-content: center;
@@ -27,31 +31,8 @@ h2 {
 }
 
 * html {
-    margin: auto;
-    padding: 1em;
-}
-
-/*html * {*/
-    /*margin: 0;*/
-    /*padding: 0;*/
-    /*font-size: 14pt;*/
-    /*font-family: "Andale Mono", monospace;*/
-
-
-
-/*div {*/
-    /*margin: auto;*/
-    /*padding: 0;*/
-    /*!*align-content: center;*!*/
-    /*!*text-align: center;*!*/
-    /*justify-content: center;*/
-    /*width: 100%;*/
-/*}*/
-
-body {
-    background-color: black;
-    /*margin: 0;*/
-    /*padding: 0;*/
+    margin: 0 auto;
+    padding: 0;
 }
 
 div > .form-group.row.role-hours {
@@ -60,8 +41,6 @@ div > .form-group.row.role-hours {
     margin-top: 0;
     margin-bottom: 0;
     padding-top: 8pt;
-    /*align-content: center;*/
-    /*justify-content: center;*/
     color: #46b8da;
 }
 
@@ -137,17 +116,9 @@ div > .form-group.row.role-hours {
     /*font-family: 'Meddon', cursive;*/
 }
 
-/*#title-div > p {*/
-    /*font-size: 20pt;*/
-    /*font-family: 'Niconna', cursive;*/
-    /*color: blue;*/
-/*}*/
-
-
 form {
     color: #46b8da;
 }
-
 
 .select-hours, .select-hours > option {
     color: black;
@@ -156,14 +127,10 @@ form {
 select {
     color:black;
 }
-/*option {*/
-    /*color: darkgreen;*/
-/*}*/
 
 input {
     height: auto;
     width: 100%;
-    /*margin: 0;*/
 }
 
 #button-div {
@@ -176,7 +143,6 @@ input {
 }
 
 #submit-button {
-
     margin: 0 auto;
     display: block;
 }
