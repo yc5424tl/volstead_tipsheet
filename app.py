@@ -67,6 +67,7 @@ def front_page():
         for denom in working_shift.cash_subtotals:
             working_shift.cash_subtotals[denom] = float(req_form[denom])
             cash_subtotal += working_shift.cash_subtotals[denom]
+        shift.tip_pool = cash_subtotal
         return cash_subtotal
 
     def get_tip_wage(tip_hours: float, cash_total: float) -> float:

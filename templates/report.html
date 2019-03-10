@@ -9,13 +9,15 @@
         <div class="col-md-2 col-sm-1"></div>
         <div class="col-md-8 col-sm-10">
             <div class="col-12" id="shift-date">
-                {{ shift.start_date }}
+                <h2>{{ shift.start_date }}</h2>
             </div>
             {# TIP HOURS -- TIP WAGE -- CC WAGE #}
-            <div class="col-4 report-details">TIP HOURS: {{ shift.tip_hours }}</div>
-            <div class="col-4 report-details">CC WAGE: {{ shift.cc_wage }}</div>
-            <div class="col-4 report-details">TIP WAGE: {{ shift.tip_wage }}</div>
-            <div class="col-12" id="report-tips">
+            <div class="col-3 report-details"><h2>TIP HOURS: {{ shift.tip_hours }}</h2></div>
+            <div class="col-3 report-details"><h2>TIP POOL: {{ shift.tip_pool }}</h2></div>
+            <div class="col-3 report-details"><h2>TIP WAGE: {{ shift.tip_wage }}</h2></div>
+            <div class="col-3 report-details"><h2>CC WAGE: {{ shift.cc_wage }}</h2></div>
+
+            <div class="col-12" id="report-ti ps">
                 <table>
                     <thead>
                         <tr>
@@ -23,6 +25,9 @@
                         </tr>
                         <tr>
                             <td>EMPLOYEE</td>
+                            <td>SHIFT HOURS</td>
+                            <td>ROLE</td>
+                            <td>TIP HOURS</td>
                             <td>TOTAL</td>
                         </tr>
                     </thead>
@@ -30,6 +35,9 @@
                         {% if emp.tip_hours > 0 %}
                             <tr>
                                 <td>{{ emp.name }}</td>
+                                <td>{{ emp.shift_hours }}</td>
+                                <td>{{ emp.role }}</td>
+                                <td>{{ emp.tip_hours }}</td>
                                 <td>{{ emp.cc_tips }}</td>
                             </tr>
                         {% endif %}
@@ -44,6 +52,9 @@
                         </tr>
                         <tr>
                             <td>EMPLOYEE</td>
+                            <td>SHIFT HOURS</td>
+                            <td>ROLE</td>
+                            <td>TIP HOURS</td>
                             <td>TOTAL</td>
                         </tr>
                     </thead>
@@ -51,6 +62,9 @@
                         {% if emp.tip_hours > 0 %}
                             <tr>
                                 <td>{{ emp.name }}</td>
+                                <td>{{ emp.shift_hours }}</td>
+                                <td>{{ emp.role }}</td>
+                                <td>{{ emp.tip_hours }}</td>
                                 <td>{{ emp.tip_total }}</td>
                             </tr>
                         {% endif %}

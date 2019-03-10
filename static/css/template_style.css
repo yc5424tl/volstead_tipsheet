@@ -5,11 +5,15 @@
 /*@media all and (min-width:540px) and (max-width: 1199px) {}*/
 
 td, tr, thead {
-    color: white;
+    color: #46b8da;
     font-size: 14pt;
     text-align: center;
     align-content: center;
     margin: auto;
+    border: 1pt solid white;
+    border-collapse: collapse;
+    width: 100%;
+    height: auto;
 }
 
 * html {

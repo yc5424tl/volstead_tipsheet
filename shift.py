@@ -13,7 +13,15 @@ class Shift(object):
         self._tip_wage = 0.0
         self._cc_wage = 0.0
         self._start_date = None
+        self._tip_pool = 0.0
 
+    @property
+    def tip_pool(self):
+        return self._tip_pool
+
+    @tip_pool.setter
+    def tip_pool(self, new_tip_pool):
+        self._tip_pool = new_tip_pool
 
     @property
     def start_date(self):
