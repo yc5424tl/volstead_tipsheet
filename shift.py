@@ -14,6 +14,7 @@ class Shift(object):
         self._cc_wage = 0.0
         self._start_date = None
 
+
     @property
     def start_date(self):
         return self._start_date

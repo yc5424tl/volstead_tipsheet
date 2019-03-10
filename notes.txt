@@ -1,6 +1,6 @@
 Procfile.windows   web: python manage.py runserver 0.0.0.0:5000
 web: python app.py runserver
-
+web: gunicorn --bind 0.0.0.0:$PORT volsteads:app
 
 Table One/Two
     Names***
