@@ -152,3 +152,12 @@ input {
     text-align: center;
     justify-content: center;
 }
+
+.form-check-input {
+    margin: 1em;
+}
+
+.form-check-label {
+    margin: auto;
+    padding: 1em;
+}
