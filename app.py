@@ -88,6 +88,8 @@ def front_page():
         shift = Shift(employees, denominations)
         analyze_hours(shift, rf)
         total_cash = get_cash_subtotal(shift, rf)
+        print("tip hours " + str(shift.tip_hours))
+        print("total cash : " + str(total_cash))
         shift._tip_wage = get_tip_wage(shift.tip_hours, total_cash)
         get_emp_tips(shift.staff, shift.tip_wage)
         shift._report_total = float(rf['report-tips'])
