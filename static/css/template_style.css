@@ -146,3 +146,10 @@ input {
     margin: 0 auto;
     display: block;
 }
+
+.report-details {
+    margin: 0;
+    padding: 1em;
+    text-align: center;
+    justify-content: center;
+}
