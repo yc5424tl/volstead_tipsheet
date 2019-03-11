@@ -71,7 +71,7 @@ def front_page():
         return cash_subtotal
 
     def get_tip_wage(tip_hours: float, cash_total: float) -> float:
-        return round(cash_total / tip_hours, 2)
+        return round((cash_total / tip_hours), 2)
 
     def get_emp_tips(emps: [Employee], tip_wage: float):
         for emp in emps:
