@@ -71,7 +71,7 @@ def front_page():
         return cash_subtotal
 
     def get_tip_wage(tip_hours: float, cash_total: float) -> float:
-        return round((cash_total / tip_hours), 2)
+        return cash_total / tip_hours
 
     def get_emp_tips(emps: [Employee], tip_wage: float):
         for emp in emps:
@@ -95,9 +95,9 @@ def front_page():
         shift._report_total = float(rf['report-tips'])
 
         if shift.report_total > 0:
-            shift.cc_wage = round(shift.report_total / shift.tip_hours, 2)
+            shift.cc_wage = shift.report_total / shift.tip_hours
             for emp in shift.staff:
-                emp._cc_tips = round(shift.cc_wage * emp.tip_hours)
+                emp._cc_tips = shift.cc_wage * emp.tip_hours
 
         today = datetime.date.today()
         yesterday = today - datetime.timedelta(days=1)
