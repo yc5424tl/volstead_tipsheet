@@ -28,17 +28,17 @@ shift_hours_range = linspace(0.0, 9.0, num=19, retstep=True)
 
 def instantiate_employees():
 
-    employee_dict = dict(JAKE=TipShare.SERVICE,
-                         CORY=TipShare.SERVICE,
-                         SAM=TipShare.SERVICE,
-                         INA=TipShare.SERVICE,
-                         ELANEOR=TipShare.SERVICE,
-                         JENNIE=TipShare.SERVICE,
-                         HEIDI=TipShare.SERVICE,
-                         CHRIS=TipShare.SERVICE,
-                         MARLEY=TipShare.SERVICE,
-                         ADAM=TipShare.SUPPORT,
-                         MOCK=TipShare.SUPPORT)
+    employee_dict = dict(JAKE="SERVICE",
+                         CORY="SERVICE",
+                         SAM="SERVICE",
+                         INA="SERVICE",
+                         ELEANEOR="SERVICE",
+                         JENNIE="SERVICE",
+                         HIEDI="SERVICE",
+                         CHRIS="SERVICE",
+                         MARLEY="SERVICE",
+                         ADAM="SUPPORT",
+                         MOGCK="SUPPORT")
 
     return [Employee(emp, employee_dict[emp]) for emp in employee_dict]
 
@@ -52,11 +52,11 @@ def front_page():
     @copy_current_request_context
     def analyze_hours(working_shift: Shift, req_form: request.form):
         for target_emp in shift.staff:
-            if target_emp.role == TipShare.SUPPORT:
+            if target_emp.role == "SUPPORT":
                 target_emp.shift_hours = float(req_form[target_emp.name + '-hours'])
                 target_emp._tip_hours = round(target_emp.shift_hours * 0.65, 2)
                 working_shift.tip_hours += target_emp.tip_hours
-            elif target_emp.role == TipShare.SERVICE:
+            elif target_emp.role == "SERVICE":
                 target_emp.shift_hours = float(req_form[target_emp.name + '-hours'])
                 target_emp._tip_hours = target_emp.shift_hours
                 working_shift.tip_hours += target_emp.tip_hours

@@ -9,7 +9,7 @@ class TipShare(Enum):
 
 class Employee(object):
 
-    def __init__(self, name: str, role: TipShare) -> ClassVar:
+    def __init__(self, name: str, role: str) -> ClassVar:
 
         self._name = name
         self._role = role
@@ -40,7 +40,7 @@ class Employee(object):
 
     @role.setter
     def role(self, new_role):
-        if new_role == TipShare.SERVICE or TipShare.SUPPORT:
+        if new_role == "SERVICE" or "SUPPORT":
             self._role = new_role
 
     @property
