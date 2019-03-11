@@ -45,17 +45,17 @@ div > .form-group.row.role-hours {
 }
 
 #banner-image {
-    width: 100%;
-    height: auto;
-    margin: 0;
-    resize: both;
-    /*opacity: 0.7;*/
-    border-bottom-left-radius: 5em;
-    border-bottom-right-radius: 5em;
-    background-color: white;
-    border: white 1pt inset;
-    /*display: block;*/
-    padding: 0;
+    /*width: 100%;*/
+    /*height: auto;*/
+    /*margin: 0;*/
+    /*resize: both;*/
+    /*!*opacity: 0.7;*!*/
+    /*border-bottom-left-radius: 5em;*/
+    /*border-bottom-right-radius: 5em;*/
+    /*background-color: white;*/
+    /*border: white 1pt inset;*/
+    /*!*display: block;*!*/
+    /*padding: 0;*/
 }
 
 #content-row {
@@ -101,11 +101,11 @@ div > .form-group.row.role-hours {
 /*font-family: 'Meddon', cursive;*/
 
 #image-div {
-    width: 100%;
+    /*width: 100%;
     height: auto;
     object-fit: fill;
     margin: 0;
-    padding: 0;
+    padding: 0;*/
 }
 
 form {
