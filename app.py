@@ -54,7 +54,7 @@ def front_page():
         for target_emp in shift.staff:
             if target_emp.role == "SUPPORT":
                 target_emp.shift_hours = float(req_form[target_emp.name + '-hours'])
-                target_emp._tip_hours = round(target_emp.shift_hours * 0.65, 2)
+                target_emp._tip_hours = target_emp.shift_hours * 0.65
                 working_shift.tip_hours += target_emp.tip_hours
             elif target_emp.role == "SERVICE":
                 target_emp.shift_hours = float(req_form[target_emp.name + '-hours'])
@@ -88,13 +88,13 @@ def front_page():
         shift = Shift(employees, denominations)
         analyze_hours(shift, rf)
         total_cash = get_cash_subtotal(shift, rf)
-        print("tip hours " + str(shift.tip_hours))
-        print("total cash : " + str(total_cash))
+        # print("tip hours " + str(shift.tip_hours))
+        # print("total cash : " + str(total_cash))
         shift._tip_wage = get_tip_wage(shift.tip_hours, total_cash)
         get_emp_tips(shift.staff, shift.tip_wage)
         shift._report_total = float(rf['report-tips'])
 
-        if shift.report_total > 0:
+        if shift.report_total > 0.0:
             shift.cc_wage = shift.report_total / shift.tip_hours
             for emp in shift.staff:
                 emp._cc_tips = shift.cc_wage * emp.tip_hours

@@ -45,10 +45,10 @@ class Employee(object):
 
     @property
     def tip_hours(self):
-        if self._role == TipShare.SERVICE:
+        if self._role == "SERVICE":
             self._tip_hours = self._shift_hours
             return self._tip_hours
-        if self._role == TipShare.SUPPORT:
+        if self._role == "SUPPORT":
             self._tip_hours = self._shift_hours * 0.65
             return self._tip_hours
 
