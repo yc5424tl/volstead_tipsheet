@@ -66,8 +66,8 @@
                         {% for denom in denominations %}
                             <div class="form-group row cash-row">
                                 <label for="{{ denom }}" class="col-2 col-form-label denom-label">{{ denom }}</label>
-                                <div class="col-5"></div>
-                                <div class="col-5">
+                                <div class="col-3"></div>
+                                <div class="col-7">
                                     <input type="number" min=0 step={{ denom }} class="form-control" id="{{ denom }}" name="{{ denom }}" placeholder="ENTER SUBTOTAL FOR {{ denom }}" required>
                                 </div>
                             </div>
