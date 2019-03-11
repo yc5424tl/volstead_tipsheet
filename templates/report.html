@@ -42,9 +42,9 @@
                             <tr>
                                 <th scope="row">{{ emp.name }}</th>
                                 <td>{{ emp.shift_hours }}</td>
-                                {% if emp.role == TipShare.SERVICE %}
+                                {% if emp.role == 'SERVICE' %}
                                     <td>Service (x1.00)</td>
-                                {% elif emp.role == TipShare.SUPPORT %}
+                                {% elif emp.role == 'SUPPORT' %}
                                     <td>Support (x0.65)</td>
                                 {% endif %}
                                 <td>{{ emp.tip_hours|round(2) }}</td>
@@ -76,9 +76,9 @@
                             <tr>
                                 <th scope="row">{{ emp.name }}</th>
                                 <td>{{ emp.shift_hours }}</td>
-                                 {% if emp.role == TipShare.SERVICE %}
+                                 {% if emp.role == 'SERVICE' %}
                                     <td>Service (x1.00)</td>
-                                {% elif emp.role == TipShare.SUPPORT %}
+                                {% elif emp.role == 'SUPPORT' %}
                                     <td>Support (x0.65)</td>
                                 {% endif %}
                                 <td>{{ emp.tip_hours|round(2) }}</td>
