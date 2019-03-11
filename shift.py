@@ -65,16 +65,16 @@ class Shift(object):
 
     @property
     def tip_wage(self):
-        return self._tip_wage
+        return round(self._tip_wage, 2)
 
     @tip_wage.setter
     def tip_wage(self, new_tip_wage: float):
-        self._tip_wage = new_tip_wage
+        self._tip_wage = round(new_tip_wage, 2)
 
     @property
     def cc_wage(self):
-        return self._cc_wage
+        return round(self._cc_wage, 2)
 
     @cc_wage.setter
     def cc_wage(self, new_cc_wage):
-        self._cc_wage = new_cc_wage
+        self._cc_wage = round(new_cc_wage, 2)

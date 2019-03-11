@@ -36,7 +36,10 @@ class Employee(object):
 
     @property
     def role(self):
-        return self._role
+        if self._role == TipShare.SERVICE:
+            return "Service"
+        elif self._role == TipShare.SUPPORT:
+            return "Support"
 
     @role.setter
     def role(self, new_role):
@@ -54,7 +57,7 @@ class Employee(object):
 
     @property
     def tip_total(self):
-        return self._tip_total
+        return round(self._tip_total, 2)
 
     @tip_total.setter
     def tip_total(self, tip_wage):
@@ -62,7 +65,7 @@ class Employee(object):
 
     @property
     def cc_tips(self):
-        return self._cc_tips
+        return round(self._cc_tips, 2)
 
     @cc_tips.setter
     def cc_tips(self, cc_wage):
