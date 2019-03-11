@@ -5,20 +5,20 @@
 
 {% block content %}
 
-    <div class="row" id="content-row">
+    <div class="row no-gutters" id="content-row">
 
         <div class="col-lg-2 col-md-2 col-sm-1"></div>
 
         <div class="col-lg-8 col-md-8 col-sm-10" id="content-form-div">
 
             <form action="{{ url_for('front_page') }}" method="post">
-                <div class="row">
+                <div class="row no gutters">
 
                     <div id="work-hours-div" class="col-12">
 
                         {% for emp in employees %}
 
-                            <div class="form-group row role-hours" id={{ emp.name }}>
+                            <div class="form-group row role-hours no-gutters" id={{ emp.name }}>
                                 <label for={{ emp.name }}-hours class="col-4 col-form-label">{{ emp.name }}</label>
 
                                 <div class="col-2">
@@ -62,7 +62,7 @@
                         {% endfor %}
                     </div>
 
-                    <div id="cash-total-div" class="col-12">
+                    <div id="cash-totals-input-div" class="col-12">
                         {% for denom in denominations %}
                             <div class="form-group row cash-row">
                                 <label for="{{ denom }}" class="col-2 col-form-label denom-label">{{ denom }}</label>
@@ -74,8 +74,8 @@
                         {% endfor %}
                     </div>
 
-                    <div id="report-tips-total" class="col-12">
-                        <div class="form-group row">
+                    <div id="daily-tips-total-input-div" class="col-12">
+                        <div class="form-group row no-gutters">
                             <label for="report-tips" class="col-auto col-form-label">Total Tips from Daily Report</label>
                             <div class="col-auto">
                                 <input type="number" class="form-control" id="report-tips" name="report-tips" placeholder="Ex. 1337.87" min=0 step=0.01 required>
@@ -84,7 +84,7 @@
                     </div>
 
                     <div class="col-12" id="button-div">
-                        <div class="row">
+                        <div class="row no-gutters">
                             <div class="col-5"></div>
                             <div class="col-2">
                                 <button class="button btn btn-info" type="submit" id="submit-button">MAGIC BUTTON ??!</button>
