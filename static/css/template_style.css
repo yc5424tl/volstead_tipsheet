@@ -137,13 +137,12 @@ div > .form-group.row.role-hours {
 }
 
 .form-check-label {
-    display: inline;
     white-space: nowrap;
 
 }
 
 .form-check-input {
-    margin: 2em;
+    padding: 2em;
 }
 
 
