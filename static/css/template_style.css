@@ -69,6 +69,7 @@ h2 {
     align-content: center;
     text-align: center;
     width: 100%;
+    white-space: nowrap;
 }
 
 div > .form-group.row.role-hours {
@@ -101,22 +102,19 @@ div > .form-group.row.role-hours {
 #work-hours-div {
     background-color: black;
     color: #46b8da;
-    opacity: 8;
+    opacity: 0.8;
 }
 
-.col-2.col-form-label.denom-label {
-    background-color: #46b8da;
-    color: black;
-    font-size: medium;
-    text-align: center;
-}
+
 .cash-row {
-    border: white 1pt solid;
+    /*border: white 1pt solid;*/
     margin-top: 0;
     margin-bottom: 0;
-    border-collapse: collapse;
-    border-radius: 3pt;
+    /*border-collapse: collapse;*/
+    /*border-radius: 3pt;*/
 }
+
+
 
 #cash-totals-input-div {
     margin-top: 5em;
@@ -125,8 +123,8 @@ div > .form-group.row.role-hours {
 
 #daily-tips-total-input-div {
     margin-top: 5em;
-    border: 1pt white solid;
-    border-radius: 3pt;
+    /*border: 1pt white solid;*/
+    /*border-radius: 3pt;*/
     align-content: center;
 
 }
@@ -139,10 +137,12 @@ div > .form-group.row.role-hours {
 .form-check-label {
     white-space: nowrap;
 
+
 }
 
 .form-check-input {
     padding: 2em;
+
 }
 
 
@@ -208,7 +208,7 @@ select {
     background: url("../img/vol_lib_port.jpg") repeat-y;
     width: 100%;
     margin: 0;
-    opacity: 8;
+    opacity: 0.8;
 }
 /*.form-check-input {*/
     /*margin: 1em;*/
@@ -218,3 +218,18 @@ select {
     /*margin: auto;*/
     /*padding: 1em;*/
 /*}*/
+
+.denom-label{
+    background-color: #46b8da;
+    color: black;
+    font-size: 1.3em;
+    font-weight: bold;
+    text-align: center;
+    opacity: 0.5;
+}
+
+.denom-input {
+    background-color: black;
+    color: #46b8da;
+    opacity: 0.7;
+}

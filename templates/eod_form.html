@@ -20,7 +20,9 @@ c
 
                             <div class="form-group row role-hours no-gutters" id={{ emp.name }}>
 
-                                <div class="col-2 col-form-label">
+                                <div class="col-1"></div>
+
+                                <div class="col-3 col-form-label">
                                     <label for={{ emp.name }}-hours>{{ emp.name }}</label>
                                 </div>
 
@@ -32,24 +34,24 @@ c
                                     </select>
                                 </div>
 
-                                <div class="form-group col-7 center-block">
+                                <div class="form-group col-4 center-block text-center">
 {#                                    <div class="row no-gutters">#}
                                         {% if emp.role == 'SERVICE' %}
                                             {#<div class="col-auto form-check-inline">#}
-                                            <div class="form-check-inline">
+                                            <div class="form-check-inline float-left">
                                                 <label class="form-check-label" for={{ emp.name }}-full><input class="form-check-input" name={{ emp.name }}-radio type="radio" id={{ emp.name }}-full value=1.0 checked>Service (x1.0)</label>
                                             </div>
 {#                                            <div class="col-auto form-check-inline">#}
-                                            <div class="form-check-inline">
+                                            <div class="form-check-inline float-right">
                                                 <label class="form-check-label" for={{ emp.name }}-partial><input class="form-check-input" name={{ emp.name }}-radio type="radio" id={{ emp.name }}-partial value=0.65>Support (x0.65)</label>
                                             </div>
                                         {% else %}
 {#                                            <div class="col-auto form-check-inline">#}
-                                            <div class="form-check-inline">
+                                            <div class="form-check-inline float-left">
                                                 <label class="form-check-label" for={{ emp.name }}-full><input class="form-check-input" name={{ emp.name }}-radio type="radio" id={{ emp.name }}-full value=1.0>Service (x1.0)</label>
                                             </div>
 {#                                            <div class="col-auto form-check-inline">#}
-                                            <div class="form-check-inline">
+                                            <div class="form-check-inline float-right">
                                                 <label class="form-check-label" for={{ emp.name }}-partial><input class="form-check-input" name={{ emp.name }}-radio type="radio" id={{ emp.name }}-partial value=0.65 checked>Support (x0.65)</label>
                                             </div>
                                         {% endif %}
@@ -65,9 +67,9 @@ c
                         {% for denom in denominations %}
                             <div class="form-group row cash-row no-gutters">
                                 <label for="{{ denom }}" class="col-3 col-form-label denom-label text-center">{{ denom }}</label>
-                                <div class="col-auto"></div>
-                                <div class="col-7">
-                                    <input type="number" min=0 step={{ denom }} class="form-control" id="{{ denom }}" name="{{ denom }}" placeholder="ENTER SUBTOTAL FOR {{ denom }}" required>
+{#                                <div class="col-auto"></div>#}
+                                <div class="col-9">
+                                    <input type="number" min="0" step="{{ denom }}" class="form-control denom-input" id="{{ denom }}" name="{{ denom }}" placeholder="ENTER SUBTOTAL FOR {{ denom }}" required>
                                 </div>
                             </div>
                         {% endfor %}
