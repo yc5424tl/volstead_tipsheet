@@ -130,11 +130,14 @@ div > .form-group.row.role-hours {
 }
 
 .col-4.col-form-label {
-    margin: auto;
     align-content: center;
     text-align: center;
 }
 
+.form-check-label {
+    align-content: left;
+    text-align: left;
+}
 
 
 
@@ -194,7 +197,7 @@ select {
 }
 
 #layout-content-div {
-    height: auto;
+    height: 100%;
     background-size: cover;
     background: url("../img/vol_lib_port.jpg") repeat-y;
     width: 100%;
