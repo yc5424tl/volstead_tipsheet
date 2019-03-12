@@ -193,6 +193,13 @@ select {
     justify-content: center;
 }
 
+#layout-content-div {
+    height: auto;
+    background-size: cover;
+    background: url("../img/vol_lib_port.jpg") repeat-y;
+    width: 100%;
+    margin: 0;
+}
 /*.form-check-input {*/
     /*margin: 1em;*/
 /*}*/

@@ -19,12 +19,12 @@
                         {% for emp in employees %}
 
                             <div class="form-group row role-hours no-gutters" id={{ emp.name }}>
+
                                 <div class="col-4 col-form-label text-center center-block">
                                     <label for={{ emp.name }}-hours class="text-center">{{ emp.name }}</label>
                                 </div>
 
-
-                                <div class="col-4 center-block text-center">
+                                <div class="col-4 center-block">
                                     <select title="Tip Hours" class="select-hours" id={{ emp.name }}-hours name={{ emp.name }}-hours>
                                         {% for x in float_range[0] %}
                                             <option value={{ x }}>{{ x }}</option>
@@ -36,27 +36,27 @@
                                     {% if emp.role == 'SERVICE' %}
 
                                         <div class="form-check">
-                                            <label class="radio form-check-label" for="tip-ratio-full">
-                                                <input class="form-check-input" name={{ emp.name }}-radio type="radio" id={{ emp.name }}-radio value=1.0 checked>Service (x1.0)
+                                            <label class="radio form-check-label" for={{ emp.name }}-full>
+                                                Service (x1.0)
                                             </label>
+                                            <input class="form-check-input" name={{ emp.name }}-radio type="radio" id={{ emp.name }}-full value=1.0 checked>
                                         </div>
                                         <div class="form-check">
-                                            <label class="radio form-check-label" for="tip-ratio-partial">
-                                                <input class="form-check-input" name={{ emp.name }}-radio type="radio" id={{ emp.name }}-radio value=0.65>Support (x0.65)
+                                            <label class="radio form-check-label" for={{ emp.name }}-partial>
+                                                Support (x0.65)
                                             </label>
+                                            <input class="form-check-input" name={{ emp.name }}-radio type="radio" id={{ emp.name }}-partial value=0.65>
                                         </div>
 
                                     {% else %}
 
                                         <div class="form-check">
-                                            <label class="radio form-check-label" for="tip-ratio-full">
-                                                <input class="form-check-input" name={{ emp.name }}-radio type="radio" id={{ emp.name }}-full value=1.0>Service (x1.0)
-                                            </label>
+                                            <label class="radio form-check-label" for={{ emp.name }}-full>Service (x1.0)</label>
+                                            <input class="form-check-input" name={{ emp.name }}-radio type="radio" id={{ emp.name }}-full value=1.0>
                                         </div>
                                         <div class="form-check">
-                                            <label class="radio form-check-label" for="tip-ratio-partial">
-                                                <input class="form-check-input" name={{ emp.name }}-radio type="radio" id={{ emp.name }}-partial value=0.65 checked>Support (x0.65)
-                                            </label>
+                                            <label class="radio form-check-label" for={{ emp.name }}-partial>Support (x0.65)</label>
+                                            <input class="form-check-input" name={{ emp.name }}-radio type="radio" id={{ emp.name }}-partial value=0.65 checked>
                                         </div>
 
                                     {% endif %}
