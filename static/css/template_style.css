@@ -101,6 +101,7 @@ div > .form-group.row.role-hours {
 #work-hours-div {
     background-color: black;
     color: #46b8da;
+    opacity: 8;
 }
 
 .col-2.col-form-label.denom-label {
@@ -135,13 +136,13 @@ div > .form-group.row.role-hours {
 }
 
 .form-check-label {
-    text-align: right;
     display: block;
     padding-left: 20px;
 }
 
 .form-check-input {
     display: block;
+    margin-right: 20px;
 }
 
 
@@ -207,6 +208,7 @@ select {
     background: url("../img/vol_lib_port.jpg") repeat-y;
     width: 100%;
     margin: 0;
+    opacity: 8;
 }
 /*.form-check-input {*/
     /*margin: 1em;*/
