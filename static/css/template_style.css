@@ -71,6 +71,7 @@ h2 {
     width: 100%;
     text-wrap: normal;
     white-space: pre-wrap;
+    height: 100%;
 }
 
 div > .form-group.row.role-hours {
@@ -84,7 +85,7 @@ div > .form-group.row.role-hours {
 
 #banner-image {
     opacity: 0.3;
-    border-bottom: inset 2pt #5c5750 ;
+    /*border-bottom: inset 2pt #5c5750 ;*/
     /*background-image: linear-gradient(*/
         /*rgba(0, 0, 0, 0.0) 0%,*/
         /*rgba(0, 0, 0, 0.0) 70%,*/
@@ -245,11 +246,12 @@ select {
 
 .denom-label{
     background-color: #18C7F7;
-    color: #5c5750;
+    color: #E2D6C5;
     font-size: 1.3em;
     font-weight: bold;
     text-align: center;
     opacity: 0.5;
+    border: 1pt solid #E2D6C5;
 }
 
 .denom-input {
