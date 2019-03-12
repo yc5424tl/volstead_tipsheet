@@ -48,12 +48,12 @@ body {
 }
 
 td, tr, thead, table {
-    color: #46b8da;
+    color: #18C7F7;
     font-size: 14pt;
     text-align: center;
     align-content: center;
     /*margin: 0 auto;*/
-    border: 1pt solid white;
+    border: 1pt solid #E2D6C5I ;
     border-collapse: collapse;
     width: 100%;
     height: auto;
@@ -62,9 +62,9 @@ td, tr, thead, table {
 h2 {
     margin: auto;
     display: block;
-    background-color: #46b8da;
-    color: black;
-    border: 1pt solid black;
+    background-color: #18C7F7;
+    color: #5c5750;
+    border: 1pt solid #5c5750;
     border-collapse: collapse;
     align-content: center;
     text-align: center;
@@ -74,12 +74,12 @@ h2 {
 }
 
 div > .form-group.row.role-hours {
-    border: 1pt solid white;
+    border: 1pt solid #E2D6C5;
     border-collapse: collapse;
     margin-top: 0;
     margin-bottom: 0;
     padding-top: 8pt;
-    color: #46b8da;
+    color: #18C7F7;
 }
 
 #banner-image {
@@ -113,8 +113,8 @@ div > .form-group.row.role-hours {
 }
 
 #work-hours-div {
-    background-color: black;
-    color: #46b8da;
+    background-color: #5c5750;
+    color: #18C7F7;
     opacity: 0.8;
 }
 
@@ -175,21 +175,21 @@ div > .form-group.row.role-hours {
         rgba(92,87,80, 0.0) 70%,
         rgba(92,87,80, 0.2) 80%,
         rgba(92,87,80, 0.7)  90%,
-        rgba(0, 0, 0, 0.9)  95%,
-        rgba(0, 0, 0, 1.0)  100%
+        rgba(92,87,80, 0.9)  95%,
+        rgba(92,87,80, 1.0)  100%
       );
 }
 
 form {
-    color: #46b8da;
+    color: #18C7F7;
 }
 
 .select-hours, .select-hours > option {
-    color: black;
+    color: #5c5750;
 }
 
 select {
-    color:black;
+    color:#5c5750;
 }
 
 /*input {*/
@@ -244,8 +244,8 @@ select {
 /*}*/
 
 .denom-label{
-    background-color: #46b8da;
-    color: black;
+    background-color: #18C7F7;
+    color: #5c5750;
     font-size: 1.3em;
     font-weight: bold;
     text-align: center;
@@ -253,7 +253,7 @@ select {
 }
 
 .denom-input {
-    background-color: black;
-    color: #46b8da;
+    background-color: #5c5750;
+    color: #18C7F7;
     opacity: 0.7;
 }
