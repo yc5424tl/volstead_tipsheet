@@ -136,6 +136,11 @@ div > .form-group.row.role-hours {
 
 .form-check-label {
     text-align: left;
+    display: block;
+}
+
+.form-check-input {
+    display: block;
 }
 
 
