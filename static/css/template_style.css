@@ -64,6 +64,8 @@ h2 {
     display: block;
     background-color: #46b8da;
     color: black;
+    border: 1pt solid black;
+    border-collapse: collapse;
     align-content: center;
     text-align: center;
     width: 100%;
@@ -123,6 +125,14 @@ div > .form-group.row.role-hours {
     margin-top: 5em;
     border: 1pt white solid;
     border-radius: 3pt;
+    align-content: center;
+
+}
+
+.col-4.col-form-label {
+    margin: auto;
+    align-content: center;
+    text-align: center;
 }
 
 
