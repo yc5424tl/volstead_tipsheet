@@ -35,21 +35,21 @@
                                 <div class="form-group col-4">
                                     {% if emp.role == 'SERVICE' %}
                                         <div class="form-check">
-                                            <label class="radio form-check-label" for={{ emp.name }}-full><input class="form-check-input" name={{ emp.name }}-radio type="radio" id={{ emp.name }}-full value=1.0 checked>Service (x1.0)</label>
+                                            <label class="radio form-check-label" for={{ emp.name }}-full><input class="form-check-input pull-right" name={{ emp.name }}-radio type="radio" id={{ emp.name }}-full value=1.0 checked>Service (x1.0)</label>
                                         </div>
                                         <div class="form-check">
-                                            <label class="radio form-check-label" for={{ emp.name }}-partial><input class="form-check-input" name={{ emp.name }}-radio type="radio" id={{ emp.name }}-partial value=0.65>Support (x0.65)</label>
+                                            <label class="radio form-check-label" for={{ emp.name }}-partial><input class="form-check-input pull-right" name={{ emp.name }}-radio type="radio" id={{ emp.name }}-partial value=0.65>Support (x0.65)</label>
                                         </div>
                                     {% else %}
                                         <div class="form-check">
-                                            <label class="radio form-check-label" for={{ emp.name }}-full><input class="form-check-input" name={{ emp.name }}-radio type="radio" id={{ emp.name }}-full value=1.0>Service (x1.0)</label>
+                                            <label class="radio form-check-label" for={{ emp.name }}-full><input class="form-check-input pull-right" name={{ emp.name }}-radio type="radio" id={{ emp.name }}-full value=1.0>Service (x1.0)</label>
                                         </div>
                                         <div class="form-check">
-                                            <label class="radio form-check-label" for={{ emp.name }}-partial><input class="form-check-input" name={{ emp.name }}-radio type="radio" id={{ emp.name }}-partial value=0.65 checked>Support (x0.65)</label>
+                                            <label class="radio form-check-label" for={{ emp.name }}-partial><input class="form-check-input pull-right" name={{ emp.name }}-radio type="radio" id={{ emp.name }}-partial value=0.65 checked>Support (x0.65)</label>
                                         </div>
                                     {% endif %}
                                 </div>
-                            
+
                             </div>
                         {% endfor %}
                     </div>
