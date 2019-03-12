@@ -19,9 +19,12 @@
                         {% for emp in employees %}
 
                             <div class="form-group row role-hours no-gutters" id={{ emp.name }}>
-                                <label for={{ emp.name }}-hours class="col-4 col-form-label">{{ emp.name }}</label>
+                                <div class="col-4 col-form-label text-center center-block">
+                                    <label for={{ emp.name }}-hours class="text-center">{{ emp.name }}</label>
+                                </div>
 
-                                <div class="col-2">
+
+                                <div class="col-4 center-block text-center">
                                     <select title="Tip Hours" class="select-hours" id={{ emp.name }}-hours name={{ emp.name }}-hours>
                                         {% for x in float_range[0] %}
                                             <option value={{ x }}>{{ x }}</option>
@@ -29,7 +32,7 @@
                                     </select>
                                 </div>
 
-                                <div class="form-group col-6 pull-right">
+                                <div class="form-group col-4 pull-right">
                                     {% if emp.role == 'SERVICE' %}
 
                                         <div class="form-check">
@@ -65,9 +68,8 @@
                     <div id="cash-totals-input-div" class="col-12">
                         {% for denom in denominations %}
                             <div class="form-group row cash-row">
-                                <label for="{{ denom }}" class="col-2 col-form-label denom-label">{{ denom }}</label>
-                                <div class="col-3"></div>
-                                <div class="col-6 pull-right">
+                                <label for="{{ denom }}" class="col-3 col-form-label denom-label">{{ denom }}</label>
+                                <div class="col-9 pull-right">
                                     <input type="number" min=0 step={{ denom }} class="form-control" id="{{ denom }}" name="{{ denom }}" placeholder="ENTER SUBTOTAL FOR {{ denom }}" required>
                                 </div>
                             </div>
@@ -77,7 +79,7 @@
                     <div id="daily-tips-total-input-div" class="col-12">
                         <div class="form-group row no-gutters text-center">
                             <label for="report-tips" class="col-auto col-form-label">Total Tips from Daily Report</label>
-                            <div class="col-auto">
+                            <div class="col-12 center-block">
                                 <input type="number" class="form-control" id="report-tips" name="report-tips" placeholder="Ex. 1337.87" min=0 step=0.01 required>
                             </div>
                         </div>
