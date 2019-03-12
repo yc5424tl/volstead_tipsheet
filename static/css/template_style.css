@@ -4,8 +4,47 @@
 /*@media all and (min-width:768px) and (max-width:991px) {}*/
 /*@media all and (min-width:540px) and (max-width: 1199px) {}*/
 
+/*font-family: 'Niconne', cursive;*/
+/*font-family: 'Italianno', cursive;*/
+/*font-family: 'Clicker Script', cursive;*/
+/*font-family: 'Bilbo Swash Caps', cursive;*/
+/*font-family: 'Euphoria Script', cursive;*/
+/*font-family: 'Meddon', cursive;*/
+
+/*font-family: 'Thasadith', sans-serif;*/
+/*font-family: 'Maven Pro', sans-serif;*/
+/*font-family: 'Rajdhani', sans-serif;*/
+/*font-family: 'Quattrocento Sans', sans-serif;*/
+/*font-family: 'Economica', sans-serif;*/
+/*font-family: 'Jura', sans-serif;*/
+/*font-family: 'Sawarabi Mincho', sans-serif;*/
+/*font-family: 'Marmelad', sans-serif;*/
+/*font-family: 'Saira', sans-serif;*/
+/*font-family: 'Metrophobic', sans-serif;*/
+/*font-family: 'M PLUS Rounded 1c', sans-serif;*/
+/*font-family: 'Niramit', sans-serif;*/
+/*font-family: 'Federo', sans-serif;*/
+/*font-family: 'Anaheim', sans-serif;*/
+/*font-family: 'NTR', sans-serif;*/
+/*font-family: 'Stylish', sans-serif;*/
+/*font-family: 'Berkshire Swash', cursive;*/
+/*font-family: 'Fondamento', cursive;*/
+/*font-family: 'Spirax', cursive;*/
+/*font-family: 'Mystery Quest', cursive;*/
+/*font-family: 'Griffy', cursive;*/
+/*font-family: 'Supermercado One', cursive;*/
+/*font-family: 'Almendra Display', cursive;*/
+/*font-family: 'Ruge Boogie', cursive;*/
+
 body {
     background-color: black;
+    align-content: center;
+    font-family: 'Federo', sans-serif;
+
+}
+
+* html {
+    height: 100%;
 }
 
 td, tr, thead, table {
@@ -13,7 +52,7 @@ td, tr, thead, table {
     font-size: 14pt;
     text-align: center;
     align-content: center;
-    margin: 0 auto;
+    /*margin: 0 auto;*/
     border: 1pt solid white;
     border-collapse: collapse;
     width: 100%;
@@ -28,11 +67,6 @@ h2 {
     align-content: center;
     text-align: center;
     width: 100%;
-}
-
-* html {
-    margin: 0 auto;
-    padding: 0;
 }
 
 div > .form-group.row.role-hours {
@@ -93,12 +127,7 @@ div > .form-group.row.role-hours {
 
 
 
-/*font-family: 'Niconne', cursive;*/
-/*font-family: 'Italianno', cursive;*/
-/*font-family: 'Clicker Script', cursive;*/
-/*font-family: 'Bilbo Swash Caps', cursive;*/
-/*font-family: 'Euphoria Script', cursive;*/
-/*font-family: 'Meddon', cursive;*/
+
 
 #image-div {
     /*width: 100%;
@@ -120,16 +149,17 @@ select {
     color:black;
 }
 
-input {
-    height: auto;
-    width: 100%;
-}
+/*input {*/
+    /*height: auto;*/
+    /*width: 100%;*/
+/*}*/
 
 #button-div {
+    margin-top: 3em;
+    margin-bottom: 3em;
     align-content: center;
     text-align: center;
     width: 100%;
-    margin: 0;
     display: flex;
     justify-content: center;
 }
@@ -153,11 +183,11 @@ input {
     justify-content: center;
 }
 
-.form-check-input {
-    margin: 1em;
-}
+/*.form-check-input {*/
+    /*margin: 1em;*/
+/*}*/
 
-.form-check-label {
-    margin: auto;
-    padding: 1em;
-}
+/*.form-check-label {*/
+    /*margin: auto;*/
+    /*padding: 1em;*/
+/*}*/
