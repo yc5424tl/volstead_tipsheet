@@ -108,6 +108,7 @@ div > .form-group.row.role-hours {
     background-color: #46b8da;
     color: black;
     font-size: medium;
+    text-align: center;
 }
 .cash-row {
     border: white 1pt solid;
