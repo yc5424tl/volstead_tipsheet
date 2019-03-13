@@ -206,15 +206,41 @@ form {
 .denom-input {
     background-color: #5c5750;
     color: white;
-    opacity: 0.7;
+    opacity: 0.8;
     margin-left: 0;
     margin-right: 0;
 }
 
-#report-tips, #cash-tips {
+#cash-tips {
     background-color: #5c5750;
     opacity: 0.7;
     color: white;
+}
+
+#report-tips {
+    background-color: #5c5750;
+    opacity: 0.8;
+    color: white;
+}
+
+#report-tips::placeholder {
+    font-weight: bold;
+}
+
+#report-tips::-moz-placeholder {
+    font-weight: bold;
+}
+
+#report-tips:-ms-input-placeholder {
+    font-weight: bold;
+}
+
+#report-tips:-moz-placeholder {
+    font-weight: bold;
+}
+
+#report-tips::-webkit-input-placeholder {
+    font-weight: bold;
 }
 #cash-tips {
     margin-bottom: 5vh;
@@ -224,10 +250,31 @@ form {
     padding-top: 8pt;
 }
 
-::placeholder {
+input::placeholder, #report-tips::placeholder, .form-control.denom-input::placeholder, ::placeholder {
+    color: white;
+    opacity: 0.7;
+}
+input:-ms-input-placeholder, #report-tips:-ms-input-placeholder, .form-control.denom-input:-ms-input-placeholder,
+:-ms-input-placeholder {
+    color: white;
+    opacity: 0.7;
+}
+
+input::-webkit-input-placeholder, #report-tips::-webkit-input-placeholder, .form-control.denom-input::-webkit-input-placeholder, ::-webkit-input-placeholder {
+    color: white;
+    opacity: 0.7;
+}
+
+input::-moz-placeholder, #report-tips::-moz-placeholder, .form-control.denom-input::-moz-placeholder, ::-moz-placeholder {
     color: white;
     opacity: 1;
 }
+
+input:-moz-placeholder, #report-tips:-moz-placeholder, .form-control.denom-input:-moz-placeholder, :-moz-placeholder {
+    color: white;
+    opacity: 0.7;
+}
+
 
 #shift-date {
     margin-top: 5vh;
@@ -242,3 +289,6 @@ form {
     color: black;
     font-size: 2em;
 }
+
+
+
