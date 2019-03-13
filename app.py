@@ -77,6 +77,9 @@ def front_page():
         for emp in emps:
             emp._tip_total = emp.tip_hours * tip_wage
 
+    def redirect_url(default='front_page'):
+        return request.args.get('next') or request.referrer or url_for(default)
+
     if request.method == 'GET':
         return render_template('eod_form.html',
                                denominations=denominations,
@@ -94,7 +97,12 @@ def front_page():
 
 
         if not (tip_hours > 0):
-            return redirect(url_for('front_page'))
+            error="Form Submitted with Zero Tip Hours"
+            return render_template('eod_form.html',
+                                   denominations=denominations,
+                                   employees=employees,
+                                   float_range=shift_hours_range,
+                                   error=error)
 
 
         shift = Shift(employees, denominations)

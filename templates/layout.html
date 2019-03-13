@@ -33,6 +33,15 @@
     {% endblock %}
 </head>
 
+{% with messages = get_flashed_messages() %}
+  {% if messages %}
+    <ul class=flashes>
+    {% for message in messages %}
+      <li>{{ message }}</li>
+    {% endfor %}
+    </ul>
+  {% endif %}
+{% endwith %}
 
 <body class="body">
     <div class="container-fluid px-0">

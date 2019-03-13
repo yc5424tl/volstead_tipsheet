@@ -8,7 +8,13 @@
 {#    <script src="{{ url_for('static', filename='js/validate_hours.js') }}"></script>#}
 {% endblock %}
 
+
+
 {% block content %}
+
+    {% if error %}
+        <p class=error>Error: {{ error }}</p>
+    {% endif %}
 c
     <div class="row no-gutters" id="content-row">
 
