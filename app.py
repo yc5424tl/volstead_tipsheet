@@ -32,7 +32,7 @@ def instantiate_employees():
                          CORY="SERVICE",
                          SAM="SERVICE",
                          INA="SERVICE",
-                         ELEANEOR="SERVICE",
+                         ELEANOR="SERVICE",
                          JENNIE="SERVICE",
                          HIEDI="SERVICE",
                          CHRIS="SERVICE",
