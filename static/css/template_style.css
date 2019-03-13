@@ -216,6 +216,9 @@ form {
     opacity: 0.7;
     color: white;
 }
+#cash-tips {
+    margin-bottom: 5vh;
+}
 
 #daily-row {
     padding-top: 8pt;
@@ -237,4 +240,5 @@ form {
     width: 100%;
     display: block;
     color: black;
+    font-size: 2em;
 }
