@@ -184,8 +184,8 @@ form {
 #layout-content-div {
     height: 100%;
     background-size: contain;
-    /*background: url("../img/vol_lib_port.jpg") repeat-y;*/
-    background: url("../img/vol_lib_port.jpg") repeat-y;
+    background: url("../img/vol_lib_port.jpg") no-repeat;
+    /*background: url("../img/vol_lib_port_bar.jpg") repeat-y;*/
     width: 100%;
     margin: 0;
 }
