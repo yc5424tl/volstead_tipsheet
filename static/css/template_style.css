@@ -48,12 +48,12 @@ body {
 }
 
 td, tr, thead, table {
-    color: #18C7F7;
+    color: #527593;
     font-size: 14pt;
     text-align: center;
     align-content: center;
     /*margin: 0 auto;*/
-    border: 1pt solid #E2D6C5I ;
+    border: 1pt solid #E2D6C5;
     border-collapse: collapse;
     width: 100%;
     height: auto;
@@ -62,7 +62,7 @@ td, tr, thead, table {
 h2 {
     margin: auto;
     display: block;
-    background-color: #18C7F7;
+    background-color: #527593;
     color: #5c5750;
     border: 1pt solid #5c5750;
     border-collapse: collapse;
@@ -80,11 +80,12 @@ div > .form-group.row.role-hours {
     margin-top: 0;
     margin-bottom: 0;
     padding-top: 8pt;
-    color: #18C7F7;
+    color: #527593;
 }
 
 #banner-image {
     opacity: 0.3;
+
     /*border-bottom: inset 2pt #5c5750 ;*/
     /*background-image: linear-gradient(*/
         /*rgba(0, 0, 0, 0.0) 0%,*/
@@ -114,8 +115,9 @@ div > .form-group.row.role-hours {
 }
 
 #work-hours-div {
-    background-color: #5c5750;
-    color: #18C7F7;
+    /*background-color: #5c5750;*/
+    background-color: black;
+    color: #527593;
     opacity: 0.8;
 }
 
@@ -137,9 +139,8 @@ div > .form-group.row.role-hours {
 
 #daily-tips-total-input-div {
     margin-top: 5em;
-    /*border: 1pt white solid;*/
-    /*border-radius: 3pt;*/
     align-content: center;
+    opacity: 0.8;
 
 }
 
@@ -150,17 +151,11 @@ div > .form-group.row.role-hours {
 
 .form-check-label {
     white-space: nowrap;
-
-
 }
 
 .form-check-input {
     padding: 2em;
-
 }
-
-
-
 
 #image-div {
     /*width: 100%;
@@ -182,7 +177,7 @@ div > .form-group.row.role-hours {
 }
 
 form {
-    color: #18C7F7;
+    color: #527593;
 }
 
 .select-hours, .select-hours > option {
@@ -211,6 +206,8 @@ select {
 #submit-button {
     margin: 0 auto;
     display: block;
+    opacity: 0.7;
+    background-color: #AF3139;
 }
 
 .col-3.report-details {
@@ -229,11 +226,11 @@ select {
 
 #layout-content-div {
     height: 100%;
-    background-size: cover;
+    background-size: contain;
     background: url("../img/vol_lib_port.jpg") repeat-y;
     width: 100%;
     margin: 0;
-    opacity: 0.8;
+    opacity: 0.7;
 }
 /*.form-check-input {*/
     /*margin: 1em;*/
@@ -245,17 +242,20 @@ select {
 /*}*/
 
 .denom-label{
-    background-color: #18C7F7;
-    color: #E2D6C5;
+    background-color: #527593;
+    /*color: #E2D6C5;*/
+    color: white;
     font-size: 1.3em;
     font-weight: bold;
     text-align: center;
-    opacity: 0.5;
-    border: 1pt solid #E2D6C5;
+    opacity: 0.7;
+    border: 1pt solid white;
+    /*border: 1pt solid #E2D6C5;*/
 }
 
 .denom-input {
-    background-color: #5c5750;
-    color: #18C7F7;
+    /*background-color: #5c5750;*/
+    background-color: black;
+    color: #527593;
     opacity: 0.7;
 }
