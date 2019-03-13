@@ -90,10 +90,10 @@ def front_page():
         for emp in employees:
             tag_id = emp.name + '-hours'
             hours = rf[tag_id]
-            tip_hours += hours
+            tip_hours += float(hours)
 
 
-        if tip_hours == 0.0:
+        if not (tip_hours > 0):
             return redirect(url_for('front_page'))
 
 
