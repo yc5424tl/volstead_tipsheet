@@ -88,7 +88,10 @@ def front_page():
         rf = request.form
         tip_hours = 0.0
         for emp in employees:
-             tip_hours += rf[emp.name+'-hours']
+            tag_id = emp.name + '-hours'
+            hours = rf[tag_id]
+            tip_hours += hours
+
 
         if tip_hours == 0.0:
             return redirect(url_for('front_page'))
