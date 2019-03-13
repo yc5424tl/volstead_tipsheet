@@ -80,7 +80,7 @@ div > .form-group.row.role-hours {
     margin-top: 0;
     margin-bottom: 0;
     padding-top: 8pt;
-    color: #527593;
+    color: white;
 }
 
 #banner-image {
@@ -115,9 +115,10 @@ div > .form-group.row.role-hours {
 }
 
 #work-hours-div {
-    /*background-color: #5c5750;*/
-    background-color: black;
-    color: #527593;
+    background-color: #5c5750;
+    /*background-color: black;*/
+    /*color: #527593;*/
+    color: white;
     opacity: 0.8;
 }
 
@@ -140,7 +141,7 @@ div > .form-group.row.role-hours {
 #daily-tips-total-input-div {
     margin-top: 5em;
     align-content: center;
-    opacity: 0.8;
+    /*opacity: 0.8;*/
 
 }
 
@@ -177,7 +178,8 @@ div > .form-group.row.role-hours {
 }
 
 form {
-    color: #527593;
+    /*color: #527593;*/
+    color:white;
 }
 
 .select-hours, .select-hours > option {
@@ -206,8 +208,9 @@ select {
 #submit-button {
     margin: 0 auto;
     display: block;
-    opacity: 0.7;
+    opacity: 0.9;
     background-color: #AF3139;
+    border: none;
 }
 
 .col-3.report-details {
@@ -230,7 +233,7 @@ select {
     background: url("../img/vol_lib_port.jpg") repeat-y;
     width: 100%;
     margin: 0;
-    opacity: 0.7;
+    /*opacity: 0.7;*/
 }
 /*.form-check-input {*/
     /*margin: 1em;*/
@@ -256,6 +259,13 @@ select {
 .denom-input {
     /*background-color: #5c5750;*/
     background-color: black;
-    color: #527593;
+    /*color: #527593;*/
+    color: white;
     opacity: 0.7;
+}
+
+#report-tips {
+    background-color: black;
+    opacity: 0.7;
+    color: white;
 }
