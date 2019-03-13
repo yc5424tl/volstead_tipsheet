@@ -21,7 +21,7 @@ c
 
                     <div id="work-hours-div" class="col-12">
 
-                        {% for emp in employees %}
+                        {% for emp in employees|sort(attribute='name') %}
 
                             <div class="form-group row role-hours no-gutters" id={{ emp.name }}>
 

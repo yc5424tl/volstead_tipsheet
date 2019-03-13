@@ -6,7 +6,7 @@
 # from numpy import linspace
 # import datetime
 import datetime
-from flask import Flask, copy_current_request_context, request, render_template
+from flask import Flask, copy_current_request_context, request, render_template, redirect, url_for
 from flask_bootstrap import Bootstrap
 # from flask_sqlalchemy import SQLAlchemy
 from numpy import linspace
@@ -84,7 +84,16 @@ def front_page():
                                float_range=shift_hours_range)
 
     if request.method == 'POST':
+
         rf = request.form
+        tip_hours = 0.0
+        for emp in employees:
+             tip_hours += rf[emp.name+'-hours']
+
+        if tip_hours == 0.0:
+            return redirect(url_for('front_page'))
+
+
         shift = Shift(employees, denominations)
         analyze_hours(shift, rf)
         total_cash = get_cash_subtotal(shift, rf)
