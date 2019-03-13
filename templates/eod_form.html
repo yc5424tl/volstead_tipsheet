@@ -13,7 +13,10 @@
 {% block content %}
 
     {% if error %}
-        <p class=error>Error: {{ error }}</p>
+        <div class="row no-gutters">
+        <div class="col"><p class=error>Error: {{ error }}</p></div>
+        </div>
+
     {% endif %}
 c
     <div class="row no-gutters" id="content-row">

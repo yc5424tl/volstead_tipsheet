@@ -229,3 +229,12 @@ form {
 #shift-date {
     margin-top: 5vh;
 }
+
+.error {
+    background-color: #9C1A1C;
+    font-weight: bold;
+    margin: 0 auto;
+    width: 100%;
+    display: block;
+    color: black;
+}
