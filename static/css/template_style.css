@@ -239,6 +239,7 @@ form {
     font-weight: bold;
 }
 
+
 #report-tips::-webkit-input-placeholder {
     font-weight: bold;
 }
@@ -290,5 +291,9 @@ input:-moz-placeholder, #report-tips:-moz-placeholder, .form-control.denom-input
     font-size: 2em;
 }
 
-
+.col-th {
+    border: solid 1pt black;
+    border-collapse: collapse;
+    opacity: 0.7;
+}
 

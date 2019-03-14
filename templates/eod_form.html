@@ -6,6 +6,7 @@
 {% block scripts %}
     {{ super() }}
 {#    <script src="{{ url_for('static', filename='js/validate_hours.js') }}"></script>#}
+
 {% endblock %}
 
 
@@ -116,4 +117,6 @@ c
 
         <div class="col-lg-2 col-md-2 col-sm-1"></div>
     </div>
+
+     <script src="{{ url_for('static', filename='js/highlight_row.js') }}"></script>
 {% endblock %}
