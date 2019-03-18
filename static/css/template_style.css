@@ -59,7 +59,7 @@ td, tr, thead, table {
 h2 {
     margin: auto;
     display: block;
-    background-color: #527593;
+    background-color: #348c9c;
     color: #E2D6C5;
     border: 1pt solid #E2D6C5;
     border-collapse: collapse;
@@ -79,6 +79,10 @@ div > .form-group.row.role-hours {
     margin-bottom: 0;
     padding-top: 8pt;
     color: white;
+    /*background-color: rgba(92, 97, 80, 0);*/
+    /*background-color: #5c5750;*/
+    /*opacity: 0.8;*/
+    background-color: rgba(28, 26, 24, 0.7);
 }
 
 #banner-image {
@@ -90,13 +94,14 @@ div > .form-group.row.role-hours {
 }
 
 #work-hours-div {
-    background-color: #5c5750;
+    /*background-color: #5c5750;*/
     color: white;
-    opacity: 0.8;
+    /*opacity: 0.8;*/
 }
 
+
 .cash-row {
-    border: #E2D6C5 1pt solid;
+    /*border: #E2D6C5 1pt solid;*/
     margin-top: 0;
     margin-bottom: 0;
     border-collapse: collapse;
@@ -161,8 +166,14 @@ form {
 #submit-button {
     margin: 0 auto;
     display: block;
-    opacity: 0.8;
-    background-color: #AF3139;
+    opacity: 0.9;
+    /*background-image: linear-gradient(120deg, #a1c4fd 0%, #c2e9fb 100%);*/
+    /*background-image: linear-gradient(120deg, #9c4434 0%, #550D00 19%, #678f30 42%, #267240 79%, #348c9c 100%);*/
+    background-image: linear-gradient(120deg, #eea2a2 0%, #bbc1bf 19%, #57c6e1 42%, #b49fda 79%, #7ac5d8 100%);
+    /*background-color: #4E9C68;*/
+    /*background-color: #9C4434;*/
+    /*background-color: #AF3139;*/
+    /*background-color: #935254;*/
     border: 1pt solid #E2D6C5;
     padding-top: 4pt;
 }
@@ -191,57 +202,75 @@ form {
 }
 
 .denom-label{
-    background-color: #527593;
+    background-color: #348c9c;
     color: white;
     font-size: 1.3em;
     font-weight: bold;
     text-align: center;
     opacity: 0.7;
-    /*border: 1pt solid white;*/
+    border: 1pt solid white;
+    border-collapse: collapse;
     margin-left: 0;
     margin-right: 0;
+    padding-top: 4pt;
+    padding-bottom: 4pt;
 
 }
 
 .denom-input {
-    background-color: #5c5750;
+    background-color: rgba(28, 26, 24, 0.7);
     color: white;
-    opacity: 0.8;
     margin-left: 0;
     margin-right: 0;
+    padding-top: 4pt;
+    padding-bottom: 4pt;
 }
 
 #cash-tips {
-    background-color: #5c5750;
-    opacity: 0.7;
+    background-color: rgba(28, 26, 24, 0.7);
     color: white;
 }
 
 #report-tips {
-    background-color: #5c5750;
-    opacity: 0.8;
+    background-color: rgba(28, 26, 24, 0.7);
+    /*opacity: 0.8;*/
     color: white;
 }
 
 #report-tips::placeholder {
-    font-weight: bold;
+    font-weight: lighter;
+    padding-left: 2em;
+    font-size: smaller;
+    opacity: 0.7;
 }
 
 #report-tips::-moz-placeholder {
-    font-weight: bold;
+    font-weight: lighter;
+    padding-left: 2em;
+    font-size: smaller;
+    opacity: 0.7;
 }
 
 #report-tips:-ms-input-placeholder {
-    font-weight: bold;
+    font-weight: lighter;
+    padding-left: 2em;
+    font-size: smaller;
+    opacity: 0.7;
 }
 
 #report-tips:-moz-placeholder {
-    font-weight: bold;
+    font-weight: lighter;
+    padding-left: 2em;
+    font-size: smaller;
+    opacity: 0.7;
 }
 
 
 #report-tips::-webkit-input-placeholder {
-    font-weight: bold;
+    font-weight: lighter;
+    padding-left: 2em;
+    font-size: smaller;
+    opacity: 0.7;
 }
 #cash-tips {
     margin-bottom: 5vh;
@@ -254,26 +283,41 @@ form {
 input::placeholder, #report-tips::placeholder, .form-control.denom-input::placeholder, ::placeholder {
     color: white;
     opacity: 0.7;
+    padding-left: 2em;
+    font-weight: lighter;
+    font-size: smaller;
 }
 input:-ms-input-placeholder, #report-tips:-ms-input-placeholder, .form-control.denom-input:-ms-input-placeholder,
 :-ms-input-placeholder {
     color: white;
     opacity: 0.7;
+    padding-left: 2em;
+    font-weight: lighter;
+    font-size: smaller;
 }
 
 input::-webkit-input-placeholder, #report-tips::-webkit-input-placeholder, .form-control.denom-input::-webkit-input-placeholder, ::-webkit-input-placeholder {
     color: white;
     opacity: 0.7;
+    padding-left: 2em;
+    font-weight: lighter;
+    font-size: smaller;
 }
 
 input::-moz-placeholder, #report-tips::-moz-placeholder, .form-control.denom-input::-moz-placeholder, ::-moz-placeholder {
     color: white;
     opacity: 1;
+    padding-left: 2em;
+    font-weight: lighter;
+    font-size: smaller;
 }
 
 input:-moz-placeholder, #report-tips:-moz-placeholder, .form-control.denom-input:-moz-placeholder, :-moz-placeholder {
     color: white;
     opacity: 0.7;
+    padding-left: 2em;
+    font-weight: lighter;
+    font-size: smaller;
 }
 
 
