@@ -1,11 +1,12 @@
 
 {% extends "layout.html" %}
 
-{% block styles %}{{ super() }}{% endblock %}
+{% block styles %}
+    {{ super() }}
+{% endblock %}
 
 {% block scripts %}
     {{ super() }}
-{#    <script src="{{ url_for('static', filename='js/validate_hours.js') }}"></script>#}
      <script src="{{ url_for('static', filename='js/highlight_row.js') }}"></script>
 {% endblock %}
 
@@ -15,11 +16,13 @@
 
     {% if error %}
         <div class="row no-gutters">
-        <div class="col"><p class="error center-block text-center">Error: {{ error }}</p></div>
+            <div class="col">
+                <p class="error center-block text-center">Error: {{ error }}</p>
+            </div>
         </div>
 
     {% endif %}
-c
+
     <div class="row no-gutters" id="content-row">
 
         <div class="col-lg-2 col-md-2 col-sm-1"></div>
@@ -58,42 +61,61 @@ c
                                 <div class="col-1"></div>
 
                                 <div class="form-group col-6 center-block text-center">
-{#                                    <div class="row no-gutters">#}
+
                                         {% if emp.role == 'SERVICE' %}
-                                            {#<div class="col-auto form-check-inline">#}
+
                                             <div class="form-check-inline pull-left">
-                                                <label class="form-check-label" for={{ emp.name }}-full><input class="form-check-input" name={{ emp.name }}-radio type="radio" id={{ emp.name }}-full value=1.0 checked>Service (x1.0)</label>
+                                                <label class="form-check-label" for={{ emp.name }}-full>
+                                                    <input class="form-check-input" name={{ emp.name }}-radio type="radio" id={{ emp.name }}-full value=SERVICE checked>
+                                                    Service (x1.0)
+                                                </label>
                                             </div>
-{#                                            <div class="col-auto form-check-inline">#}
+
                                             <div class="form-check-inline center-block">
-                                                <label class="form-check-label" for={{ emp.name }}-partial><input class="form-check-input" name={{ emp.name }}-radio type="radio" id={{ emp.name }}-partial value=0.65>Support (x0.65)</label>
+                                                <label class="form-check-label" for={{ emp.name }}-partial>
+                                                    <input class="form-check-input" name={{ emp.name }}-radio type="radio" id={{ emp.name }}-partial value=SUPPORT>
+                                                    Support (x0.65)
+                                                </label>
                                             </div>
+
                                         {% else %}
-{#                                            <div class="col-auto form-check-inline">#}
+
                                             <div class="form-check-inline pull-left">
-                                                <label class="form-check-label" for={{ emp.name }}-full><input class="form-check-input" name={{ emp.name }}-radio type="radio" id={{ emp.name }}-full value=1.0>Service (x1.0)</label>
+                                                <label class="form-check-label" for={{ emp.name }}-full>
+                                                    <input class="form-check-input" name={{ emp.name }}-radio type="radio" id={{ emp.name }}-full value=SERVICE>
+                                                    Service (x1.0)
+                                                </label>
                                             </div>
-{#                                            <div class="col-auto form-check-inline">#}
+
                                             <div class="form-check-inline center-block">
-                                                <label class="form-check-label" for={{ emp.name }}-partial><input class="form-check-input" name={{ emp.name }}-radio type="radio" id={{ emp.name }}-partial value=0.65 checked>Support (x0.65)</label>
+                                                <label class="form-check-label" for={{ emp.name }}-partial>
+                                                    <input class="form-check-input" name={{ emp.name }}-radio type="radio" id={{ emp.name }}-partial value=SUPPORT checked>
+                                                    Support (x0.65)
+                                                </label>
                                             </div>
+
                                         {% endif %}
-{#                                    </div>#}
 
                                 </div>
-
                             </div>
+
                         {% endfor %}
+
                     </div>
 
                     <div id="cash-totals-input-div" class="col-12">
                         {% for denom in denominations %}
                             <div class="form-group row cash-row no-gutters">
                                 <label for="{{ denom }}" class="col-4 col-form-label denom-label text-center">${{ denom }}</label>
-{#                                <div class="col-auto"></div>#}
-
                                 <div class="col">
-                                    <input type="number" min="0" step="{{ denom }}" class="form-control denom-input" id="{{ denom }}" name="{{ denom }}" placeholder="ENTER SUBTOTAL FOR {{ denom }}" required>
+                                    <input type="number"
+                                           min="0"
+                                           step="{{ denom }}"
+                                           class="form-control denom-input"
+                                           id="{{ denom }}"
+                                           name="{{ denom }}"
+                                           placeholder="ENTER SUBTOTAL FOR {{ denom }}"
+                                           required>
                                 </div>
                             </div>
                         {% endfor %}
@@ -103,18 +125,23 @@ c
                         <div class="form-group row no-gutters text-center" id="daily-row">
                             <label for="report-tips" class="col-auto col-form-label">Total Tips from Daily Report</label>
                             <div class="col-12 center-block">
-                                <input type="number" class="form-control" id="report-tips" name="report-tips" placeholder="Ex. 1337.87" min=0 step=0.01 required>
+                                <input type="number"
+                                       class="form-control"
+                                       id="report-tips"
+                                       name="report-tips"
+                                       placeholder="Ex. 1337.87"
+                                       min=0
+                                       step=0.01
+                                       required>
                             </div>
                         </div>
                     </div>
 
                     <div class="col-12" id="button-div">
                         <div class="row no-gutters">
-{#                            <div class="col-5"></div>#}
                             <div class="col-12 center-block">
                                 <button class="button btn btn-info center-block" type="submit" id="submit-button">MAGIC BUTTON ??!</button>
                             </div>
-{#                            <div class="col-5"></div>#}
                         </div>
                     </div>
 
@@ -125,6 +152,5 @@ c
 
         <div class="col-lg-2 col-md-2 col-sm-1"></div>
     </div>
-
 
 {% endblock %}

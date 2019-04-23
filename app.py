@@ -1,12 +1,6 @@
 
-# from flask import Flask, render_template, request, copy_current_request_context
-# from flask_bootstrap import Bootstrap
-# from flask_sqlalchemy import SQLAlchemy
-# from config import Config
-# from numpy import linspace
-# import datetime
 import datetime
-from flask import Flask, copy_current_request_context, request, render_template, redirect, url_for
+from flask import Flask, copy_current_request_context, request, render_template, url_for
 from flask_bootstrap import Bootstrap
 # from flask_sqlalchemy import SQLAlchemy
 from numpy import linspace
@@ -16,9 +10,19 @@ from employee import Employee, TipShare
 from shift import Shift
 import os
 
+from pymongo import MongoClient
+
+
 app = Flask(__name__)
 Bootstrap(app)
 app.config.from_object(Config)
+
+db_uri = os.environ['PROD_MONGODB']
+# client = MongoClient(db_uri, connectTimeout=30000, socketTimeoutMS=None, socketKeepAlive=True)
+client = MongoClient(db_uri)
+print(client.server_info)
+db = client.get_database('volsteads_db')
+print( db.list_collection_names() )
 # db = SQLAlchemy(app)
 
 denominations = {'100.00': 0.0, '50.00': 0.0, '20.00': 0.0, '10.00': 0.0, '5.00': 0.0, '1.00': 0.0, '0.25': 0.0}
@@ -70,12 +74,13 @@ def front_page():
         shift.tip_pool = cash_subtotal
         return cash_subtotal
 
-    def get_tip_wage(tip_hours: float, cash_total: float) -> float:
-        return cash_total / tip_hours
+    def get_tip_wage(total_tip_hours: float, cash_total: float) -> float:
+        return cash_total / total_tip_hours
 
-    def get_emp_tips(emps: [Employee], tip_wage: float):
-        for emp in emps:
-            emp._tip_total = emp.tip_hours * tip_wage
+    def get_emp_tips(shift_staff: [Employee], tip_wage: float):
+        for employee in shift_staff:
+            employee._tip_total = employee.tip_hours * tip_wage
+
 
     def redirect_url(default='front_page'):
         return request.args.get('next') or request.referrer or url_for(default)
@@ -87,13 +92,18 @@ def front_page():
                                float_range=shift_hours_range)
 
     if request.method == 'POST':
-
         rf = request.form
         tip_hours = 0.0
         for emp in employees:
-            tag_id = emp.name + '-hours'
-            hours = rf[tag_id]
+            hours_tag_id = emp.name + '-hours'
+            hours = rf[hours_tag_id]
             tip_hours += float(hours)
+
+            role_tag_id = emp.name + '-radio'
+            role_radio_value = rf[role_tag_id]
+            emp.role(role_radio_value)
+
+
 
 
         if not (tip_hours > 0):
@@ -108,8 +118,7 @@ def front_page():
         shift = Shift(employees, denominations)
         analyze_hours(shift, rf)
         total_cash = get_cash_subtotal(shift, rf)
-        # print("tip hours " + str(shift.tip_hours))
-        # print("total cash : " + str(total_cash))
+
         shift._tip_wage = get_tip_wage(shift.tip_hours, total_cash)
         get_emp_tips(shift.staff, shift.tip_wage)
         shift._report_total = float(rf['report-tips'])
@@ -134,15 +143,13 @@ def front_page():
 def validate_cash_inputs(denomination_list, request_form):
     denoms = denomination_list
     rf = request_form
+
     for denom in denoms:
         subtotal = float(rf[denom])
-        print('DENOM SUBTOTAL FOR ' + str(denom) + ' EQUALS ' + str(subtotal))
         if subtotal > 0:
             modulated_subtotal = float(subtotal) % float(denom)
-            print('MODULATED SUBTOTAL = ' + str(modulated_subtotal))
             if modulated_subtotal != 0:
                 return False
-
     return True
 
 
