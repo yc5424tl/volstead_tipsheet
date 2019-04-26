@@ -34,7 +34,6 @@ def instantiate_employees():
 
     employee_dict = dict(JAKE="SERVICE",
                          CORY="SERVICE",
-                         SAM="SERVICE",
                          INA="SERVICE",
                          ELEANOR="SERVICE",
                          JENNIE="SERVICE",
