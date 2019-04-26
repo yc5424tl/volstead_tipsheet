@@ -98,8 +98,8 @@ def front_page():
 
         for emp in employees:
             hours_tag_id = emp.name + '-hours'
-            hours = rf[hours_tag_id]
-            tip_hours += float(hours)
+            hours = float(rf[hours_tag_id])
+            tip_hours += hours
 
             if hours > 0:
                 role_tag_id = emp.name + '-radio'
