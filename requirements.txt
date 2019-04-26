@@ -1,4 +1,4 @@
-pymongo
+
 alembic==1.0.7
 Click==7.0
 dominate==2.3.5

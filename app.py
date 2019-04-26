@@ -56,12 +56,11 @@ def front_page():
     @copy_current_request_context
     def analyze_hours(working_shift: Shift, req_form: request.form):
         for target_emp in shift.staff:
+            target_emp.shift_hours = float(req_form[target_emp.name + '-hours'])
             if target_emp.role == "SUPPORT":
-                target_emp.shift_hours = float(req_form[target_emp.name + '-hours'])
                 target_emp._tip_hours = target_emp.shift_hours * 0.65
                 working_shift.tip_hours += target_emp.tip_hours
             elif target_emp.role == "SERVICE":
-                target_emp.shift_hours = float(req_form[target_emp.name + '-hours'])
                 target_emp._tip_hours = target_emp.shift_hours
                 working_shift.tip_hours += target_emp.tip_hours
 
@@ -85,25 +84,27 @@ def front_page():
     def redirect_url(default='front_page'):
         return request.args.get('next') or request.referrer or url_for(default)
 
+
     if request.method == 'GET':
         return render_template('eod_form.html',
                                denominations=denominations,
                                employees=employees,
                                float_range=shift_hours_range)
 
+
     if request.method == 'POST':
         rf = request.form
         tip_hours = 0.0
+
         for emp in employees:
             hours_tag_id = emp.name + '-hours'
             hours = rf[hours_tag_id]
             tip_hours += float(hours)
 
-            role_tag_id = emp.name + '-radio'
-            role_radio_value = rf[role_tag_id]
-            emp.role(role_radio_value)
-
-
+            if hours > 0:
+                role_tag_id = emp.name + '-radio'
+                role_radio_value = rf[role_tag_id]
+                emp.role = role_radio_value
 
 
         if not (tip_hours > 0):
@@ -129,8 +130,11 @@ def front_page():
                 emp._cc_tips = shift.cc_wage * emp.tip_hours
 
         today = datetime.date.today()
-        yesterday = today - datetime.timedelta(days=1)
-        shift._start_date = yesterday.strftime('%A %B %d %Y')
+        if int(datetime.datetime.now().strftime('%H')) >= 17:
+            shift._start_date = today.strftime('%A %B %d %Y')
+        else:
+            yesterday = today - datetime.timedelta(days=1)
+            shift._start_date = yesterday.strftime('%A %B %d %Y')
 
         return render_template('report.html',
                                denominations=denominations,
