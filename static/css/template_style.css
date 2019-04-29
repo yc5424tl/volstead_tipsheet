@@ -153,7 +153,7 @@ form {
     color: #5c5750;
 }
 
-#button-div {
+#button-div{
     margin-top: 3em;
     margin-bottom: 3em;
     align-content: center;
@@ -163,7 +163,7 @@ form {
     justify-content: center;
 }
 
-#submit-button {
+#submit-button, #report-btn {
     margin: 0 auto;
     display: block;
     opacity: 0.9;
@@ -178,7 +178,7 @@ form {
     padding-top: 4pt;
 }
 
-.col-3.report-details {
+.col.report-details {
     margin: 0;
     padding: 0;
     text-align: center;

@@ -9,22 +9,30 @@ class TipShare(Enum):
 
 class Employee(object):
 
-    def __init__(self, name: str, role: str) -> ClassVar:
-
-        self._name = name
+    def __init__(self, first_name: str, last_name: str, role: str) -> ClassVar:
+        self._first_name = first_name
+        self._last_name = last_name
         self._role = role
         self._shift_hours = 0.00
         self._tip_hours = 0.00
-        self._tip_total = 0.00
+        self._cash_tips = 0.00
         self._cc_tips = 0.00
 
     @property
-    def name(self):
-        return self._name
+    def first_name(self) -> str:
+        return self._first_name
 
-    @name.setter
-    def name(self, new_name):
-        self._name = new_name
+    @first_name.setter
+    def first_name(self, new_first_name):
+        self._first_name = new_first_name
+
+    @property
+    def last_name(self) -> str:
+        return self._last_name
+
+    @last_name.setter
+    def last_name(self, new_last_name):
+        self._last_name = new_last_name
 
     @property
     def shift_hours(self):
@@ -53,12 +61,12 @@ class Employee(object):
             return self._tip_hours
 
     @property
-    def tip_total(self):
-        return self._tip_total
+    def cash_tips(self):
+        return self._cash_tips
 
-    @tip_total.setter
-    def tip_total(self, tip_wage):
-        self._tip_total = tip_wage * self._tip_hours
+    @cash_tips.setter
+    def cash_tips(self, tip_wage):
+        self._cash_tips = tip_wage * self._tip_hours
 
     @property
     def cc_tips(self):
@@ -70,6 +78,6 @@ class Employee(object):
 
     @property
     def shift_details(self):
-        details = "NAME: %s  SHIFT: %d hours  ROLE: %s  TIP-HOURS: %d hours  TOTAL-TIPS: $%d " \
-                  % (self.name, self.shift_hours, self.role, self.tip_hours, self.tip_total)
+        details = "NAME: %s  SHIFT: %f hours  ROLE: %s  TIP-HOURS: %f hours  CC-TIPS: $%f  CASH-TIPS: $%f" \
+                  % (self.first_name + ' ' + self.last_name, self.shift_hours, self.role, self.tip_hours, self.cc_tips, self.cash_tips)
         return details

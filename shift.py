@@ -1,3 +1,4 @@
+
 import datetime
 
 from employee import Employee
@@ -7,21 +8,28 @@ class Shift(object):
 
     def __init__(self, staff: [Employee], cash_subtotals: {str: float}):
         self._staff = staff
-        self._report_total = 0.0
+        self._cc_tip_pool = 0.00
         self._cash_subtotals = cash_subtotals
-        self._tip_hours = 0.0
-        self._tip_wage = 0.0
-        self._cc_wage = 0.0
+        self._shift_hours = 0.00
+        self._tip_hours = 0.00
+        self._cash_tip_wage = 0.00
+        self._cc_tip_wage = 0.00
         self._start_date = None
-        self._tip_pool = 0.0
+        self._cash_tip_pool = 0.00
+
+    def get_cash_tip_pool(self):
+        tip_pool = 0.00
+        for denom in self._cash_subtotals:
+            tip_pool += self._cash_subtotals[denom]
+        self._cash_tip_pool = tip_pool
 
     @property
-    def tip_pool(self):
-        return self._tip_pool
+    def cash_tip_pool(self):
+        return self._cash_tip_pool
 
-    @tip_pool.setter
-    def tip_pool(self, new_tip_pool):
-        self._tip_pool = new_tip_pool
+    @cash_tip_pool.setter
+    def cash_tip_pool(self, new_tip_pool):
+        self._cash_tip_pool = new_tip_pool
 
     @property
     def start_date(self):
@@ -40,12 +48,12 @@ class Shift(object):
         self._staff = staff_list
 
     @property
-    def report_total(self) -> float:
-        return self._report_total
+    def cc_tip_pool(self) -> float:
+        return self._cc_tip_pool
 
-    @report_total.setter
-    def report_total(self, new_total: float) -> None:
-        self._report_total = new_total
+    @cc_tip_pool.setter
+    def cc_tip_pool(self, new_total: float) -> None:
+        self._cc_tip_pool = new_total
 
     @property
     def cash_subtotals(self) -> {str: float}:
@@ -56,6 +64,14 @@ class Shift(object):
         self._cash_subtotals = new_subtotals
 
     @property
+    def shift_hours(self) -> float:
+        return self._shift_hours
+
+    @shift_hours.setter
+    def shift_hours(self, new_shift_hours: float) -> None:
+        self._shift_hours = new_shift_hours
+
+    @property
     def tip_hours(self) -> float:
         return self._tip_hours
 
@@ -64,17 +80,17 @@ class Shift(object):
         self._tip_hours = new_tip_hours
 
     @property
-    def tip_wage(self):
-        return self._tip_wage
+    def cash_tip_wage(self):
+        return self._cash_tip_wage
 
-    @tip_wage.setter
-    def tip_wage(self, new_tip_wage: float):
-        self._tip_wage = new_tip_wage
+    @cash_tip_wage.setter
+    def cash_tip_wage(self, new_tip_wage: float):
+        self._cash_tip_wage = new_tip_wage
 
     @property
-    def cc_wage(self):
-        return self._cc_wage
+    def cc_tip_wage(self):
+        return self._cc_tip_wage
 
-    @cc_wage.setter
-    def cc_wage(self, new_cc_wage):
-        self._cc_wage = new_cc_wage
+    @cc_tip_wage.setter
+    def cc_tip_wage(self, new_cc_wage):
+        self._cc_tip_wage = new_cc_wage
