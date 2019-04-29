@@ -34,20 +34,20 @@
 
                     <div id="work-hours-div" class="col-12">
 
-                        {% for emp in employees|sort(attribute='name') %}
+                        {% for emp in employees|sort(attribute='first_name') %}
 
-                            <div class="form-group row role-hours no-gutters" id={{ emp.name }}>
+                            <div class="form-group row role-hours no-gutters" id={{ emp.first_name }}>
 
                                 <div class="col-1"></div>
 
                                 <div class="col-2 text-left col-form-label emp-name">
-                                    <label for={{ emp.name }}-hours>{{ emp.name }}</label>
+                                    <label for={{ emp.first_name }}-hours>{{ emp.first_name }}</label>
                                 </div>
 
 
 
                                 <div class="col text-center">
-                                    <select title="Tip Hours" class="select-hours" id={{ emp.name }}-hours name={{ emp.name }}-hours>
+                                    <select title="Tip Hours" class="select-hours" id={{ emp.first_name }}-hours name={{ emp.first_name }}-hours>
                                         {% for x in float_range[0] %}
                                             <option value={{ x }}
                                                 {% if x == 0.0 %}
@@ -65,15 +65,15 @@
                                         {% if emp.role == 'SERVICE' %}
 
                                             <div class="form-check-inline pull-left">
-                                                <label class="form-check-label" for={{ emp.name }}-full>
-                                                    <input class="form-check-input" name={{ emp.name }}-radio type="radio" id={{ emp.name }}-full value="SERVICE" checked>
+                                                <label class="form-check-label" for={{ emp.first_name }}-full>
+                                                    <input class="form-check-input" name={{ emp.first_name }}-radio type="radio" id={{ emp.first_name }}-full value="SERVICE" checked>
                                                     Service (x1.0)
                                                 </label>
                                             </div>
 
                                             <div class="form-check-inline center-block">
-                                                <label class="form-check-label" for={{ emp.name }}-partial>
-                                                    <input class="form-check-input" name={{ emp.name }}-radio type="radio" id={{ emp.name }}-partial value="SUPPORT">
+                                                <label class="form-check-label" for={{ emp.first_name }}-partial>
+                                                    <input class="form-check-input" name={{ emp.first_name }}-radio type="radio" id={{ emp.first_name }}-partial value="SUPPORT">
                                                     Support (x0.65)
                                                 </label>
                                             </div>
@@ -81,15 +81,15 @@
                                         {% else %}
 
                                             <div class="form-check-inline pull-left">
-                                                <label class="form-check-label" for={{ emp.name }}-full>
-                                                    <input class="form-check-input" name={{ emp.name }}-radio type="radio" id={{ emp.name }}-full value="SERVICE">
+                                                <label class="form-check-label" for={{ emp.first_name }}-full>
+                                                    <input class="form-check-input" name={{ emp.first_name }}-radio type="radio" id={{ emp.first_name }}-full value="SERVICE">
                                                     Service (x1.0)
                                                 </label>
                                             </div>
 
                                             <div class="form-check-inline center-block">
-                                                <label class="form-check-label" for={{ emp.name }}-partial>
-                                                    <input class="form-check-input" name={{ emp.name }}-radio type="radio" id={{ emp.name }}-partial value="SUPPORT" checked>
+                                                <label class="form-check-label" for={{ emp.first_name }}-partial>
+                                                    <input class="form-check-input" name={{ emp.first_name }}-radio type="radio" id={{ emp.first_name }}-partial value="SUPPORT" checked>
                                                     Support (x0.65)
                                                 </label>
                                             </div>

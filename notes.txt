@@ -42,3 +42,25 @@ Employee
      Hours Worked
      Tip Hours
      Tip Total
+
+   ====================================================================
+
+ SHIFT (shift)
+    - DATE                      (shift.start_date)
+        - DAY OF WEEK
+        - JULIAN DATE
+        - MM-DD-YYYY
+    - TOTAL SHIFT HOURS         (shift.shift_hours)
+    - TOTAL TIP HOURS           (shift.tip_hours)
+    - CC TIP POOL               (shift.report_total)
+    - HOURLY CC TIP WAGE        (shift.cc_wage)
+    - EMPLOYEE LIST             (shift.staff)
+         - EMPLOYEE
+            - FIRST NAME
+            - LAST NAME
+            - TIP ROLE          (emp.role)
+            - SHIFT HOURS       (emp.shift_hours)
+            - TIP HOURS         (emp.tip_hours)
+            - TIP TOTAL         (emp.cc_tips)
+
+

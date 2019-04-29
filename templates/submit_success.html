@@ -1,0 +1,34 @@
+{% extends "layout.html" %}
+
+{% block styles %}
+    {{ super() }}
+{% endblock %}
+
+{% block content %}
+
+    <div class="row no-gutters" id="submit-sccs-row">
+        <div class="col-md-2 col-sm-1"></div>
+        <div class="col-md-8 col-sm-10">
+            <h1>SHIFT DETAILS</h1>
+            <div>Cash Subtotals:
+                {% for k in daily_report.cash_subtotals %}
+                    <p>{{ k }} : {{ daily_report.cash_subtotals[k] }}</p>
+                {% endfor %}
+            </div>
+            <p>Shift Hours: {{ daily_report.shift_hours }}</p>
+            <p>Tip Hours: {{ daily_report.tip_hours }}</p>
+            <p>Cash Tip Wage: {{ daily_report.cash_tip_wage }}</p>
+            <p>CC Tip Wage: {{ daily_report.cc_tip_wage }}</p>
+            <p>Start Date: {{ daily_report.start_date }}</p>
+            <p>Cash Tip Pool: {{ daily_report.cash_tip_pool }}</p>
+            <p>CC Tip Pool: {{ daily_report.cc_tip_pool }}</p>
+            <div>
+                <h3>SHIFT SUMMARIES</h3>
+                {% for emp in daily_report.staff_report %}
+                    <p>{{ emp.shift_summary }}</p>
+                {% endfor %}
+            </div>
+        </div>
+        <div class="col-md-2 col-sm-1"></div>
+    </div>
+{% endblock %}
