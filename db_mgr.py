@@ -1,7 +1,8 @@
+# coding=utf-8
 from pymongo.errors import DuplicateKeyError
 
 from employee import Employee
-from config import Config
+
 from logging import Logger
 from pymongo import MongoClient
 import pymongo
@@ -42,7 +43,7 @@ class DbController(object):
                                       'tip_role': emp.role,
                                       'tip_total': emp.tip_total})
         except DuplicateKeyError:
-            Logger.log(level=Warning, msg='Operation to add new employee encountered a duplicate key.')
+            Logger.log(msg='Operation to add new employee encountered a duplicate key.')
 
     @staticmethod
     def build_staff_report(staff) -> []:

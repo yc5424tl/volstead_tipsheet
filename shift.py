@@ -1,4 +1,4 @@
-
+# coding=utf-8
 import datetime
 
 from employee import Employee

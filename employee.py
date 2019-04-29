@@ -1,5 +1,7 @@
+# coding=utf-8
 from enum import Enum
 from typing import ClassVar
+from decimal import Decimal
 
 
 class TipShare(Enum):
@@ -79,5 +81,5 @@ class Employee(object):
     @property
     def shift_details(self):
         details = "NAME: %s  SHIFT: %f hours  ROLE: %s  TIP-HOURS: %f hours  CC-TIPS: $%f  CASH-TIPS: $%f" \
-                  % (self.first_name + ' ' + self.last_name, self.shift_hours, self.role, self.tip_hours, self.cc_tips, self.cash_tips)
+                  % (self.first_name + ' ' + self.last_name, float(Decimal(self.shift_hours).quantize(Decimal('.01'))), self.role, float(Decimal(self.tip_hours).quantize(Decimal('.01'))), float(Decimal(self.cc_tips).quantize(Decimal('.01'))), float(Decimal(self.cash_tips).quantize(Decimal('.01'))))
         return details
