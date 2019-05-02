@@ -214,3 +214,4 @@ $RECYCLE.BIN/
 
 /venv/
 /google-sheets/credentials.json
+/client_secret.json
