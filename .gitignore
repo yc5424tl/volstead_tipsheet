@@ -213,3 +213,4 @@ $RECYCLE.BIN/
 *.lnk
 
 /venv/
+/google-sheets/credentials.json

@@ -23,3 +23,13 @@
 # class EmpRoleEnum(enum.Enum):
 #     service = 1.00
 #     support = 0.65
+
+from datetime import datetime
+from hashlib import md5
+from time import time
+from flask import current_app
+from flask_login import UserMixin
+from werkzeug.security import generate_password_hash, check_password_hash
+#TODO from volsteads import db, login
+
+# class Employee(UserMixin, db.Model)

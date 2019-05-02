@@ -23,6 +23,9 @@ class Shift(object):
             tip_pool += self._cash_subtotals[denom]
         self._cash_tip_pool = tip_pool
 
+    def stringify_date(self):
+        return self._start_date.strftime('%A %B %d %Y')
+
     @property
     def cash_tip_pool(self):
         return self._cash_tip_pool
@@ -36,8 +39,9 @@ class Shift(object):
         return self._start_date
 
     @start_date.setter
-    def start_date(self, new_date: datetime.date):
-        self._start_date = new_date.strftime('%A %B %d %Y')
+    def start_date(self, new_date: datetime.datetime):
+        # self._start_date = new_date.strftime('%A %B %d %Y')
+        self._start_date = new_date
 
     @property
     def staff(self) -> [Employee]:

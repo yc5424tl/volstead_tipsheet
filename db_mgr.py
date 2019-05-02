@@ -51,6 +51,7 @@ class DbController(object):
         for emp in staff:
             emp_report = {'first_name': emp.first_name,
                           'last_name': emp.last_name,
+                          # 'report_name': emp.report_name,
                           'shift_hours': float(emp.shift_hours),
                           'tip_hours': float(emp.tip_hours),
                           'tip_role': emp.role,

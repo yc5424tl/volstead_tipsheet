@@ -3,10 +3,14 @@ import datetime
 import os
 
 from decimal import Decimal, ROUND_HALF_UP
+
+import flask
+import google_auth_oauthlib
 from flask import Flask, copy_current_request_context, request, render_template, url_for
 from flask_bootstrap import Bootstrap
 from numpy import linspace
 
+import sheet_mgr
 import db_mgr
 from config import Config
 from employee import Employee
@@ -21,16 +25,16 @@ shift_hours_range = linspace(0.0, 9.0, num=19, retstep=True)
 
 def instantiate_employees():
 
-    employee_dict = dict(JAKE=("BOLINE", "SERVICE"),
-                         CORY=("SCHULLER", "SERVICE"),
-                         INA=("DALE", "SERVICE"),
-                         ELEANOR=("JOHNSON", "SERVICE"),
-                         JENNIE=("SONG", "SERVICE"),
-                         HIEDI=("HIEDI", "SERVICE"),
-                         CHRIS=("THOMPSON", "SERVICE"),
-                         MARLEY=("BARTLETT", "SERVICE"),
-                         ADAM=("ADAM", "SUPPORT"),
-                         REBECCA=("MOGCK", "SUPPORT"))
+    employee_dict = dict(JAKE=("BOLINE", "SERVICE", "Jacob Boline"),
+                         CORY=("SCHULLER", "SERVICE", "Cory"),
+                         INA=("DALE", "SERVICE", "Ina"),
+                         ELEANOR=("JOHNSON", "SERVICE", "Eleanor"),
+                         JENNIE=("SONG", "SERVICE", ""),
+                         HEIDI=("HEIDI", "SERVICE", "Heidi"),
+                         CHRIS=("THOMPSON", "SERVICE", "Chris"),
+                         MARLEY=("BARTLETT", "SERVICE", "Marley"),
+                         ADAM=("O'BRIEN", "SUPPORT", "Adam O'Brien"),
+                         REBECCA=("MOGCK", "SUPPORT", "Rebecca M"))
 
     return [Employee(emp, employee_dict[emp][0], employee_dict[emp][1]) for emp in employee_dict]
 
@@ -61,16 +65,26 @@ def validate_cash_inputs(denomination_list, request_form):
 
 @app.route('/submit_report', methods=['POST'])
 def submit_report():
-
     if request.method == 'POST':
         if employees and shift:
-            # staff_report = db_ctr.build_staff_report(employees)
             shift_report = db_ctr.build_shift_report(shift)
             shift_report['staff_report'] = db_ctr.build_staff_report(employees)
-            # daily_report = db_ctr.build_daily_report(shift_report, staff_report)
             if db_ctr.submit_daily_report(shift_report):
                 print('report submitted to db')
+
             return render_template('submit_success.html', daily_report=shift_report)
+
+
+@app.route('/oauth2callback', methods=['POST'])
+def oauth2_callback():
+
+    state = flask.session['state']
+    flow = google_auth_oauthlib.flow.Flow.from_client_secrets_file('client_secret.json', scopes=['https://www.googleapis.com/auth/'])
+
+
+@app.route('/privacy_policy', methods=['GET'])
+def privacy_policy():
+    return render_template('privacy_policy.html')
 
 
 @app.route('/', methods=['GET', 'POST'])
@@ -109,6 +123,9 @@ def front_page():
     def get_emp_tips(shift_staff: [Employee], tip_wage: float):
         for employee in shift_staff:
             employee._cash_tips = Decimal(Decimal(employee.tip_hours) * Decimal(tip_wage)).quantize(Decimal('.01'), rounding=ROUND_HALF_UP)
+
+    def stringify_date(date: datetime.datetime):
+        return date.strftime('%A %B %d %Y')
 
     if request.method == 'GET':
         return render_template('eod_form.html',
@@ -149,14 +166,33 @@ def front_page():
             for emp in shift.staff:
                 emp._cc_tips = Decimal(Decimal(shift.cc_tip_wage) * Decimal(emp.tip_hours)).quantize(Decimal('.01'), rounding=ROUND_HALF_UP)
 
-        today = datetime.date.today()
+        today = datetime.datetime.today()
         if int(datetime.datetime.now().strftime('%H')) >= 17:
-            shift._start_date = today.strftime('%A %B %d %Y')  # Day of Week, Month, Day, Year
+            # shift._start_date = today.strftime('%A %B %d %Y')  # Day of Week, Month, Day, Year
+            shift._start_date = today
         else:
             yesterday = today - datetime.timedelta(days=1)
-            shift._start_date = yesterday.strftime('%A %B %d %Y')
+            # shift._start_date = yesterday.strftime('%A %B %d %Y')
+            shift._start_date = yesterday
 
-        return render_template('report.html', denominations=denominations, employees=shift.staff, float_range=shift_hours_range, shift=shift)
+        return render_template('report.html', denominations=denominations, employees=shift.staff, float_range=shift_hours_range, shift=shift, stringify_date=stringify_date)
+
+        # TO GET ROW FOR SPREADSHEET
+        # Target Date = MM/DD/YYYY
+        # Reference Date = 12/31/2018
+        # Target_Date - Reference_date
+        # ref_date = datetime.datetime(year=2018, month=12, day=31)
+        # target_date = datetime.datetime(year=int(target_date.strftime('%Y')), month=int(target_date.strftime('%m')), day=int(target_date.strftime('%d')))
+        # days_since = target_date - ref_date
+        # days_since_numeric_value = days_since.days
+
+        # period = (days_since_numeric_value // 16) + 1  **first part gives # of full periods, add one to get the current period
+
+        # each period takes 16 rows, plus one row at the beginning
+
+        # row_in_period = days_since_numeric_value % 16
+
+        # row = 16 * (period - 1) + 1 + row_in_period
 
         # return render_template(redirect_url())
 
