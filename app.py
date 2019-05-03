@@ -5,7 +5,7 @@ import os
 from decimal import Decimal, ROUND_HALF_UP
 
 import flask
-import google_auth_oauthlib
+# import google_auth_oauthlib
 from flask import Flask, copy_current_request_context, request, render_template, url_for
 from flask_bootstrap import Bootstrap
 from numpy import linspace
@@ -75,11 +75,11 @@ def submit_report():
             return render_template('submit_success.html', daily_report=shift_report)
 
 
-@app.route('/oauth2callback', methods=['POST'])
-def oauth2_callback():
-
-    state = flask.session['state']
-    flow = google_auth_oauthlib.flow.Flow.from_client_secrets_file('client_secret.json', scopes=['https://www.googleapis.com/auth/'])
+# @app.route('/oauth2callback', methods=['POST'])
+# def oauth2_callback():
+#
+#     state = flask.session['state']
+#     flow = google_auth_oauthlib.flow.Flow.from_client_secrets_file('client_secret.json', scopes=['https://www.googleapis.com/auth/'])
 
 
 @app.route('/privacy_policy', methods=['GET'])
