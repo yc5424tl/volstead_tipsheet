@@ -242,29 +242,29 @@ def insert_subtotals_row(target_row: int) -> bool:
 #   add_new_employee()
 #
 #
-
-# print(get_individual_period_subtotal(3, 'Jacob Boline').value)
-test_date = datetime(year=2019, month=3, day=10)
-# days = get_timedelta_days(test_date)
-# print('days = ' + str(days))
-# row = get_row_by_date(days)
-# print('row = ' + str(row))
-# end_of_period = is_end_of_period(days)
-# print(end_of_period)
-# print('COL TITLES: ' + get_col_titles())
-# cell_query = 'Jacob Boline'
-# result = get_first_match(cell_query)
-# print(str(result.col) + ', ' +  str(result.row))
-# print(type(result.col))
-# print(type(result.row))
-# col_titles = tips_sheet.row_values(row=1)
-# for title in col_titles[1:-2]:
-#     print('title: ' + title)
-#     print('value: ' + str(tips_sheet.find(title).col))
-
-blank_cell_value = tips_sheet.cell(row=129, col=2).value
-print("blank cell value == None: ")
-print(blank_cell_value is None)
-print('blank_cell_value = "": ')
-print(blank_cell_value == '')
-print('blank cell value = ' + blank_cell_value)
+#
+# # print(get_individual_period_subtotal(3, 'Jacob Boline').value)
+# test_date = datetime(year=2019, month=3, day=10)
+# # days = get_timedelta_days(test_date)
+# # print('days = ' + str(days))
+# # row = get_row_by_date(days)
+# # print('row = ' + str(row))
+# # end_of_period = is_end_of_period(days)
+# # print(end_of_period)
+# # print('COL TITLES: ' + get_col_titles())
+# # cell_query = 'Jacob Boline'
+# # result = get_first_match(cell_query)
+# # print(str(result.col) + ', ' +  str(result.row))
+# # print(type(result.col))
+# # print(type(result.row))
+# # col_titles = tips_sheet.row_values(row=1)
+# # for title in col_titles[1:-2]:
+# #     print('title: ' + title)
+# #     print('value: ' + str(tips_sheet.find(title).col))
+#
+# blank_cell_value = tips_sheet.cell(row=129, col=2).value
+# print("blank cell value == None: ")
+# print(blank_cell_value is None)
+# print('blank_cell_value = "": ')
+# print(blank_cell_value == '')
+# print('blank cell value = ' + blank_cell_value)
