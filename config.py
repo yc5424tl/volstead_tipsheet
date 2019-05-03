@@ -16,6 +16,8 @@ class Config(object):
 
     DB_HOST = os.getenv('VOL_DB_PORT')
 
+    MONGOALCHEMY_CONNECTION_STRING = 'mongodb://%s:%s@%s:%s/%s' % (DB_USER, DB_PW, DB_HOST, DB_PORT, DB_NAME)
+
     DEBUG = True
     # SQLALCHEMY_DATABASE_URI = None
     # SQLALCHEMY_TRACK_MODIFICATIONS = True

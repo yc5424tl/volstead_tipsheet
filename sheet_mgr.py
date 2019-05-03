@@ -6,25 +6,25 @@ from shift import Shift
 from datetime import datetime
 from oauth2client.service_account import ServiceAccountCredentials
 
-class SheetMgr(object):
-    def __init__(self, scope, client_secret, row_offset=1, creds=None, client=None):
-        self._scope = scope
-        self._client_secret = client_secret
-        self._row_offset = row_offset
-        self._creds = creds
-        self._client = client
+# class SheetMgr(object):
+#     def __init__(self, scope, client_secret, row_offset=1, creds=None, client=None):
+#         self._scope = scope
+#         self._client_secret = client_secret
+#         self._row_offset = row_offset
+#         self._creds = creds
+#         self._client = client
 
-    @property
-    def scope(self):
-        return self._scope
-
-    @scope.setter
-    def scope(self, new_scope):
-        self._scope = new_scope
-
-    @property
-    def client_secret(self):
-        return self._client_secret
+    # @property
+    # def scope(self):
+    #     return self._scope
+    #
+    # @scope.setter
+    # def scope(self, new_scope):
+    #     self._scope = new_scope
+    #
+    # @property
+    # def client_secret(self):
+    #     return self._client_secret
 scope = ['https://spreadsheets.google.com/feeds', 'https://www.googleapis.com/auth/spreadsheets', 'https://www.googleapis.com/auth/drive']
 creds = ServiceAccountCredentials.from_json_keyfile_name('client_secret.json', scope)
 client = gspread.authorize(creds)
