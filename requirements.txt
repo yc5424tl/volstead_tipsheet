@@ -31,7 +31,7 @@ google-apis-client-generator==1.6.1
 google-apputils==0.4.2
 google-auth==1.6.3
 google-auth-httplib2==0.0.3
-
+google_auth_oauthlib ==0.3.0
 google-cloud-scheduler==0.3.0
 googleapis-common-protos==1.6.0b9
 grpcio==1.20.1
