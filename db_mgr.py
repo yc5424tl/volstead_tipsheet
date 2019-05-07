@@ -1,14 +1,13 @@
 # coding=utf-8
 from pymongo.errors import DuplicateKeyError
-
 from employee import Employee
-
 from logging import Logger
 from pymongo import MongoClient
-import pymongo
+from flask.ext.pymongo import pymongo
 import os
 from shift import Shift
 
+mongo = pymongo
 
 class DbController(object):
 
@@ -22,7 +21,7 @@ class DbController(object):
             connection = MongoClient(self._db_host, self._db_port)
             self._db = connection[os.getenv('VOL_DB_NAME')]
             self._db.authenticate(os.getenv('VOL_DB_USER'), os.getenv('VOL_DB_PW'))
-            print(self._db.last_status())
+            # print(self._db.last_status())
             return True
         except ConnectionError:
             return False
@@ -51,14 +50,12 @@ class DbController(object):
         for emp in staff:
             emp_report = {'first_name': emp.first_name,
                           'last_name': emp.last_name,
-                          # 'report_name': emp.report_name,
                           'shift_hours': float(emp.shift_hours),
                           'tip_hours': float(emp.tip_hours),
                           'tip_role': emp.role,
                           'cc_tips': float(emp.cc_tips),
                           'cash_tips': float(emp.cash_tips),
                           'shift_summary': emp.shift_details}
-
             staff_report.append(emp_report)
         return staff_report
 
@@ -80,9 +77,3 @@ class DbController(object):
     def submit_daily_report(self, daily_report: dict) -> bool:
             self._db.test_daily_report.update_one({}, {"$set": daily_report}, upsert=True)
             return True
-
-    # @staticmethod
-    # def build_daily_report(shift_report: dict, staff_report: list) -> dict:
-    #     shift_report['staff_report'] = staff_report
-    #     return shift_report
-

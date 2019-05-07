@@ -1,3 +1,23 @@
+SMTP DEBUGGING MAIL SERVER SETUP:
+    ** FLASK_DEBUG must = 0 for this to run **
+    Terminal 1: set MAIL_SERVER=localhost
+    Terminal 1: set MAIL_PORT=8025
+    python371 -m smtpd -n -c DebuggingServer localhost:8025
+
+
+CONFIGURE GMAIL AS EMAIL SERVER
+       ** may have to configure gmail account to allow "less secure apps" access, otherwise the app might be prevented from sending emails **
+        HOW TO -> https://support.google.com/accounts/answer/6010255?hl=en
+
+    set MAIL_SERVER=smtp.googlemail.com
+    set MAIL_PORT=587
+    set MAIL_USE_TLS=1
+    set MAIL_USERNAME=<gmail-username>
+    set MAIL_PASSWORD=<gmail-password>
+
+
+
+
 Procfile.windows   web: python manage.py runserver 0.0.0.0:5000
 web: python app.py runserver
 web: gunicorn --bind 0.0.0.0:$PORT volsteads:app

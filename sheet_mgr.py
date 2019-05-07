@@ -185,18 +185,16 @@ def get_subtotal_row_if_first_second_last_day(shift_date: datetime) -> int:
     timedelta_days = get_timedelta_days(shift_date)
     period_index = timedelta_days % 14
     complete_periods = timedelta_days // 16
-    subtotal_row = None
+    subtotal_row = -1
     if period_index == 1 or 2:
         subtotal_row = 16 * complete_periods
         pool_col = get_first_match('Total Pool').col
         period_pool_subtotal = tips_sheet.cell(row=subtotal_row, col=pool_col).value
-        if period_pool_subtotal == '':
-            return subtotal_row
-        elif period_pool_subtotal != '':
-            return -1
+        if period_pool_subtotal != '':
+            subtotal_row = -1
     elif period_index == 0:
         subtotal_row = ((complete_periods * 16) + 1 + period_index)
-        return subtotal_row
+    return subtotal_row
 
 
 def insert_subtotals_row(target_row: int) -> bool:

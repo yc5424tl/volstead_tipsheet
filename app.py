@@ -5,11 +5,10 @@ import os
 from decimal import Decimal, ROUND_HALF_UP
 
 import flask
-# import google_auth_oauthlib
+import google_auth_oauthlib
 from flask import Flask, copy_current_request_context, request, render_template, url_for
 from flask_bootstrap import Bootstrap
 from numpy import linspace
-
 import sheet_mgr
 import db_mgr
 from config import Config
@@ -25,16 +24,16 @@ shift_hours_range = linspace(0.0, 9.0, num=19, retstep=True)
 
 def instantiate_employees():
 
-    employee_dict = dict(JAKE=("BOLINE", "SERVICE", "Jacob Boline"),
-                         CORY=("SCHULLER", "SERVICE", "Cory"),
-                         INA=("DALE", "SERVICE", "Ina"),
-                         ELEANOR=("JOHNSON", "SERVICE", "Eleanor"),
-                         JENNIE=("SONG", "SERVICE", ""),
-                         HEIDI=("HEIDI", "SERVICE", "Heidi"),
-                         CHRIS=("THOMPSON", "SERVICE", "Chris"),
-                         MARLEY=("BARTLETT", "SERVICE", "Marley"),
-                         ADAM=("O'BRIEN", "SUPPORT", "Adam O'Brien"),
-                         REBECCA=("MOGCK", "SUPPORT", "Rebecca M"))
+    employee_dict = dict(JAKE=("BOLINE", "SERVICE"),
+                         CORY=("SCHULLER", "SERVICE"),
+                         INA=("DALE", "SERVICE"),
+                         ELEANOR=("JOHNSON", "SERVICE"),
+                         JENNIE=("SONG", "SERVICE"),
+                         HEIDI=("LUNDGREN", "SERVICE"),
+                         CHRIS=("THOMPSON", "SERVICE"),
+                         MARLEY=("BARTLETT", "SERVICE"),
+                         ADAM=("O'BRIEN", "SUPPORT"),
+                         REBECCA=("MOGCK", "SUPPORT"))
 
     return [Employee(emp, employee_dict[emp][0], employee_dict[emp][1]) for emp in employee_dict]
 
@@ -46,7 +45,7 @@ db_ctr = db_mgr.DbController(int(os.getenv('VOL_DB_PORT')), os.getenv('VOL_DB_HO
 db_ctr.connect_db()
 
 
-def redirect_url(default='front_page'):
+def redirect_url(default='login'):
     return request.args.get('next') or request.referrer or url_for(default)
 
 
@@ -72,8 +71,7 @@ def submit_report():
             if db_ctr.submit_daily_report(shift_report):
                 print('report submitted to db')
 
-            return render_template('submit_success.html', daily_report=shift_report)
-
+            return render_template('report_archived_confirmation.html', daily_report=shift_report)
 
 # @app.route('/oauth2callback', methods=['POST'])
 # def oauth2_callback():
@@ -88,7 +86,7 @@ def privacy_policy():
 
 
 @app.route('/', methods=['GET', 'POST'])
-def front_page():
+def build_report():
     @copy_current_request_context
     def analyze_hours(working_shift: Shift, req_form: request.form):
         for target_emp in shift.staff:
@@ -128,7 +126,7 @@ def front_page():
         return date.strftime('%A %B %d %Y')
 
     if request.method == 'GET':
-        return render_template('eod_form.html',
+        return render_template('build_report.html',
                                denominations=denominations,
                                employees=employees,
                                float_range=shift_hours_range)
@@ -149,7 +147,7 @@ def front_page():
 
         if not (tip_hours > 0):
             error = "Form Submitted with Zero Tip Hours"
-            return render_template('eod_form.html',
+            return render_template('build_report.html',
                                    denominations=denominations,
                                    employees=employees,
                                    float_range=shift_hours_range,
@@ -168,11 +166,10 @@ def front_page():
 
         today = datetime.datetime.today()
         if int(datetime.datetime.now().strftime('%H')) >= 17:
-            # shift._start_date = today.strftime('%A %B %d %Y')  # Day of Week, Month, Day, Year
+            # today.strftime('%A %B %d %Y')  # Day of Week, Month, Day, Year
             shift._start_date = today
         else:
             yesterday = today - datetime.timedelta(days=1)
-            # shift._start_date = yesterday.strftime('%A %B %d %Y')
             shift._start_date = yesterday
 
         return render_template('report.html', denominations=denominations, employees=shift.staff, float_range=shift_hours_range, shift=shift, stringify_date=stringify_date)
