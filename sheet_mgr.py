@@ -1,7 +1,7 @@
 # coding=utf-8
 
 import gspread
-from employee import Employee
+from models import Employee
 from shift import Shift
 from datetime import datetime
 from oauth2client.service_account import ServiceAccountCredentials
@@ -25,47 +25,18 @@ from oauth2client.service_account import ServiceAccountCredentials
     # @property
     # def client_secret(self):
     #     return self._client_secret
-scope = ['https://spreadsheets.google.com/feeds', 'https://www.googleapis.com/auth/spreadsheets', 'https://www.googleapis.com/auth/drive']
-creds = ServiceAccountCredentials.from_json_keyfile_name('client_secret.json', scope)
-client = gspread.authorize(creds)
-ref_date = datetime(year=2018, month=12, day=30)
-TITLE_ROW_OFFSET = 1
+scope = ['https://spreadsheets.google.com/feeds',
+         'https://www.googleapis.com/auth/spreadsheets',
+         'https://www.googleapis.com/auth/drive']
+
+cred = ServiceAccountCredentials.from_json_keyfile_name('client_secret.json', scope)
+client = gspread.authorize(cred)
+
 sheet = client.open('Copy of Tips').sheet1
 tips_sheet = sheet.spreadsheet.get_worksheet(1)
-# list_of_hashes = tips_sheet.get_all_records()
-# print(list_of_hashes)
 
-
-# COLS = {'DATE': 'A',
-#         'TOTAL POOL': 'B',
-#         'Adam O\'Brien': 'C',
-#         'Chris': 'D',
-#         'Cory': 'E',
-#         'Eleanor': 'F',
-#         'Heidi': 'G',
-#         'Ina': 'H',
-#         'Jacob Boline': 'I',
-#         'Jennie': 'J',
-#         'Joe Goff': 'K',
-#         'Marley': 'L',
-#         'Rebecca M': 'M',
-#         'Samantha': 'N',
-#         'Paid Out': 'O',
-#         'OVER / UNDER': 'P'}
-#
-# COL_NAMES = {
-#     'JAKE BOLINE': 'Jacob Boline',
-#     'CORY SHULLER': 'Cory Shuller',
-#     'INA DALE': 'Ina Dale',
-#     'ELEANOR JOHNSON': 'Eleanor Johnson',
-#     'JENNIE SONG': 'Jennie Song',
-#     'HEIDI HEIDI': 'Heidi Heidi',
-#     'CHRIS THOMPSON': 'Chris Thompson',
-#     'MARLEY BARTLETT': 'Marley Bartlett',
-#     'ADAM O\'BRIEN': 'Adam O\'Brien',
-#     'REBECCA MOGCK': 'Rebecca Mogck'
-# }
-
+ref_date = datetime(year=2018, month=12, day=30)
+TITLE_ROW_OFFSET = 1
 # def get_period(period_number: int) -> bool or dict:
 #     if 100 > period_number < 1:
 #         return False
@@ -82,29 +53,20 @@ tips_sheet = sheet.spreadsheet.get_worksheet(1)
 #     subtotal = tips_sheet.acell(target_cell)
 #     return subtotal
 
-
-
-def get_row_by_date(timedelta_days: int):
+def get_row_by_timedelta(timedelta_days: int) -> int:
     full_pay_period_row_groups = (timedelta_days // 14)
     full_periods_remainder = timedelta_days % 14
-    # print('full periods = ' + str(full_pay_period_row_groups) + 'remainder after periods = ' + str(full_periods_remainder) + 'timedelta days = ' + str(timedelta_days) + 'TITLE_ROW_OFFSET = ' + str(TITLE_ROW_OFFSET))
-    new_row = ((16 * full_pay_period_row_groups) + full_periods_remainder) + TITLE_ROW_OFFSET
-    return new_row
+    target_row_int = ((16 * full_pay_period_row_groups) + full_periods_remainder) + TITLE_ROW_OFFSET
+    return target_row_int
 
 def get_timedelta_days(target_date: datetime) -> int:
     formatted_date = datetime(year=int(target_date.strftime('%Y')), month=int(target_date.strftime('%m')), day=int(target_date.strftime('%d')))
     timedelta_day_gap = formatted_date - ref_date
-    numeric_day_gap = timedelta_day_gap.days # (datetime(year=int(day.strftime('%Y')), month=int(day.strftime('%m')), day=int(day.strftime('%d'))) - ref_date).days
+    numeric_day_gap = timedelta_day_gap.days
+    # (datetime(year=int(day.strftime('%Y')), month=int(day.strftime('%m')), day=int(day.strftime('%d'))) - ref_date).days
     return numeric_day_gap
-# def is_end_of_period(timedelta_days: int) -> bool:
-#     day_of_period = timedelta_days % 14
-#     print('day out of 14 in current period = ' + str(day_of_period))
-#     if day_of_period == 0:
-#         return True
-#     else:
-#         return False
-# def get_date_row(day):
-#     return 16 * ((datetime(year=int(day.strftime('%Y')), month=int(day.strftime('%m')), day=int(day.strftime('%d'))) - ref_date).days // 16) + ((datetime(year=int(day.strftime('%Y')), month=int(day.strftime('%m')), day=int(day.strftime('%d'))) - ref_date).days % 16) + 3
+
+
 
 
 
@@ -125,9 +87,7 @@ def get_timedelta_days(target_date: datetime) -> int:
 def get_first_match(query: str) -> gspread.Cell or None:
     return tips_sheet.find(query)
 
-
-
-def insert_emp_shift_data(shift_row: int, emp_name: str, new_value: float) -> bool:
+def insert_shift_for_emp(shift_row: int, emp_name: str, new_value: float) -> bool:
     emp_col = get_first_match(emp_name).col
     if emp_col:
         tips_sheet.update_cell(row=shift_row, col=emp_col, value=new_value)
@@ -142,27 +102,41 @@ def insert_shift_pool(shift_row: int, shift_pool: float) -> bool:
         return True
     return False
 
-
-def insert_shift_date(shift_row: int, shift_date: datetime) -> bool:
+def insert_date_for_shift(shift_row: int, shift_date: datetime) -> bool:
     if shift_row > 1 and (datetime.today() - shift_date).days >= 0:
         tips_sheet.update_cell(row=shift_row, col=1, value=shift_date.strftime('%m/%d/%Y'))
         return True
     return False
 
-
-def insert_new_shift(shift: Shift) -> bool:
+def insert_new_row_for_shift(shift: Shift) -> bool:
     shift_timedelta = get_timedelta_days(shift.start_date)
-    shift_row = get_row_by_date(shift_timedelta)
+    shift_row = get_row_by_timedelta(shift_timedelta)
     insert_pool = insert_shift_pool(shift_row, shift.cc_tip_pool)
-    insert_date = insert_shift_date(shift_row, shift.start_date)
+    insert_date = insert_date_for_shift(shift_row, shift.start_date)
     if insert_pool and insert_date:
         for emp in shift.staff:
-            full_name = emp.first_name + ' ' + emp.last_name
-            cont = insert_emp_shift_data(shift_row, full_name, emp.cc_tips)
+            cont = insert_shift_for_emp(shift_row, emp.full_name, emp.cc_tips)
             if not cont:
                 print('Error when inserting employee shift data')
                 return False
     return True
+
+
+def insert_subtotals_row(target_row: int) -> bool:
+    tips_sheet.update_cell(row=target_row, col=1, value='Period Totals')
+    target_cols = tips_sheet.row_values(row=1)
+    first_row = target_row - 14
+    last_row = target_row - 1
+    for col in target_cols[1:-2]:
+        col_num = tips_sheet.find(col).col
+        cell_data = tips_sheet.range(first_row=first_row, first_col=col_num, last_row=last_row, last_col=col_num)
+        subtotal = 0
+        for cell in cell_data:
+            subtotal += cell.value
+        tips_sheet.update_cell(row=target_row, col=col_num, value=subtotal)
+    return True
+
+
 # def check_if_new_period(shift_date: datetime):
 #     timedelta_days = get_timedelta_days(shift_date)
 #     day_of_period = timedelta_days % 14
@@ -181,6 +155,29 @@ def insert_new_shift(shift: Shift) -> bool:
 #                 subtotal += x.value
 #             tips_sheet.update_cell(row=subtotal_row, col=col, value=subtotal)
 
+
+# def is_end_of_period(timedelta_days: int) -> bool:
+#     day_of_period = timedelta_days % 14
+#     print('day out of 14 in current period = ' + str(day_of_period))
+#     if day_of_period == 0:
+#         return True
+#     else:
+#         return False
+
+
+# def get_date_row(day):
+#     return 16 * ((datetime(year=int(day.strftime('%Y')), month=int(day.strftime('%m')), day=int(day.strftime('%d'))) - ref_date).days // 16) + ((datetime(year=int(day.strftime('%Y')), month=int(day.strftime('%m')), day=int(day.strftime('%d'))) - ref_date).days % 16) + 3
+
+
+
+# should just set up a daily check for 2 conditions:
+#       1: Is it the last day of the pay period?
+#           Yes -> Compute period subtotals
+
+#       2: Has the previous period's subtotals been computed?
+#           No -> Compute previous period subtotals
+
+
 def get_subtotal_row_if_first_second_last_day(shift_date: datetime) -> int:
     timedelta_days = get_timedelta_days(shift_date)
     period_index = timedelta_days % 14
@@ -196,20 +193,26 @@ def get_subtotal_row_if_first_second_last_day(shift_date: datetime) -> int:
         subtotal_row = ((complete_periods * 16) + 1 + period_index)
     return subtotal_row
 
+def subtotals_check(shift_date: datetime) -> int:
+    timedelta_days = get_timedelta_days(shift_date)
+    period_index = timedelta_days % 14
+    periods_completed = timedelta_days // 16
+    subtotal_row = -1
 
-def insert_subtotals_row(target_row: int) -> bool:
-    tips_sheet.update_cell(row=target_row, col=1, value='Period Totals')
-    target_cols = tips_sheet.row_values(row=1)
-    first_row = target_row - 14
-    last_row = target_row - 1
-    for col in target_cols[1:-2]:
-        col_num = tips_sheet.find(col).col
-        cell_data = tips_sheet.range(first_row=first_row, first_col=col_num, last_row=last_row, last_col=col_num)
-        subtotal = 0
-        for cell in cell_data:
-            subtotal += cell.value
-        tips_sheet.update_cell(row=target_row, col=col_num, value=subtotal)
-    return True
+    if period_index in range(1, 14):
+        subtotal_row = 16 * periods_completed
+        pool_col = get_first_match('Total Pool').col
+        period_pool_subtotal = tips_sheet.cell(row=subtotal_row, col=pool_col).value
+        if period_pool_subtotal != '':
+            subtotal_row = -1
+
+    elif period_index == 0:
+        subtotal_row = ((periods_completed * 16) + 1 + period_index)
+
+    return subtotal_row
+
+
+
 
 
 

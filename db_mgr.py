@@ -45,8 +45,8 @@ class DbController(object):
             Logger.log(msg='Operation to add new employee encountered a duplicate key.')
 
     @staticmethod
-    def build_staff_report(staff) -> []:
-        staff_report = []
+    def build_staff_report(staff: [Employee]) -> []:
+        staff_report = {}
         for emp in staff:
             emp_report = {'first_name': emp.first_name,
                           'last_name': emp.last_name,
@@ -56,8 +56,12 @@ class DbController(object):
                           'cc_tips': float(emp.cc_tips),
                           'cash_tips': float(emp.cash_tips),
                           'shift_summary': emp.shift_details}
-            staff_report.append(emp_report)
+            new_data = {emp.full_name: emp_report}
+            staff_report.update(new_data)
         return staff_report
+        # staff_report.append(emp_report)
+        # return staff_report_ = client.open('Copy of Tips').sheet1
+        # tips_sheet = sheet.spreadsheet.get_worksheet(1)
 
     @staticmethod
     def build_shift_report(shift: Shift) -> dict:
@@ -70,10 +74,11 @@ class DbController(object):
             'cc_tip_wage': float(shift.cc_tip_wage),
             'cash_tip_pool': float(shift.cash_tip_pool),
             'cash_tip_wage': float(shift.cash_tip_wage),
-            'cash_subtotals': shift.cash_subtotals
+            'cash_subtotals': shift.cash_subtotals,
+            'staff_report': None
         }
         return shift_report
 
-    def submit_daily_report(self, daily_report: dict) -> bool:
+    def submit_daily_report(self, daily_report) -> bool:
             self._db.test_daily_report.update_one({}, {"$set": daily_report}, upsert=True)
             return True

@@ -188,6 +188,10 @@ class Employee(mongo.db.Document):
     cash_tips = mongo.db.FloatField(max_value=5000, min_value=0)
     cc_tips = mongo.db.FloatField(max_value=5000, min_value=0)
 
+    def full_name(self) -> str:
+        name = self.first_name + ' ' + self.last_name
+        return name
+
 
 
 class Shift(mongo.db.Document):

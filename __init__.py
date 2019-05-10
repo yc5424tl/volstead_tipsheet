@@ -10,9 +10,12 @@ from flask_migrate import Migrate
 from flask_login import LoginManager
 from flask_mail import Mail
 from flask_bootstrap import Bootstrap
+from flask_babel import Babel, lazy_gettext as _1
 # from flask_moment import Moment
 # from flask_babel import Babel, lazy_gettext as _1
 from config import Config
+
+from db_mgr import DbController as db
 
 from volsteads import routes, models, errors
 #
@@ -28,10 +31,13 @@ from volsteads import routes, models, errors
 mongo = PyMongo()
 migrate = Migrate()
 login = LoginManager()
+login.login_view = 'login'
+login.login_message = _1('Please log in to access this page.')
 # login.login_view = 'auth.login'
 # login.login_message = _1('Please log in to access this page')
 mail = Mail()
 bootstrap = Bootstrap()
+babel = Babel()
 # moment = Moment()
 # babel = Babel()'
 
@@ -41,6 +47,10 @@ def create_app(config_class=Config):
     app = Flask(__name__)
     app.config.from_object(config_class)
 
+    if db.connect_db():
+        print('Connected to DB')
+    else:
+        'DB connection failed'
     # mongo_connection = MongoClient(Config.DB_HOST,)
 #
 #
@@ -49,10 +59,13 @@ def create_app(config_class=Config):
     login.init_app(app)
     mail.init_app(app)
     bootstrap.init_app(app)
+    babel.init_app(app)
 #     moment.init_app(app)
 #     babel.init_app(app)
 
-    login.login_view = 'login'
+
+
+
 
     from volsteads.errors import bp as errors_bp
     app.register_blueprint(errors_bp)
@@ -79,20 +92,27 @@ def create_app(config_class=Config):
             mail_handler.setLevel(logging.ERROR)
             app.logger.addHandler(mail_handler)
 
-        if not os.path.exists('logs'):
-            os.mkdir('logs')
-        file_handler = RotatingFileHandler('logs/volsteads.log',
-                                           maxBytes=10240, backupCount=10)
-        file_handler.setFormatter(logging.Formatter(
-            '%(asctime)s %(levelname)s: %(message)s '
-            '[in %(pathname)s:%(lineno)d]'))
-        file_handler.setLevel(logging.INFO)
-        app.logger.addHandler(file_handler)
+        if app.config['LOG_TO_STDOUT']:
+            stream_handler = logging.StreamHandler()
+            stream_handler.setLevel(logging.INFO)
+            app.logger.addHandler(stream_handler)
+        else:
+            if not os.path.exists('logs'):
+                os.mkdir('logs')
+            file_handler = RotatingFileHandler('logs/volsteads.log',
+                                               maxBytes=10240, backupCount=10)
+            file_handler.setFormatter(logging.Formatter(
+                '%(asctime)s %(levelname)s: %(message)s '
+                '[in %(pathname)s:%(lineno)d]'))
+            file_handler.setLevel(logging.INFO)
+            app.logger.addHandler(file_handler)
 
         app.logger.setLevel(logging.INFO)
         app.logger.info("Volstead's Vault startup")
 
     return app
+
+
 
 # @babel.localeselector
 # def get_locale():

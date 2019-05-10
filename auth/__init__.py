@@ -3,7 +3,7 @@
 from flask import Blueprint
 bp = Blueprint('auth', __name__)
 from volsteads.auth import routes
-from volsteads import LoginManager, models
+# from volsteads import LoginManager, models
 
 # @LoginManager.user_loader
 # def load_user(username):
