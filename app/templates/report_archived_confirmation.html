@@ -15,8 +15,8 @@
                     <p>{{ k }} : {{ daily_report.cash_subtotals[k] }}</p>
                 {% endfor %}
             </div>
-            <p>Shift Hours: {{ daily_report.shift_hours }}</p>
-            <p>Tip Hours: {{ daily_report.tip_hours }}</p>
+            <p>Shift Hours: {{ daily_report.total_shift_hours }}</p>
+            <p>Tip Hours: {{ daily_report.total_tip_hours }}</p>
             <p>Cash Tip Wage: {{ daily_report.cash_tip_wage }}</p>
             <p>CC Tip Wage: {{ daily_report.cc_tip_wage }}</p>
             <p>Start Date: {{ daily_report.start_date }}</p>

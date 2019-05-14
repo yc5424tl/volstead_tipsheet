@@ -15,6 +15,9 @@ from app.main.employee import Employee
 # from config import Config
 import app.sheet_mgr as g_sheet
 from app import db
+# from app.models import ShiftReport
+
+
 
 denominations = {x:0.0 for x in ['0.25', '1.00', '5.00', '10.00', '20.00', '50.00', '100.00']}
 # denominations = {'100.00': 0.00, '50.00': 0.00, '20.00': 0.00, '10.00': 0.00, '5.00': 0.00, '1.00': 0.00, '0.25': 0.00}
@@ -22,7 +25,7 @@ shift_hours_range = linspace(0.0, 9.0, num=19, retstep=True)
 
 
 def instantiate_employees():
-    employee_dict = dict(JAKE=("BOLINE", "SERVICE"),
+    employee_dict = dict(JACOB=("BOLINE", "SERVICE"),
                          CORY=("SCHULLER", "SERVICE"),
                          INA=("DALE", "SERVICE"),
                          ELEANOR=("JOHNSON", "SERVICE"),
@@ -152,38 +155,74 @@ def start_report():
 def register_user():
     return render_template('register.html')
 
+def list_of_emp(emp_list) -> bool:
+    if isinstance(emp_list, list):
+        for emp in emp_list:
+            if not isinstance(emp, Employee):
+                print('isinstance(emp, Employee) = ' + str(isinstance(emp, Employee)))
+                return False
+        return True
+    return False
+
+
 @bp.route('/submit_report', methods=['POST'])
 # @login_required
 def submit_report():
     if request.method == 'POST':
-        if employees == {Employee} and type(shift) == Shift:
-            shift_report = db.build_shift_report(shift) # -> dict
-            staff_report = db.build_staff_report(employees)
-            staff_report_dict = {'staff_report': staff_report}
-            shift_report = shift_report.update(staff_report_dict)
+        print('isinstance(employees, {Employee} = ' + str(list_of_emp(employees)))
+        print('isinstance(shift, Shift) = ' + str(isinstance(shift, Shift)))
+        if list_of_emp(employees) and isinstance(shift, Shift):
+            print('Correct types for shift and employees passed.')
+            g_sheet.insert_new_row_for_shift(shift)
+            # CHECK if prior subtotal rows have data
+            g_sheet.check_previous_subtotals(shift.start_date)
+            # CHECK if start_date is last day in period
+            g_sheet.end_of_period_check(shift.start_date)
+            sr = shift.build_shift_report()
 
-            try:
-                db.submit_daily_report(shift_report)
-                print('report submitted to db')
-            except Exception:
-                print('failure submitting report to db')
-                print(Exception.with_traceback(), Exception.__str__())
+            db_shift_report = db.ShiftReport(cash_subtotals=sr.cash_subtotals,
+                                          cash_tip_pool=sr.cash_tip_pool,
+                                          cash_tip_wage= sr.cash_tip_wage,
+                                          cc_tip_pool=sr.cc_tip_pool,
+                                          cc_tip_wage=sr.cc_tip_wage,
+                                          start_date=sr.start_date,
+                                          total_shift_hours=sr.total_shift_hours,
+                                          total_tip_hours=sr.total_tip_hours,
+                                          staff_report=sr)
 
-            try:
-                if g_sheet.insert_new_row_for_shift(shift):
-                    subtotals_row = g_sheet.subtotals_check(shift.start_date)
-                    if subtotals_row == -1:
-                        print('Previous period subtotal row already complete.')
-                    else:
-                        if g_sheet.insert_subtotals_row(target_row=subtotals_row):
-                            print('Subtotals row for ' + shift.start_date + ' inserted at row ' + str(subtotals_row))
-                        else:
-                            print('Error while adding subtotals for ' + shift.start_date + ' to row ' + str(subtotals_row))
-            except Exception:
-                print('Failure during sheet interaction')
-                print(Exception.with_traceback(), Exception.__str__())
+            db.session.add(db_shift_report)
+            db.session.commit()
 
-            return render_template('report_archived_confirmation.html', daily_report=shift_report)
+
+
+
+            # shift_report = shift.build_shift_report() # -> dict
+            # staff_report = db.build_staff_report(employees)
+            # staff_report_dict = {'staff_report': staff_report}
+            # shift_report = shift_report.update(staff_report_dict)
+
+            # try:
+            #     db.submit_daily_report(shift_report)
+            #     print('report submitted to db')
+            # except Exception:
+            #     print('failure submitting report to db')
+            #     print(Exception.with_traceback(), Exception.__str__())
+            #
+            # try:
+            #     if g_sheet.insert_new_row_for_shift(shift):
+            #         subtotals_row = g_sheet.subtotals_check(shift.start_date)
+            #         if subtotals_row == -1:
+            #             print('Previous period subtotal row already complete.')
+            #         else:
+            #             if g_sheet.insert_subtotals_row(target_row=subtotals_row):
+            #                 print('Subtotals row for ' + shift.start_date + ' inserted at row ' + str(subtotals_row))
+            #             else:
+            #                 print('Error while adding subtotals for ' + shift.start_date + ' to row ' + str(subtotals_row))
+            # except Exception:
+            #     print('Failure during sheet interaction')
+            #     print(Exception.with_traceback(), Exception.__str__())
+
+            return render_template('report_archived_confirmation.html', daily_report=sr)
 
 
 @bp.route('/privacy_policy', methods=['GET'])

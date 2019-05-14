@@ -1,6 +1,6 @@
 # coding=utf-8
 
-from app.main.employee import Employee
+from volsteads.app.main.employee import Employee
 from datetime import datetime
 
 class Shift(object):

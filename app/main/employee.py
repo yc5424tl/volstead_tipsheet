@@ -22,6 +22,14 @@ class Employee(object):
         self._cc_tips = 0.00
 
     @property
+    def _full_name(self):
+        return self.first_name + ' ' + self.last_name
+
+    @_full_name.setter
+    def _full_name(self, new_full_name):
+        self._full_name = new_full_name
+
+    @property
     def first_name(self) -> str:
         return self._first_name
 

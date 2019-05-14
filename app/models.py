@@ -2,6 +2,7 @@
 
 from datetime import datetime
 from hashlib import md5
+from logging import Logger
 from time import time
 
 from sqlalchemy import CheckConstraint
@@ -144,6 +145,7 @@ class ShiftReport(db.Model):
     start_date = db.Column(db.DateTime, index=True, unique=True)
     total_shift_hours = db.Column(db.Float)
     total_tip_hours = db.Column(db.Float)
+    created_at = db.Column(db.DateTime, default=datetime.utcnow())
     staff_report =  db.Column(db.PickleType(db.PickleType))
     employee_report = db.relationship('EmployeeReport', backref='shift_report', lazy=True)
 
@@ -188,7 +190,8 @@ class ShiftReport(db.Model):
     def insert_new_shift(shift: shift_data) -> bool:
         new_shift = ShiftReport(shift.start_date, shift.total_shift_hours, shift.total_tip_hour,
                                 shift.cc_tip_pool, shift.cc_tip_wage, shift.cash_tip_pool,
-                                shift.cash_tip_wage, shift.cash_subtotals, shift.staff_report)
+                                shift.cash_tip_wage, shift.cash_subtotals, shift.staff_report,
+                                shift.created_at)
         try:
             db.session.add(new_shift)
             db.session.commit()
@@ -206,6 +209,7 @@ class Employee(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     first_name = db.Column(db.String(64))
     last_name = db.Column(db.String(64))
+    created_at = db.Column(db.DateTime, default=datetime.utcnow())
     user = db.relationship('User', foreign_keys='Employee.user_id', backref='emp_user', lazy=True, uselist=False)
     user_id = db.Column(db.Integer, db.ForeignKey('user_table.id'), nullable=False)
     employee_reports = db.relationship('EmployeeReport', backref='rep_user', lazy=True)
@@ -229,18 +233,18 @@ def load_user(user_id):
     return User.query.get(int(user_id))
 
 
-# user_manager = UserManager(current_app, db, UserModel)
+user_manager = UserManager(current_app, db, User)
 # db.create_all()
 #
-# if not UserModel.query.filter(UserModel.email == 'member@example.com').first():
-#     user = UserModel(Modelemail='member@example.com',password=user_manager.hash_password('Password1'),)
+# if not User.query.filter(User.email == 'member@example.com').first():
+#     user = User(email='member@example.com',password=user_manager.hash_password('Password1'),)
 #     db.session.add(user)
 #     db.session.commit()
 #
-# if not UserModel.query.filter(UserModel.email == 'admin@example.com').first():
-#     user = UserModel(email='admin@example.com', password=user_manager.hash_password('Password1'),)
-#     user.roles.append(RoleModel(name='Admin'))
-#     user.roles.append(RoleModel(name='Agent'))
+# if not User.query.filter(User.email == 'admin@example.com').first():
+#     user = User(email='admin@example.com', password=user_manager.hash_password('Password1'),)
+#     user.roles.append(Role(name='Admin'))
+#     user.roles.append(Role(name='Agent'))
 #     db.session.add(user)
 #     db.session.commit()
 
@@ -252,46 +256,19 @@ def load_user(user_id):
 #             super(HashField, self).set_value(instance, str(hash(value)))
 
 
-# class Employee(db.Document):
-#     first_name = db.StringField(max_length=45, min_length=1)
-#     last_name = db.StringField(max_length=45, min_length=1)
-#     role = db.EnumField(db.StringField('SERVICE', 'SUPPORT'))
-#     shift_hours = db.FloatField(max_value=9, min_value = 0)
-#     tip_hours = db.FloatField(max_value = 9, min_value = 0)
-#     cash_tips = db.FloatField(max_value=5000, min_value=0)
-#     cc_tips = db.FloatField(max_value=5000, min_value=0)
-#
-#     def full_name(self) -> str:
-#         name = self.first_name + ' ' + self.last_name
-#         return name
-#
-#
-#
-# class Shift(db.Document):
-#     staff = db.ListField(Employee)
-#     cc_tip_pool = db.FloatField(max_value=50000, min_value=0)
-#     cash_subtotals = db.DictField(value_type=db.FloatField)
-#     shift_hours = db.FloatField(max_value=100, min_value=0)
-#     tip_hours = db.FloatField(max_value=100, min_value=0)
-#     cash_tip_wage = db.FloatField(max_value=100, min_value=0)
-#     cc_tip_wage = db.FloatField(max_value=100, min_value=0)
-#     start_date = db.DateTimeField(min_date=datetime(2018,12,31,0,0,0), use_tz=pytz.timezone('US/Central'))
-#     cash_tip_pool = db.FloatField(max_value=50000, min_value=0)
-#
-#
 
-#
-# def add_new_emp(self, emp: {Employee}):
-#     try:
-#         self._db.employee.update({'first_name': emp.first_name,
-#                                   'last_name': emp.last_name,
-#                                   'shift_hours': emp.shift_hours,
-#                                   'tip_hours': emp.tip_hours,
-#                                   'tip_role': emp.role,
-#                                   'tip_total': emp.tip_total})
-#     except DuplicateKeyError:
-#         Logger.log(msg='Operation to add new employee encountered a duplicate key.')
-#
+
+def add_new_emp(self, emp: {Employee}):
+    try:
+        self._db.employee.update({'first_name': emp.first_name,
+                                  'last_name': emp.last_name,
+                                  'shift_hours': emp.shift_hours,
+                                  'tip_hours': emp.tip_hours,
+                                  'tip_role': emp.role,
+                                  'tip_total': emp.tip_total})
+    except :
+        Logger.log(msg='Operation to add new employee did not complete.')
+
 #
 # def create_emp_index() -> bool:
 #     try:
