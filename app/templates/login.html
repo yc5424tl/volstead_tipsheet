@@ -1,23 +1,67 @@
 {% extends 'layout.html' %}
+{% import 'bootstrap/wtf.html' as wtf %}
 
 
-{% block styles %}
-
-{% endblock %}
+{% block styles %}{{ super() }}{% endblock %}
 
 
 
 {% block page_content %}
-<p>Add New User</p>
+    <div class="row">
 
-    <p>
+        <div class="col-12"><h1 id="login-header">{{ _('Sign In') }}</h1></div>
 
-    <a href="{{ url_for('reset_password_request') }}">Reset Password</a>
-    </p>
+    </div>
+
+    <div class="row">
+        <div class="col"></div>
+        <div class="col-8">
+            {{ wtf.quick_form(form, extra_classes="login-form") }}
+        </div>
+        <div class="col"></div>
+    </div>
+{#    <br>#}
+    <div class="row">
+{#        <div class="col"></div>#}
+{#        <div class="col-5">#}
+{#            <p class="login-footer">{{  _('New User?') }} <a href="{{ url_for('main.register_user') }}">{{ _('Click to Register') }}</a></p>#}
+{#        </div>#}
+{##}
+{#        <div class="col-5">#}
+{#            <p class="login-footer">#}
+{#                {{ _('Forgot Your Password?') }}#}
+{#                <a href="{{ url_for('auth.reset_password_request') }}">{{ _('Click to Reset') }}</a>#}
+{#            </p>#}
+{#        </div>#}
+        <div class="col-12 login-footer">
+{#            <div class="login-footer-span">#}
+{#                {{  _('New User?') }}#}
+{#                <a href="{{ url_for('main.register_user') }}">#}
+{#                    {{ _('Click to Register') }}#}
+{#                </a>#}
+{#            </div>#}
+            <div class="login-footer-span">
+                {{ _('Forgot Your Password?') }}
+                <a href="{{ url_for('auth.reset_password_request') }}">
+                    {{ _('Click to Reset') }}
+                </a>
+            </div>
+
+        </div>
+{#        <div class="col"></div>#}
+    </div>
+
+
+
+{#    <p>Add New User</p>#}
+{#    <p>#}
+{#        <a href="{{ url_for('auth.reset_password_request') }}">Reset Password</a>#}
+{#    </p>#}
+
+
+
 {% endblock %}
 
 
 
-{% block scripts %}
-
-{% endblock %}
+{% block scripts %}{% endblock %}

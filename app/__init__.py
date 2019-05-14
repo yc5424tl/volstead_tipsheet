@@ -1,6 +1,5 @@
 
 import logging
-from flask_pymongo import PyMongo, MongoClient
 from logging.handlers import SMTPHandler, RotatingFileHandler
 import os
 from flask import Flask, Request, current_app
@@ -29,6 +28,9 @@ babel = Babel()
 def create_app(config_class=Config):
     app = Flask(__name__)
     app.config.from_object(config_class)
+    app.app_context().push()
+    # with app.app_context():
+    #     db.init_app(app)
     db.init_app(app)
     migrate.init_app(app, db)
     login.init_app(app)
@@ -91,10 +93,26 @@ def create_app(config_class=Config):
 
     return app
 
+# db.drop_all()
+# db.create_all()
 from app import models
-
-
-# from app import models
+# from volsteads.app.models import UserManager, UserModel, RoleModel
+#
+# user_manager = UserManager(current_app, db, UserModel)
+#
+#
+# if not UserModel.query.filter(UserModel.email == 'member@example.com').first():
+#     user = UserModel(Modelemail='member@example.com', password=user_manager.hash_password('Password1'), )
+#     db.session.add(user)
+#     db.session.commit()
+#
+# if not UserModel.query.filter(UserModel.email == 'admin@example.com').first():
+#     user = UserModel(email='admin@example.com', password=user_manager.hash_password('Password1'), )
+#     user.roles.append(RoleModel(name='Admin'))
+#     user.roles.append(RoleModel(name='Agent'))
+#     db.session.add(user)
+#     db.session.commit()
+    # from app import models
 
 
 

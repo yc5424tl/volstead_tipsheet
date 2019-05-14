@@ -1,8 +1,8 @@
 {% extends 'bootstrap/base.html' %}
-{#<!DOCTYPE html>
-<html lang="en">
-
-<head>#}
+{#<!DOCTYPE html>#}
+{#<html lang="en">#}
+{##}
+{#<head>#}
     {% block head %}
         {{ super() }}
 
@@ -19,7 +19,7 @@
                   rel="stylesheet"
                   integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
                   crossorigin="anonymous">
-            <link rel=stylesheet href={{ url_for('.static', filename='css/template_style.css') }}>
+            <link rel=stylesheet href={{ url_for('static', filename='css/template_style.css') }}>
             <link href="https://fonts.googleapis.com/css?family=Bilbo+Swash+Caps|Clicker+Script|Euphoria+Script|Italianno|Meddon|Niconne" rel="stylesheet">
             <link href="https://fonts.googleapis.com/css?family=Almendra+Display|Anaheim|Berkshire+Swash|Economica|Federo|Fondamento|Griffy|Josefin+Sans|Jura|M+PLUS+Rounded+1c|Marmelad|Maven+Pro|Metrophobic|Mystery+Quest|NTR|Niramit|Quattrocento+Sans|Rajdhani|Ruge+Boogie|Saira|Sawarabi+Mincho|Spirax|Stylish|Supermercado+One|Thasadith" rel="stylesheet">
         {% endblock %}
@@ -27,8 +27,9 @@
 
 
     {% endblock %}
+{#</head>#}
 
-
+{#<body>#}
 {% with messages = get_flashed_messages() %}
   {% if messages %}
     <ul class=flashes>
@@ -41,17 +42,18 @@
 
 {% block content %}
     <div class="container">
-        <body class="body">
-    <div class="container-fluid px-0">
-        <div class="row mx-0">
-            <div class="col-12 px-0" id="image-div">
-                <img class="img-fluid w-100" id="banner-image" src="{{ url_for('static', filename='img/marquee-Volstead.jpg') }}">
+{#        <body class="body">#}
+            <div class="container-fluid px-0">
+                <div class="row mx-0">
+                    <div class="col-12 px-0" id="image-div">
+                        <img class="img-fluid w-100" id="banner-image" src="{{ url_for('static', filename='img/marquee-Volstead.jpg') }}">
+                    </div>
+                    <div class="content" id="layout-content-div">
+                        {% block page_content %}{% endblock %}
+                    </div>
+                </div>
             </div>
-            <div class="content" id="layout-content-div">
-                {% block page_content %}{% endblock %}
-            </div>
-        </div>
-    </div>
+{#        </body>#}
     </div>
 
 
@@ -62,5 +64,6 @@
 
         {% endblock %}
 
-</body>
+{% endblock %}
+{#</body>#}
 

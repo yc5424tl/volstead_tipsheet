@@ -1,5 +1,5 @@
 from flask import render_template
-from app.db_mgr import mongo
+from app import db
 from app.errors import bp
 
 @bp.app_errorhandler(404)
@@ -8,5 +8,5 @@ def not_found_error(error):
 
 @bp.app_errorhandler(500)
 def internal_error(error):
-    mongo.db.session.rollback()
+    db.session.rollback()
     return render_template('500.html'), 500

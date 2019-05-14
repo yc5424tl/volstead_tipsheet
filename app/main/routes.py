@@ -7,14 +7,17 @@ from datetime import datetime, timedelta
 from flask import render_template, copy_current_request_context, url_for, request, g
 from flask_login import current_user, login_required
 from flask_babel import _, get_locale
+from flask_user import roles_required
 from numpy import linspace
-from app.models import Employee, Shift
 from app.main import bp
-from config import Config
+from app.main.shift import Shift
+from app.main.employee import Employee
+# from config import Config
 import app.sheet_mgr as g_sheet
 from app import db
 
-denominations = {'100.00': 0.00, '50.00': 0.00, '20.00': 0.00, '10.00': 0.00, '5.00': 0.00, '1.00': 0.00, '0.25': 0.00}
+denominations = {x:0.0 for x in ['0.25', '1.00', '5.00', '10.00', '20.00', '50.00', '100.00']}
+# denominations = {'100.00': 0.00, '50.00': 0.00, '20.00': 0.00, '10.00': 0.00, '5.00': 0.00, '1.00': 0.00, '0.25': 0.00}
 shift_hours_range = linspace(0.0, 9.0, num=19, retstep=True)
 
 
@@ -28,7 +31,8 @@ def instantiate_employees():
                          CHRIS=("THOMPSON", "SERVICE"),
                          MARLEY=("BARTLETT", "SERVICE"),
                          ADAM=("O'BRIEN", "SUPPORT"),
-                         REBECCA=("MOGCK", "SUPPORT"))
+                         REBECCA=("MOGCK", "SUPPORT"),
+                         HARRISON=("EASTON", "SUPPORT") )
     return [Employee(emp, employee_dict[emp][0], employee_dict[emp][1]) for emp in employee_dict]
 
 employees = instantiate_employees()
@@ -47,7 +51,7 @@ def redirect_url(default='auth.login'):
 
 @bp.route('/', methods=['GET', "POST'"])
 @bp.route('/index', methods=['GET', 'POST'])
-@login_required
+# @login_required
 def start_report():
     @copy_current_request_context
     def analyze_hours(working_shift: Shift, req_form: request.form):
@@ -134,16 +138,25 @@ def start_report():
             yesterday = today - timedelta(days=1)
             shift._start_date = yesterday
 
-        return render_template('view_report.html', denominations=denominations, employees=shift.staff, float_range=shift_hours_range, shift=shift,
+        return render_template('view_report.html',
+                               denominations=denominations,
+                               employees=shift.staff,
+                               float_range=shift_hours_range,
+                               shift=shift,
                                stringify_date=stringify_date)
 
 
+@bp.route('/register_user', methods=['GET', 'POST'])
+# @login_required
+# @roles_required('Admin')
+def register_user():
+    return render_template('register.html')
 
 @bp.route('/submit_report', methods=['POST'])
-@login_required
+# @login_required
 def submit_report():
     if request.method == 'POST':
-        if employees and shift and employees == {Employee} and type(shift) == Shift:
+        if employees == {Employee} and type(shift) == Shift:
             shift_report = db.build_shift_report(shift) # -> dict
             staff_report = db.build_staff_report(employees)
             staff_report_dict = {'staff_report': staff_report}

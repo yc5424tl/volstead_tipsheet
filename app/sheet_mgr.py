@@ -1,8 +1,8 @@
 # coding=utf-8
 
 import gspread
-from app.models import Employee
-from app.models import Shift
+from app.main.employee import Employee
+from app.main.shift import Shift
 from datetime import datetime
 from oauth2client.service_account import ServiceAccountCredentials
 

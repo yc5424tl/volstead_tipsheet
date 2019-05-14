@@ -1,7 +1,7 @@
+# coding=utf-8
 
 from app.main.employee import Employee
 from datetime import datetime
-
 
 class Shift(object):
 
@@ -9,12 +9,13 @@ class Shift(object):
         self._staff = staff
         self._cc_tip_pool = 0.00
         self._cash_subtotals = cash_subtotals
-        self._shift_hours = 0.00
-        self._tip_hours = 0.00
+        self._total_shift_hours = 0.00
+        self._total_tip_hours = 0.00
         self._cash_tip_wage = 0.00
         self._cc_tip_wage = 0.00
         self._start_date = None
         self._cash_tip_pool = 0.00
+        self._staff_report = {}
 
     def get_cash_tip_pool(self):
         tip_pool = 0.00
@@ -68,22 +69,22 @@ class Shift(object):
 
     @property
     def shift_hours(self) -> float:
-        return self._shift_hours
+        return self._total_shift_hours
 
     @shift_hours.setter
     def shift_hours(self, new_shift_hours: float) -> None:
-        self._shift_hours = new_shift_hours
+        self._total_shift_hours = new_shift_hours
 
     @property
     def tip_hours(self) -> float:
-        return self._tip_hours
+        return self._total_tip_hours
 
     @tip_hours.setter
     def tip_hours(self, new_tip_hours: float) -> None:
-        self._tip_hours = new_tip_hours
+        self._total_tip_hours = new_tip_hours
 
     @property
-    def cash_tip_wage(self):
+    def cash_tip_wage(self) -> float:
         return self._cash_tip_wage
 
     @cash_tip_wage.setter
@@ -91,13 +92,20 @@ class Shift(object):
         self._cash_tip_wage = new_tip_wage
 
     @property
-    def cc_tip_wage(self):
+    def cc_tip_wage(self) -> float:
         return self._cc_tip_wage
 
     @cc_tip_wage.setter
-    def cc_tip_wage(self, new_cc_wage):
+    def cc_tip_wage(self, new_cc_wage) -> None:
         self._cc_tip_wage = new_cc_wage
 
+    @property
+    def staff_report(self) -> dict:
+        return self._staff_report
+
+    @staff_report.setter
+    def staff_report(self, new_report: dict) -> None:
+        self._staff_report = new_report
 
     def build_staff_report(self):
         staff_report = {}
