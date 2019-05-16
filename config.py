@@ -13,7 +13,7 @@ class Config(object):
     # CSRF_ENABLED = True
     SQLALCHEMY_TRACK_MODIFICATIONS = False
 
-
+    SESSION_TYPE = 'sqlalchemy'
 
     DB_URI = os.environ.get('PROD_MONGODB')
     DB_USER = urllib.parse.quote_plus(os.getenv('VOL_DB_USER'))

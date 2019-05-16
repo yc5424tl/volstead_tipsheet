@@ -2,44 +2,28 @@
 # from guess_language import guess_language
 # from volsteads.main.forms import EditProfileForm, PostForm
 # from volsteads.translate import translate
+
 from decimal import Decimal, ROUND_HALF_UP
 from datetime import datetime, timedelta
-from flask import render_template, copy_current_request_context, url_for, request, g
+from flask import jsonify, render_template, session, copy_current_request_context, url_for, request, g, app
 from flask_login import current_user, login_required
 from flask_babel import _, get_locale
 from flask_user import roles_required
+
 from numpy import linspace
 from app.main import bp
-from app.main.shift import Shift
-from app.main.employee import Employee
+from app.main.employee_data_controller import EmployeeDataController
+
+from app.main.shift_data_controller import ShiftDataController
 # from config import Config
 import app.sheet_mgr as g_sheet
+import app.models as models
 from app import db
-# from app.models import ShiftReport
 
-
-
-denominations = {x:0.0 for x in ['0.25', '1.00', '5.00', '10.00', '20.00', '50.00', '100.00']}
-# denominations = {'100.00': 0.00, '50.00': 0.00, '20.00': 0.00, '10.00': 0.00, '5.00': 0.00, '1.00': 0.00, '0.25': 0.00}
 shift_hours_range = linspace(0.0, 9.0, num=19, retstep=True)
 
-
-def instantiate_employees():
-    employee_dict = dict(JACOB=("BOLINE", "SERVICE"),
-                         CORY=("SCHULLER", "SERVICE"),
-                         INA=("DALE", "SERVICE"),
-                         ELEANOR=("JOHNSON", "SERVICE"),
-                         JENNIE=("SONG", "SERVICE"),
-                         HEIDI=("LUNDGREN", "SERVICE"),
-                         CHRIS=("THOMPSON", "SERVICE"),
-                         MARLEY=("BARTLETT", "SERVICE"),
-                         ADAM=("O'BRIEN", "SUPPORT"),
-                         REBECCA=("MOGCK", "SUPPORT"),
-                         HARRISON=("EASTON", "SUPPORT") )
-    return [Employee(emp, employee_dict[emp][0], employee_dict[emp][1]) for emp in employee_dict]
-
-employees = instantiate_employees()
-shift = Shift(employees, denominations)
+employees = EmployeeDataController.instantiate_employees()
+shift = ShiftDataController(employees)
 
 @bp.before_app_request
 def before_request():
@@ -51,30 +35,33 @@ def before_request():
 def redirect_url(default='auth.login'):
     return request.args.get('next') or request.referrer or url_for(default)
 
+def stringify_date(date: datetime):
+    return date.strftime('%A %B %d %Y')
+
 
 @bp.route('/', methods=['GET', "POST'"])
 @bp.route('/index', methods=['GET', 'POST'])
 # @login_required
 def start_report():
     @copy_current_request_context
-    def analyze_hours(working_shift: Shift, req_form: request.form):
+    def analyze_hours(working_shift: ShiftDataController, req_form: request.form):
         for target_emp in shift.staff:
 
             target_emp.shift_hours = float(req_form[target_emp.first_name + '-hours'])
-            shift.shift_hours += target_emp.shift_hours
+            shift._shift_hours += target_emp.shift_hours
 
-            if target_emp.role == "SUPPORT":
+            if target_emp.tip_role == "SUPPORT":
                 target_emp._tip_hours = Decimal(target_emp.shift_hours * 0.65).quantize(Decimal('.01'), rounding=ROUND_HALF_UP)
                 working_shift.tip_hours += target_emp.tip_hours
 
-            elif target_emp.role == "SERVICE":
+            elif target_emp.tip_role == "SERVICE":
                 target_emp._tip_hours = target_emp.shift_hours
                 working_shift.tip_hours += target_emp.tip_hours
 
         return True
 
     @copy_current_request_context
-    def get_cash_subtotal(working_shift: Shift, req_form: request.form) -> float:
+    def get_cash_subtotal(working_shift: ShiftDataController, req_form: request.form) -> float:
         cash_subtotal = 0.00
 
         for denom in working_shift.cash_subtotals:
@@ -84,19 +71,18 @@ def start_report():
         shift.cash_tip_pool = cash_subtotal
         return cash_subtotal
 
-    def get_tip_wage(total_tip_hours: float, cash_total: float) -> float:
-        return Decimal(cash_total / total_tip_hours).quantize(Decimal('.01'), rounding=ROUND_HALF_UP)
+    def get_tip_wage(shift_tip_hours: float, cash_total: float) -> float:
+        return float(Decimal(cash_total / shift_tip_hours).quantize(Decimal('.01'), rounding=ROUND_HALF_UP))
 
-    def get_emp_tips(shift_staff: [Employee], tip_wage: float):
+    def get_emp_tips(shift_staff: [EmployeeDataController], tip_wage: float):
         for employee in shift_staff:
-            employee._cash_tips = Decimal(Decimal(employee.tip_hours) * Decimal(tip_wage)).quantize(Decimal('.01'), rounding=ROUND_HALF_UP)
+            employee._cash_tips = float(Decimal(Decimal(employee.tip_hours) * Decimal(tip_wage)).quantize(Decimal('.01'), rounding=ROUND_HALF_UP))
 
-    def stringify_date(date: datetime):
-        return date.strftime('%A %B %d %Y')
+
 
     if request.method == 'GET':
         return render_template('start_report.html',
-                               denominations=denominations,
+                               denominations=shift.cash_subtotals,
                                employees=employees,
                                float_range=shift_hours_range)
 
@@ -112,26 +98,26 @@ def start_report():
             if hours > 0:
                 role_tag_id = emp.first_name + '-radio'
                 role_radio_value = rf[role_tag_id]
-                emp.role = role_radio_value
+                emp.tip_role = role_radio_value
 
         if not (tip_hours > 0):
             error = "Form Submitted with Zero Tip Hours"
             return render_template('start_report.html',
-                                   denominations=denominations,
+                                   denominations=shift.cash_subtotals,
                                    employees=employees,
                                    float_range=shift_hours_range,
                                    error=error)
 
         analyze_hours(shift, rf)
         total_cash = get_cash_subtotal(shift, rf)
-        shift._cash_tip_wage = get_tip_wage(shift.tip_hours, total_cash)
+        shift._cash_tip_wage = get_tip_wage(tip_hours, total_cash)
         get_emp_tips(shift.staff, shift.cash_tip_wage)
-        shift._cc_tip_pool = float(rf['report-tips'])
+        shift._cred_tip_pool = float(rf['report-tips'])
 
-        if shift.cc_tip_pool > 0.00:
-            shift.cc_tip_wage = Decimal(shift.cc_tip_pool / shift.tip_hours).quantize(Decimal('.01'), rounding=ROUND_HALF_UP)
+        if shift.cred_tip_pool > 0.00:
+            shift.cred_tip_wage = float(Decimal(shift.cred_tip_pool / shift.tip_hours).quantize(Decimal('.01'), rounding=ROUND_HALF_UP))
             for emp in shift.staff:
-                emp._cc_tips = Decimal(Decimal(shift.cc_tip_wage) * Decimal(emp.tip_hours)).quantize(Decimal('.01'), rounding=ROUND_HALF_UP)
+                emp._cred_tips = float(Decimal(Decimal(shift.cred_tip_wage) * Decimal(emp.tip_hours)).quantize(Decimal('.01'), rounding=ROUND_HALF_UP))
 
         today = datetime.today()
         if int(datetime.now().strftime('%H')) >= 17:
@@ -141,8 +127,39 @@ def start_report():
             yesterday = today - timedelta(days=1)
             shift._start_date = yesterday
 
+
+
+        shift_data = {'shift_hours': str(shift.shift_hours),
+                            'tip_hours': str(shift.tip_hours),
+                            'cash_tip_wage': str(shift.cash_tip_wage),
+                            'cred_tip_wage': str(shift.cred_tip_wage),
+                            'cash_tip_pool': str(shift.cash_tip_pool),
+                            'cred_tip_pool': str(shift.cred_tip_pool),
+                            'start_date': stringify_date(shift.start_date)}
+        print('shift_data = ' + str(shift_data))
+        print('shift_data_type = ' + str(type(shift_data)))
+        session['shift'] = jsonify(shift_data)
+
+        for emp in employees:
+            emp_data = {
+                'tip_hours': str(emp.tip_hours),
+                'shift_hours': str(emp.shift_hours),
+                'tip_role': str(emp.tip_role),
+                'cred_tips': str(emp.cred_tips),
+                'cash_tips': str(emp.cash_tips),
+                'first_name': str(emp.first_name),
+                'last_name': str(emp.last_name)
+            }
+            print('emp_date = ' + str(emp_data))
+            session_title = emp.first_name + ' ' + emp.last_name
+            session[session_title] = jsonify(emp_data)
+
+
+        subtotals_data = {x: shift.cash_subtotals[x] for x in ('0.25', '1.00', '5.00', '10.00', '20.00', '50.00', '100.00')}
+        session['subtotals'] = jsonify(subtotals_data)
+
         return render_template('view_report.html',
-                               denominations=denominations,
+                               denominations=shift.cash_subtotals,
                                employees=shift.staff,
                                float_range=shift_hours_range,
                                shift=shift,
@@ -158,8 +175,8 @@ def register_user():
 def list_of_emp(emp_list) -> bool:
     if isinstance(emp_list, list):
         for emp in emp_list:
-            if not isinstance(emp, Employee):
-                print('isinstance(emp, Employee) = ' + str(isinstance(emp, Employee)))
+            if not isinstance(emp, EmployeeDataController):
+                print('isinstance(emp, Employee) = ' + str(isinstance(emp, EmployeeDataController)))
                 return False
         return True
     return False
@@ -168,29 +185,57 @@ def list_of_emp(emp_list) -> bool:
 @bp.route('/submit_report', methods=['POST'])
 # @login_required
 def submit_report():
+    session_shift = json.loads(session['shift'])
+    print('shift: ')
+    print(session_shift)
     if request.method == 'POST':
+        session_shift = session['shift']
+        session_shift = json.loads(session_shift)
         print('isinstance(employees, {Employee} = ' + str(list_of_emp(employees)))
-        print('isinstance(shift, Shift) = ' + str(isinstance(shift, Shift)))
-        if list_of_emp(employees) and isinstance(shift, Shift):
+        print('isinstance(shift, Shift) = ' + str(isinstance(session_shift, ShiftDataController)))
+        if list_of_emp(employees) and isinstance(session_shift, ShiftDataController):
             print('Correct types for shift and employees passed.')
-            g_sheet.insert_new_row_for_shift(shift)
+            print('session_shift.start_date on next line')
+            print(str(session_shift.start_date))
+            print('after start_date print')
+            g_sheet.insert_new_row_for_shift(session_shift)
             # CHECK if prior subtotal rows have data
-            g_sheet.check_previous_subtotals(shift.start_date)
+            g_sheet.check_previous_subtotals(session_shift.start_date)
             # CHECK if start_date is last day in period
-            g_sheet.end_of_period_check(shift.start_date)
-            sr = shift.build_shift_report()
+            g_sheet.end_of_period_check(session_shift.start_date)
 
-            db_shift_report = db.ShiftReport(cash_subtotals=sr.cash_subtotals,
-                                          cash_tip_pool=sr.cash_tip_pool,
-                                          cash_tip_wage= sr.cash_tip_wage,
-                                          cc_tip_pool=sr.cc_tip_pool,
-                                          cc_tip_wage=sr.cc_tip_wage,
-                                          start_date=sr.start_date,
-                                          total_shift_hours=sr.total_shift_hours,
-                                          total_tip_hours=sr.total_tip_hours,
-                                          staff_report=sr)
+            print('session_shift.cash_tip_wage is float = ' + str(isinstance(session_shift.cash_tip_wage, float)))
+            print('session_shift.cash_tip_wage is Decimal = ' + str(isinstance(session_shift.cash_tip_wage, Decimal)))
+            print('Decimal value = ' + str(session_shift.cash_tip_wage))
+            print('Cast Decimal to Float value = ' + str(float(session_shift.cash_tip_wage)))
 
-            db.session.add(db_shift_report)
+            new_shift_report = models.ShiftReport()
+            new_shift_report.populate_fields(session_shift)
+            db.session.add(new_shift_report)
+            new_shift_id = new_shift_report.id
+            print('new_shift_id = ' + str(new_shift_id))
+
+            new_cash_subtotals = models.CashSubtotals()
+            new_cash_subtotals.populate_fields(session_shift, new_shift_id)
+            db.session.add(new_cash_subtotals)
+            print('passed db.session.add(new_cash_subtotals) ln 179: routes.py')
+
+
+            for employee_report in session_shift.staff:
+                print('beginning for employee_report in session_shift.staff loop')
+                query_name = employee_report.first_name + ' ' + employee_report.last_name
+                print('query_name = ' + query_name)
+                target_employee = models.Employee.query.filter_by(full_name=query_name).first()
+                print('target_employee first/last name = ' + target_employee.first_name + ' ' + target_employee.last_name)
+                target_employee_id = target_employee.id
+                print('target_employee_id = ' + str(target_employee_id))
+                employee_id = models.Employee.query.get(full_name=query_name).id
+                new_employee_report = models.EmployeeReport()
+                new_employee_report.populate_fields(employee=employee_report, shift_id=new_shift_id, employee_id=employee_id)
+
+
+
+
             db.session.commit()
 
 
@@ -222,7 +267,7 @@ def submit_report():
             #     print('Failure during sheet interaction')
             #     print(Exception.with_traceback(), Exception.__str__())
 
-            return render_template('report_archived_confirmation.html', daily_report=sr)
+            return render_template('report_archived_confirmation.html', daily_report=session_shift)
 
 
 @bp.route('/privacy_policy', methods=['GET'])

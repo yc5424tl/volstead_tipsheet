@@ -3,8 +3,8 @@
 import gspread
 import simplejson
 
-from app.main.employee import Employee
-from app.main.shift import Shift
+from app.main.employee_data_controller import EmployeeDataController
+from app.main.shift_data_controller import ShiftDataController
 from datetime import datetime
 from oauth2client.service_account import ServiceAccountCredentials
 
@@ -32,11 +32,17 @@ def get_row_by_timedelta(timedelta_days: int) -> int:
 
 
 def get_timedelta_days(target_date: datetime) -> int:
+    print('in get_timedelta_days')
+    print('year = ' + str(datetime(year=int(target_date.strftime('%Y')))))
+    print('month = ' + str(datetime(month=int(target_date.strftime('%m')))))
+    print('day = ' + str(datetime(day=int(target_date.strftime('%d')))))
     formatted_date = datetime(year=int(target_date.strftime('%Y')),
                               month=int(target_date.strftime('%m')),
                               day=int(target_date.strftime('%d')))
     timedelta_day_gap = formatted_date - ref_date
+    print('timedelta_day_gap = ' + str(timedelta_day_gap))
     numeric_day_gap = timedelta_day_gap.days
+    print('numeric_day_gap = ' + str(numeric_day_gap) + ' is type ' + str(type(numeric_day_gap)))
     return numeric_day_gap
 
 
@@ -46,10 +52,10 @@ def get_first_match(query: str) -> gspread.Cell or None:
 
 
 
-def insert_shift_for_emp(shift_row: int, employee: Employee) -> bool:
-    emp_col = get_first_match(employee._full_name.casefold()).col
+def insert_shift_for_emp(shift_row: int, employee: EmployeeDataController) -> bool:
+    emp_col = get_first_match(employee.full_name.casefold()).col
     if emp_col:
-        tips_sheet.update_cell(row=shift_row, col=emp_col, value=simplejson.dumps(employee.cc_tips, use_decimal=True))
+        tips_sheet.update_cell(row=shift_row, col=emp_col, value=simplejson.dumps(employee.cred_tips, use_decimal=True))
         return True
     return False
 
@@ -73,10 +79,12 @@ def insert_date_for_shift(shift_row: int, shift_date: datetime) -> bool:
 
 
 
-def insert_new_row_for_shift(shift: Shift) -> bool:
+def insert_new_row_for_shift(shift: ShiftDataController) -> bool:
+    print('shift.start_date = ' + str(shift.start_date))
     shift_timedelta = get_timedelta_days(shift.start_date)
+    print('shift_timedelta = ' + str(shift_timedelta))
     shift_row = get_row_by_timedelta(shift_timedelta)
-    insert_pool = insert_shift_pool(shift_row, shift.cc_tip_pool)
+    insert_pool = insert_shift_pool(shift_row, shift.cred_tip_pool)
     insert_date = insert_date_for_shift(shift_row, shift.start_date)
     if insert_pool and insert_date:
         for emp in shift.staff:
@@ -104,12 +112,17 @@ def insert_subtotals_row(target_row: int) -> bool:
 
 def check_previous_subtotals(shift_date: datetime):
     timedelta_d = get_timedelta_days(shift_date)
+    print('Timedelta.Days = ' + str(timedelta_d))
     current_per_index = timedelta_d % 14
+    print(str('Current Period Index (1-13 and 14(0)) = ' + str(current_per_index)))
     completed_periods = timedelta_d // 16
+    print('Completed Periods = ' + str(completed_periods))
     pool_col = get_first_match('Total Pool').col
+    print('Total Pool Column = ' + str(pool_col))
     if completed_periods >= 1:
         for period in range(1, completed_periods):
-            subtotal_row = (period * 16) + 1 # + TITLE_ROW_OFFSET
+            subtotal_row = period * 16 # + TITLE_ROW_OFFSET
+            print('Row for subtotal = ' + str(subtotal_row))
             period_pool_subtotal = tips_sheet.cell(row=subtotal_row, col=pool_col).value
             print('Period Pool Subtotal = ' + str(period_pool_subtotal))
             if period_pool_subtotal is None:

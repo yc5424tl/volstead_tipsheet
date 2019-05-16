@@ -15,16 +15,16 @@
                     <p>{{ k }} : {{ daily_report.cash_subtotals[k] }}</p>
                 {% endfor %}
             </div>
-            <p>Shift Hours: {{ daily_report.total_shift_hours }}</p>
-            <p>Tip Hours: {{ daily_report.total_tip_hours }}</p>
+            <p>ShiftDataController Hours: {{ daily_report.shift_hours }}</p>
+            <p>Tip Hours: {{ daily_report.tip_hours }}</p>
             <p>Cash Tip Wage: {{ daily_report.cash_tip_wage }}</p>
-            <p>CC Tip Wage: {{ daily_report.cc_tip_wage }}</p>
+            <p>CC Tip Wage: {{ daily_report.cred_tip_wage }}</p>
             <p>Start Date: {{ daily_report.start_date }}</p>
             <p>Cash Tip Pool: {{ daily_report.cash_tip_pool }}</p>
-            <p>CC Tip Pool: {{ daily_report.cc_tip_pool }}</p>
+            <p>CC Tip Pool: {{ daily_report.cred_tip_pool }}</p>
             <div>
                 <h3>SHIFT SUMMARIES</h3>
-                {% for emp in daily_report.staff_report %}
+                {% for emp in daily_report.staff %}
                     <p>{{ emp.shift_summary }}</p>
                 {% endfor %}
             </div>

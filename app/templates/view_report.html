@@ -32,11 +32,11 @@
                     </div>
 
                     <div class="col report-details">
-                        <h2 class="report-details-h2">CC TIP POOL: {{ shift.cc_tip_pool }}</h2>
+                        <h2 class="report-details-h2">CC TIP POOL: {{ shift.cred_tip_pool }}</h2>
                     </div>
 
                     <div class="col report-details">
-                        <h2 class="report-details-h2">CC TIP WAGE: {{ shift.cc_tip_wage|round(2) }}</h2>
+                        <h2 class="report-details-h2">CC TIP WAGE: {{ shift.cred_tip_wage|round(2) }}</h2>
                     </div>
 
                     <div class="col-12" id="report-tips">
@@ -58,13 +58,13 @@
                                     <tr>
                                         <th scope="row">{{ emp.first_name }}</th>
                                         <td>{{ emp.shift_hours }}</td>
-                                        {% if emp.role == 'SERVICE' %}
+                                        {% if emp.tip_role == 'SERVICE' %}
                                             <td>Service (x1.00)</td>
-                                        {% elif emp.role == 'SUPPORT' %}
+                                        {% elif emp.tip_role == 'SUPPORT' %}
                                             <td>Support (x0.65)</td>
                                         {% endif %}
                                         <td>{{ emp.tip_hours|round(2) }}</td>
-                                        <td>{{ emp.cc_tips|round(2) }}</td>
+                                        <td>{{ emp.cred_tips|round(2) }}</td>
                                     </tr>
                                 {% endif %}
                             {% endfor %}
@@ -89,9 +89,9 @@
                                     <tr>
                                         <th scope="row">{{ emp.first_name }}</th>
                                         <td>{{ emp.shift_hours }}</td>
-                                         {% if emp.role == 'SERVICE' %}
+                                         {% if emp.tip_role == 'SERVICE' %}
                                             <td>Service (x1.00)</td>
-                                        {% elif emp.role == 'SUPPORT' %}
+                                        {% elif emp.tip_role == 'SUPPORT' %}
                                             <td>Support (x0.65)</td>
                                         {% endif %}
                                         <td>{{ emp.tip_hours|round(2) }}</td>

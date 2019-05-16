@@ -49,12 +49,12 @@ Show Date on Site
 
 CLASS
 
-Shift
+ShiftDataController
     Date
-    Employee List
+    EmployeeDataController List
     Tip Hours
 
-Employee
+EmployeeDataController
      Name
      Position Type
      In-Time
