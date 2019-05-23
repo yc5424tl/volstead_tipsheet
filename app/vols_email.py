@@ -1,24 +1,7 @@
-
-# (venv) $ python -m smtpd -n -c DebuggingServer localhost:8025
-# (venv) $ export MAIL_SERVER=localhost
-# (venv) $ export MAIL_PORT=8025
-# (venv) $ export MAIL_SERVER=smtp.googlemail.com
-# (venv) $ export MAIL_PORT=587
-# (venv) $ export MAIL_USE_TLS=1
-# (venv) $ export MAIL_USERNAME=<your-gmail-username>
-# (venv) $ export MAIL_PASSWORD=<your-gmail-password>
-
-
-
-
-
-
 # coding=utf-8
-
 from threading import Thread
 from flask import current_app
 from flask_mail import Message
-
 from app import mail
 from flask import render_template
 from config import Config
@@ -36,12 +19,10 @@ def send_async_email(target_app, msg):
     with target_app.app_context():
         mail.send(msg)
 
-
 def send_email(subject, sender, recipients, text_body, html_body):
     msg = Message(subject, sender=sender, recipients=recipients)
     msg.body = text_body
     msg.html = html_body
-    # mail.send(msg)
     Thread(target=send_async_email, args=(current_app, msg)).start()
 
 def send_mail(subject, sender, recipients, text_body, html_body, attachments=None, sync=False):

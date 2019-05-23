@@ -53,7 +53,7 @@
                                     <th class="col col-th" scope="col">TOTAL</th>
                                 </tr>
                             </thead>
-                              {% for emp in employees %}
+                              {% for emp in employees|sort(attribute='first_name') %}
                                 {% if emp.tip_hours > 0 %}
                                     <tr>
                                         <th scope="row">{{ emp.first_name }}</th>
@@ -84,7 +84,7 @@
                                     <th class="col col-th" scope="col">TOTAL</th>
                                 </tr>
                             </thead>
-                              {% for emp in employees %}
+                              {% for emp in employees|sort(attribute='first_name') %}
                                 {% if emp.tip_hours > 0 %}
                                     <tr>
                                         <th scope="row">{{ emp.first_name }}</th>

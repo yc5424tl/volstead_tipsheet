@@ -1,3 +1,4 @@
+
 {% extends 'layout.html' %}
 {% import 'bootstrap/wtf.html' as wtf %}
 
@@ -16,17 +17,35 @@
     <div class="row">
         <div class="col"></div>
         <div class="col-8">
-            {{ wtf.quick_form(form, extra_classes="login-form") }}
+{#            <form method="post" action="">#}
+{#                {{ form.csrf_token }}#}
+{#                {{ form.hidden_tag() }}#}
+{#                <div class="form-group">#}
+{#                    <label class="col-sm-12" for="username">{{ form.username.label }}#}
+{#                    </label>#}
+{#                    {{ form.username() }}#}
+{#                </div>#}
+{#                <div class="form-group">#}
+{#                    <label class="col-sm-12" for="password">{{ form.password.label }}#}
+{#                    </label>#}
+{#                    {{ form.password() }}#}
+{#                </div>#}
+{#                <div class="form-group">#}
+{#                    {{ form.submit() }}#}
+{#                </div>#}
+{#                {{ form.hidden_tag() }}#}
+{#            </form>#}
+            {{ wtf.quick_form(form, extra_classes="login-form")}}
         </div>
         <div class="col"></div>
     </div>
-{#    <br>#}
+    <br>
     <div class="row">
-{#        <div class="col"></div>#}
-{#        <div class="col-5">#}
-{#            <p class="login-footer">{{  _('New User?') }} <a href="{{ url_for('main.register_user') }}">{{ _('Click to Register') }}</a></p>#}
-{#        </div>#}
-{##}
+        <div class="col"></div>
+        <div class="col-5">
+            <p class="login-footer">{{  _('New User?') }} <a href="{{ url_for('main.register_user') }}">{{ _('Click to Register') }}</a></p>
+        </div>
+
 {#        <div class="col-5">#}
 {#            <p class="login-footer">#}
 {#                {{ _('Forgot Your Password?') }}#}

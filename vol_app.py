@@ -1,14 +1,13 @@
 # coding=utf-8
-
 from app import create_app
 
 app = create_app()
+app.app_context().push()
 
 from app.models import User, ShiftReport, Employee, EmployeeReport, UserRoles, Role
 
 @app.shell_context_processor
 def make_shell_context():
-
     return {'db': app.db,
             'User': User,
             'ShiftReport': ShiftReport,

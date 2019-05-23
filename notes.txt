@@ -17,7 +17,6 @@ CONFIGURE GMAIL AS EMAIL SERVER
 
 
 
-
 Procfile.windows   web: python manage.py runserver 0.0.0.0:5000
 web: python app.py runserver
 web: gunicorn --bind 0.0.0.0:$PORT volsteads:app
@@ -31,21 +30,6 @@ Table One/Two
     Hourly Tip Wage
     Staff Tips
 
-
-Cash Entry by Denomination
-
- 100 =
-   50 =
-   20 =
-   10 =
-     5 =
-     1 =
-     Q =
-
-Grand Total
-
-
-Show Date on Site
 
 CLASS
 

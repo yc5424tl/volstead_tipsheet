@@ -1,6 +1,5 @@
 # coding=utf-8
 import json
-
 from app.main.employee_data_controller import EmployeeDataController
 from datetime import datetime
 
@@ -18,7 +17,6 @@ class ShiftDataController(object):
         self._cred_tip_wage = 0.00
         self._start_date = None
         self._cash_subtotals = denominations
-        # self._staff_reports = {}
 
     def get_cash_tip_pool(self):
         tip_pool = 0.00
@@ -75,7 +73,6 @@ class ShiftDataController(object):
 
     @start_date.setter
     def start_date(self, new_date: datetime):
-        # self._start_date = new_date.strftime('%A %B %d %Y')
         self._start_date = new_date
 
     @property

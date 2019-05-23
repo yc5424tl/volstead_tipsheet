@@ -161,6 +161,8 @@ venv371/
 ENV/
 env.bak/
 venv.bak/
+venv*/
+ven*/
 
 # Spyder project settings
 .spyderproject
@@ -215,3 +217,14 @@ $RECYCLE.BIN/
 /venv/
 /google-sheets/credentials.json
 /client_secret.json
+/.env
+.flaskenv
+app/errors/templates/
+migrations/README
+migrations/alembic.ini
+migrations/env.py
+migrations/script.py.mako
+migrations/versions/8c1412122663_.py
+new_models.txt
+serialize_shift
+volsteads_vault.db
