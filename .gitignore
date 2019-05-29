@@ -228,3 +228,5 @@ migrations/versions/8c1412122663_.py
 new_models.txt
 serialize_shift
 volsteads_vault.db
+/volsteads_vault.db
+/.flaskenv
