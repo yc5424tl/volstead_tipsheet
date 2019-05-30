@@ -41,7 +41,7 @@ class User(UserMixin, db.Model):
         self.password_hash = bcrypt.hashpw(password)
 
     def check_password(self, password):
-        return bcrypt.checkpw(self.password_hash.decode('utf-8'), password)
+        return bcrypt.checkpw(password.encode('utf-8'), self.password_hash)
 
     def avatar(self, size):
         digest = md5(self.email.lower().encode('utf-8')).hexdigest()

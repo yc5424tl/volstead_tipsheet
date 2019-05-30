@@ -4,12 +4,13 @@ from logging.handlers import SMTPHandler, RotatingFileHandler
 import os
 from flask import Flask
 
+
 # from flask_bcrypt import Bcrypt
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 from flask_login import LoginManager
 from flask_mail import Mail
-# from flask_bootstrap import Bootstrap
+from flask_bootstrap import Bootstrap
 from flask_babel import Babel, lazy_gettext as _1
 from config import Config
 
@@ -19,7 +20,7 @@ login = LoginManager()
 login.login_view = 'auth.login'
 login.login_message = _1('Authorized Users Must Log In To Access This Page')
 mail = Mail()
-# bootstrap = Bootstrap()
+bootstrap = Bootstrap()
 # bcrypt = Bcrypt()
 babel = Babel()
 

@@ -14,10 +14,15 @@ def login():
     form = LoginForm()
     if request.method == 'POST':
         remember = form.remember_me.data
-        user = User.query.filter_by(username=form.username.data)
+        print('remember = ' + str(remember) + ' type= ' + str(type(remember)))
+        user = User.query.filter_by(username=form.username.data).first()
+        print(user.username)
+        print(user.email)
+        print(str(form.password.data))
         if not user or not user.check_password(form.password.data):
             flash('Password/Username Incorrect')
             return redirect(url_for('auth.login', form=LoginForm))
+        print('logging in user')
         login_user(user, remember=remember)
         return redirect(url_for('main.start_report'))
 
@@ -32,7 +37,7 @@ def login():
 @bp.route('/logout')
 def logout():
     logout_user()
-    return redirect(url_for('login'))
+    return redirect(url_for('auth.login'))
 
 
 @bp.route('/reset_password_request', methods=['GET', 'POST'])

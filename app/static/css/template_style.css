@@ -381,3 +381,7 @@ and (-webkit-min-device-pixel-ratio: 2) {
         display: inherit;
     }
 }
+
+.nav-wrapper {
+    background: url('../img/marquee-Volstead.jpg') no-repeat scroll 0 0;
+}
