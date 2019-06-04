@@ -4,14 +4,14 @@ import string
 import gspread
 import os
 import simplejson
-from gspread import utils
+
 
 from vault.main.employee_data_controller import EmployeeDataController
 from vault.main.shift_data_controller import ShiftDataController
 from datetime import datetime
 from oauth2client.service_account import ServiceAccountCredentials
 from retrying import retry
-from collections import OrderedDict
+
 
 
 scope = ['https://spreadsheets.google.com/feeds',

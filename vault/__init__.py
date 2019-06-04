@@ -106,7 +106,6 @@ def create_app(config_class=Config):
 
     db.init_app(app)
     db.create_all()
-
     create_users()
 
     migrate.init_app(app, db)
