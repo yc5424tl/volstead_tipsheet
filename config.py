@@ -19,14 +19,7 @@ class Config(object):
     SESSION_COOKIE_DOMAIN = 'localhost.localdomain'
     SESSION_COOKIE_SECURE = False  # True will cause CSRF to fail.
 
-    DB_URI = os.environ.get('PROD_MONGODB')
-    DB_USER = urllib.parse.quote_plus(os.getenv('VOL_DB_USER'))
-    DB_PW = urllib.parse.quote_plus(os.getenv('VOL_DB_PW'))
-    DB_NAME = os.getenv('VOL_DB_NAME')
-    DB_PORT = os.getenv('VOL_DB_PORT')
-    DB_HOST = os.getenv('VOL_DB_PORT')
-
-    DEBUG = True
+    DEBUG = False
     TEMPLATES_AUTO_RELOAD = True
 
     MAIL_SERVER = os.environ.get('MAIL_SERVER')
