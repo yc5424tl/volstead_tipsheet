@@ -2,6 +2,7 @@
 import string
 
 import gspread
+import os
 import simplejson
 from gspread import utils
 
@@ -16,8 +17,8 @@ from collections import OrderedDict
 scope = ['https://spreadsheets.google.com/feeds',
          'https://www.googleapis.com/auth/spreadsheets',
          'https://www.googleapis.com/auth/drive']
-
-cred = ServiceAccountCredentials.from_json_keyfile_name('client_secret.json', scope)
+cred = ServiceAccountCredentials.from_json_keyfile_name(os.getenv("GOOGLE_APP_CREDS"), scope)
+# cred = ServiceAccountCredentials.from_json_keyfile_name('client_secret.json', scope)
 # cred = ServiceAccountCredentials.from_json(os.getenv('VOL_CLI_SEC'))
 client = gspread.authorize(cred)
 sheet = client.open('Copy of Tips').sheet1
