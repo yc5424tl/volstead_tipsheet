@@ -1,0 +1,101 @@
+
+{% extends 'layout.html' %}
+{% import 'bootstrap/wtf.html' as wtf %}
+
+
+{% block styles %}{{ super() }}{% endblock %}
+
+
+
+{% block page_content %}
+    <div class="row">
+
+        <div class="col-12"><h1 id="login-header">{{ _('Sign In') }}</h1></div>
+
+    </div>
+
+    <div class="row">
+        <div class="col"></div>
+        <div class="col-8">
+{#            <form method="post" action="">#}
+{#                {{ form.csrf_token }}#}
+{#                {{ form.hidden_tag() }}#}
+{#                <div class="form-group">#}
+{#                    <label class="col-sm-12" for="username">{{ form.username.label }}#}
+{#                    </label>#}
+{#                    {{ form.username() }}#}
+{#                </div>#}
+{#                <div class="form-group">#}
+{#                    <label class="col-sm-12" for="password">{{ form.password.label }}#}
+{#                    </label>#}
+{#                    {{ form.password() }}#}
+{#                </div>#}
+{#                <div class="form-group">#}
+{#                    {{ form.submit() }}#}
+{#                </div>#}
+{#                {{ form.hidden_tag() }}#}
+{#            </form>#}
+            {{ wtf.quick_form(form, extra_classes="login-form")}}
+        </div>
+        <div class="col"></div>
+    </div>
+    <br>
+    <div class="row">
+
+{#        <div class="col-3"></div>#}
+
+{#        <div class="col login-footer">#}
+{#            <p class="login-footer">{{  _('New User?') }}#}
+{#                <a href="{{ url_for('main.register_user') }}">#}
+{#                    {{ _('Click to Register') }}#}
+{#                </a>#}
+{#            </p>#}
+{#        </div>#}
+
+{#        <div class="col"></div>#}
+
+{#        <div class="col-5">#}
+{#            <p class="login-footer">#}
+{#                {{ _('Forgot Your Password?') }}#}
+{#                <a href="{{ url_for('auth.reset_password_request') }}">{{ _('Click to Reset') }}</a>#}
+{#            </p>#}
+{#        </div>#}
+        <div class="col-12 text-center login-footer">
+{#            <div class="login-footer-span">#}
+{#                {{  _('New User?') }}#}
+{#                <a href="{{ url_for('main.register_user') }}">#}
+{#                    {{ _('Click to Register') }}#}
+{#                </a>#}
+{#            </div>#}
+{#            <div class="login-footer-span">#}
+{#                {{ _('Forgot Your Password?') }}#}
+{#                <a href="{{ url_for('auth.reset_password_request') }}">#}
+{#                    {{ _('Click to Reset') }}#}
+{#                </a>#}
+{#            </div>#}
+
+              <p class="login-footer">
+                {{ _('Forgot Your Password?') }}
+                <a href="{{ url_for('auth.reset_password_request') }}">
+                    {{ _('Click to Reset') }}
+                </a>
+            </p>
+        </div>
+
+{#        <div class="col-3"></div>#}
+    </div>
+
+
+
+{#    <p>Add New User</p>#}
+{#    <p>#}
+{#        <a href="{{ url_for('auth.reset_password_request') }}">Reset Password</a>#}
+{#    </p>#}
+
+
+
+{% endblock %}
+
+
+
+{% block scripts %}{% endblock %}

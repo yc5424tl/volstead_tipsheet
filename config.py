@@ -6,7 +6,8 @@ basedir = os.path.abspath(os.path.dirname(__file__))
 class Config(object):
     SECRET_KEY = os.environ.get('VOLSTEADS_SECRET_KEY') or 'eyes-of-the-night-king'
     SERVER_NAME = 'volsteads.vault:5000'
-    SQLALCHEMY_DATABASE_URI = os.environ.get('VOL_SQL_DB') or 'sqlite:///' + os.path.join(basedir, 'volsteads_vault.db')
+    # SQLALCHEMY_DATABASE_URI = os.environ.get('VOL_SQL_DB') or 'sqlite:///' + os.path.join(basedir, 'volsteads_vault.db')
+    SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URL')
     # SQLALCHEMY_TRACK_MODIFICATIONS = True
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     WTF_CSRF_CHECK_DEFAULT = False
@@ -16,7 +17,7 @@ class Config(object):
 
     SESSION_TYPE = 'filesystem'
     SESSION_COOKIE_DOMAIN = 'localhost.localdomain'
-    SESSION_COOKIE_SECURE = False
+    SESSION_COOKIE_SECURE = False  # True will cause CSRF to fail.
 
     DB_URI = os.environ.get('PROD_MONGODB')
     DB_USER = urllib.parse.quote_plus(os.getenv('VOL_DB_USER'))
@@ -30,7 +31,8 @@ class Config(object):
 
     MAIL_SERVER = os.environ.get('MAIL_SERVER')
     MAIL_PORT = int(os.environ.get('MAIL_PORT') or 25)
-    MAIL_USE_TLS = os.environ.get('MAIL_USE_TLS') is not None
+    MAIL_USE_SSL = os.environ.get('MAIL_USE_SSL')
+    MAIL_USE_TLS = os.environ.get('MAIL_USE_TLS')
     MAIL_USERNAME = os.environ.get('MAIL_USERNAME')
     MAIL_PASSWORD = os.environ.get('MAIL_PASSWORD')
     MAIL_DEFAULT_SENDER = os.environ.get('MAIL_DEFAULT_SENDER')
@@ -41,6 +43,6 @@ class Config(object):
     USER_EMAIL_SENDER_NAME = os.environ.get('USER_EMAIL_SENDER_NAME')
     USER_EMAIL_SENDER_EMAIL = os.environ.get('USER_EMAIL_SENDER_EMAIL')
 
-    ADMINS = ['jkboline@gmail.com']
+    ADMINS = ['volsteads.vault@gmail.com']
 
     LOG_TO_STDOUT = os.environ.get('LOG_TO_STDOUT')

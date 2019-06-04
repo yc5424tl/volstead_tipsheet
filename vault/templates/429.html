@@ -1,0 +1,7 @@
+{% extends 'layout.html' %}
+
+{% block page_content %}
+    <h1>Too Many Requests</h1>
+    <h4>Please try again after {{ retry_after }}.</h4>
+    <p><a href="{{ url_for('main.start_report') }}">Back</a></p>
+{% endblock %}

@@ -68,3 +68,21 @@ EmployeeDataController
             - TIP TOTAL         (emp.cc_tips)
 
 
+
+
+
+INSERT INTO users(username, password_hash, email, email_confirmed_at, employee_id)
+VALUES
+    ("marleygirl22@gmail.com", "$2b$12$p8CBGnsaDTx8f1JknuvQAuxMV9IZ6Z5AA.FnabRJoj8uNTT8kPdBC", "marleygirl22@gmail.com", "2019-06-03 23:52:44.453992", 9),
+    ("jkboline@gmail.com", "$2b$12$MpqYBXT7UZ28YIORfTbZtOBDtk/x0cguWyyzhqtRRHac75n4QUeXq", "jkboline@gmail.com", "2019-06-03 23:52:44.453992", 2),
+    ("ina.dale55408@gmail.com", "$2b$12$FdMoHvDkst8v/EGynzlGkugHD/5iCOZCXU3fRdN2f.0FuhtXbOR76", "ina.dale55408@gmail.com", "2019-06-03 23:52:44.453992", 4),
+    ("harrisonbryc7@gmail.com", "$2b$12$ElKNez/U7NjT8U3J2wgKrOippkpK23D7s0dgb41.ytiiqSwFMx8h6", "harrisonbryc7@gmail.com", "2019-06-03 23:52:44.453992", 12),
+    ("egjohnson9@gmail.com", "$2b$12$LQ1q9OUgbbwygrVURmSjL.j4D8bFjjqbw6zghN2nDu0DxWEMk0.3m", "egjohnson9@gmail.com", "2019-06-03 23:52:44.453992", 5),
+    ("lundgren.heidi@gmail.com", "$2b$12$HH.VMB5ea.pbvu2meaQrteNwshYBri3fWS0RSyso0865YD0dNgdMO", "lundgren.heidi@gmail.com", "2019-06-03 23:52:44.453992", 7),
+    ("rebeccamogck@gmail.com", "$2b$12$bGzYD8PRucV75BQ7Z2H8r.z4mNfj5DuZdblJgJcxZSdhrd7AhFo2S", "rebeccamogck@gmail.com", "2019-06-03 23:52:44.453992", 11),
+    ("padamlantz@gmail.com", "$2b$12$21COpHc5rZnxNZjwfl9GvOgEbhyY.qnTxpobL3gIFCYOmCDcyS30u", "padamlantz@gmail.com", "2019-06-03 23:52:44.453992", 10),
+    ("jeff@volsteads.com", "$2b$12$GBU0Q3j1aLoyMOvfNNx1Hu7wt1yLIwaEo16lTkXQXPfMVbTOfssEa", "jeff@volsteads.com", "2019-06-03 23:52:44.453992"),
+    ("bar@volsteads.com", "$2b$12$dDdKa4LI2L/BRtPB7EeyuePir8tGrDVauyYBbE3FE/xK0FFLFM8FC", "bar@volsteads.com", "2019-06-03 23:52:44.453992", 3),
+    ("jjsong@gmail.com", "$2b$12$bq/qjXufmwkuwUftO0cWI.hWkd8yu9CaniImX5VApS/oUYaX4UciO", "jjsong@gmail.com", "2019-06-03 23:52:44.453992", 6),
+    ("cthompson369@outlook.com", "$2b$12$kEvCAFaWoI7sIlcNfWz.ZOL0tjJAiemsbyhAtqjxMfK1Afjo5WEEy", "cthompson369@outlook.com", "2019-06-03 23:52:44.453992", 8),
+    ("natalie.erin.goodwin@gmail.com", "$2b$12$2fz/c23nBjO7stReRNdwFeD4iRfFMZKxtwMiXnfwWjXB.7uk5P.gq", "natalie.erin.goodwin@gmail.com", "2019-06-03 23:52:44.453992", 13)
