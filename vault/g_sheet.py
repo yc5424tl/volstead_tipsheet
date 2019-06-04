@@ -1,4 +1,5 @@
 # coding=utf-8
+import json
 import string
 
 import gspread
@@ -17,10 +18,15 @@ from retrying import retry
 scope = ['https://spreadsheets.google.com/feeds',
          'https://www.googleapis.com/auth/spreadsheets',
          'https://www.googleapis.com/auth/drive']
-cred = ServiceAccountCredentials.from_json_keyfile_name(os.getenv("GOOGLE_APP_CREDS"), scope)
+json_cred = os.getenv('GOOGLE_APP_CREDS')
+cred_dict = json.loads(json_cred)
+cred_dict['private_key'] = cred_dict['private_key'].replace("\\\\n", "\n")
+creds = ServiceAccountCredentials.from_json_keyfile_dict(cred_dict, scope)
+client = gspread.authorize(creds)
+cred = ServiceAccountCredentials.from_json(os.getenv("GOOGLE_APP_CREDS"), scope)
 # cred = ServiceAccountCredentials.from_json_keyfile_name('client_secret.json', scope)
 # cred = ServiceAccountCredentials.from_json(os.getenv('VOL_CLI_SEC'))
-client = gspread.authorize(cred)
+# client = gspread.authorize(cred)
 sheet = client.open('Copy of Tips').sheet1
 tips_sheet = sheet.spreadsheet.get_worksheet(1)
 
