@@ -1,1 +1,1 @@
-web: flask db upgrade; gunicorn vault:app
+web: flask db upgrade; gunicorn vol_app.py:app
