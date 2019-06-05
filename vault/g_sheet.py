@@ -33,6 +33,15 @@ if 'HEROKU_ENV' in os.environ:
     # service_account_info = json.loads(json.dumps(credentials_raw))
     # credentials = service_account.Credentials.from_service_account_info(json.loads(service_account_info))
     credentials = service_account.Credentials.from_service_account_info(credentials_raw)
+    with open('client_secret.json', 'w') as json_cred_file:
+        json_cred_file.write(credentials_raw)
+
+    print('tyring to open file')
+
+    with open('client_secret.json', 'r') as json_cred_file:
+        print(json_cred_file.read())
+
+    credentials = ServiceAccountCredentials.from_json_keyfile_name('client_secret.json', scope)
 
 else:
     credentials = ServiceAccountCredentials.from_json_keyfile_name('client_secret.json', scope)
