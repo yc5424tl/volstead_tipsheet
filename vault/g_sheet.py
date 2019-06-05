@@ -57,7 +57,8 @@ if 'HEROKU_ENV' in os.environ:
     # tips_sheet = sheet.spreadsheet.get_worksheet(1)
     print('in heroku env')
     creds = json.loads(os.environ.get('GOOGLE_APPLICATION_CREDENTIALS'))
-    print('creds')
+    print('creds ->')
+    print(creds)
     with open('gcreds.json', 'w') as json_file:
         json.dump(creds, json_file)
     print('next line will print file contents?!')
@@ -74,6 +75,7 @@ if 'HEROKU_ENV' in os.environ:
     tips_sheet = sheet.spreadsheet.get_worksheet(1)
 
 else:
+    print('not in heroku env')
     credentials = ServiceAccountCredentials.from_json_keyfile_name('client_secret.json', scope)
     client = gspread.authorize(credentials)
     sheet = client.open('Copy of Tips').sheet1
