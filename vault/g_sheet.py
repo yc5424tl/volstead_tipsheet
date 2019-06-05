@@ -5,7 +5,7 @@ import string
 import gspread
 import os
 import simplejson
-
+from flask import current_app
 
 from vault.main.employee_data_controller import EmployeeDataController
 from vault.main.shift_data_controller import ShiftDataController
@@ -15,7 +15,7 @@ from oauth2client.service_account import ServiceAccountCredentials
 from google.oauth2 import service_account
 from retrying import retry
 
-from vol_app import app
+
 
 scope = ['https://spreadsheets.google.com/feeds',
          'https://www.googleapis.com/auth/spreadsheets',
@@ -23,10 +23,10 @@ scope = ['https://spreadsheets.google.com/feeds',
 
 credentials = None
 if 'HEROKU_ENV' in os.environ:
-    app.logger('os.environ.get(\'GOOGLE_APPLICATION_CREDENTIALS\')')
-    app.logger(str(os.environ.get('GOOGLE_APPLICATION_CREDENTIALS')))
-    app.logger('GOOGLE_APPLICATION_CREDENTIALS ---- TYPE ===> ' + str(type(os.environ.get('GOOGLE_APPLICATION_CREDENTIALS'))))
-    app.logger('json.loads(GOOGLE_APPLICATION_CREDENTIALS) --- TYPE ===>')
+    current_app.logger('os.environ.get(\'GOOGLE_APPLICATION_CREDENTIALS\')')
+    current_app.logger(str(os.environ.get('GOOGLE_APPLICATION_CREDENTIALS')))
+    current_app.logger('GOOGLE_APPLICATION_CREDENTIALS ---- TYPE ===> ' + str(type(os.environ.get('GOOGLE_APPLICATION_CREDENTIALS'))))
+    current_app.logger('json.loads(GOOGLE_APPLICATION_CREDENTIALS) --- TYPE ===>')
 
     credentials_raw = os.environ.get('GOOGLE_APPLICATION_CREDENTIALS')
     print('credentials raw = ' + credentials_raw)
