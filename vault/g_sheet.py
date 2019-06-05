@@ -21,7 +21,7 @@ scope = ['https://spreadsheets.google.com/feeds',
          'https://www.googleapis.com/auth/spreadsheets',
          'https://www.googleapis.com/auth/drive']
 
-credentials = None
+
 if 'HEROKU_ENV' in os.environ:
     # print('os.environ.get(\'GOOGLE_APPLICATION_CREDENTIALS\')')
     # print(str(os.environ.get('GOOGLE_APPLICATION_CREDENTIALS')))
@@ -52,19 +52,25 @@ if 'HEROKU_ENV' in os.environ:
     with open('gcreds.json', 'w') as json_file:
         json.dump(creds, json_file)
     credentials = ServiceAccountCredentials.from_json_keyfile_name(('gcreds.json', scope))
+    client = gspread.authorize(credentials)
+    sheet = client.open('Copy of Tips').sheet1
+    tips_sheet = sheet.spreadsheet.get_worksheet(1)
 else:
     credentials = ServiceAccountCredentials.from_json_keyfile_name('client_secret.json', scope)
+    client = gspread.authorize(credentials)
+    sheet = client.open('Copy of Tips').sheet1
+    tips_sheet = sheet.spreadsheet.get_worksheet(1)
 # json_cred = os.getenv('GOOGLE_APPLICATION_CREDS')
 # cred_dict = json.loads(json_cred)
 # cred_dict['private_key'] = cred_dict['private_key'].replace("\\\\n", "\n")
 # creds = ServiceAccountCredentials.from_json_keyfile_dict(cred_dict, scope)
-client = gspread.authorize(credentials)
+# client = gspread.authorize(credentials)
 # cred = ServiceAccountCredentials.from_json(os.getenv("GOOGLE_APP_CREDS"), scope)
 # cred = ServiceAccountCredentials.from_json_keyfile_name('client_secret.json', scope)
 # cred = ServiceAccountCredentials.from_json(os.getenv('VOL_CLI_SEC'))
 # client = gspread.authorize(cred)
-sheet = client.open('Copy of Tips').sheet1
-tips_sheet = sheet.spreadsheet.get_worksheet(1)
+# sheet = client.open('Copy of Tips').sheet1
+# tips_sheet = sheet.spreadsheet.get_worksheet(1)
 
 ref_date = datetime(year=2018, month=12, day=30)
 # TITLE_ROW_OFFSET = 1
