@@ -220,13 +220,10 @@ $RECYCLE.BIN/
 /.env
 .flaskenv
 app/errors/templates/
-migrations/README
-migrations/alembic.ini
-migrations/env.py
-migrations/script.py.mako
-migrations/versions/8c1412122663_.py
+
 new_models.txt
 serialize_shift
 volsteads_vault.db
 /volsteads_vault.db
 /.flaskenv
+
