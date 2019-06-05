@@ -11,6 +11,8 @@ from vault.main.employee_data_controller import EmployeeDataController
 from vault.main.shift_data_controller import ShiftDataController
 from datetime import datetime
 from oauth2client.service_account import ServiceAccountCredentials
+# from oauth2client import service_account
+from google.oauth2 import service_account
 from retrying import retry
 
 
@@ -18,12 +20,21 @@ from retrying import retry
 scope = ['https://spreadsheets.google.com/feeds',
          'https://www.googleapis.com/auth/spreadsheets',
          'https://www.googleapis.com/auth/drive']
-json_cred = os.getenv('GOOGLE_APP_CREDS')
-cred_dict = json.loads(json_cred)
-cred_dict['private_key'] = cred_dict['private_key'].replace("\\\\n", "\n")
-creds = ServiceAccountCredentials.from_json_keyfile_dict(cred_dict, scope)
-client = gspread.authorize(creds)
-cred = ServiceAccountCredentials.from_json(os.getenv("GOOGLE_APP_CREDS"), scope)
+
+credentials = None
+if 'HEROKU_ENV' in os.environ:
+    credentials_raw = os.environ.get('GOOGLE_APPLICATION_CREDENTIALS')
+    service_account_info = json.loads(credentials_raw)
+    credentials = service_account.Credentials.from_service_account_info(service_account_info)
+
+else:
+    credentials = ServiceAccountCredentials.from_json_keyfile_name('client_secret.json', scope)
+# json_cred = os.getenv('GOOGLE_APPLICATION_CREDS')
+# cred_dict = json.loads(json_cred)
+# cred_dict['private_key'] = cred_dict['private_key'].replace("\\\\n", "\n")
+# creds = ServiceAccountCredentials.from_json_keyfile_dict(cred_dict, scope)
+client = gspread.authorize(credentials)
+# cred = ServiceAccountCredentials.from_json(os.getenv("GOOGLE_APP_CREDS"), scope)
 # cred = ServiceAccountCredentials.from_json_keyfile_name('client_secret.json', scope)
 # cred = ServiceAccountCredentials.from_json(os.getenv('VOL_CLI_SEC'))
 # client = gspread.authorize(cred)
