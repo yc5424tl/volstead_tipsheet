@@ -23,32 +23,35 @@ scope = ['https://spreadsheets.google.com/feeds',
 
 credentials = None
 if 'HEROKU_ENV' in os.environ:
-    print('os.environ.get(\'GOOGLE_APPLICATION_CREDENTIALS\')')
-    print(str(os.environ.get('GOOGLE_APPLICATION_CREDENTIALS')))
-    print('GOOGLE_APPLICATION_CREDENTIALS ---- TYPE ===> ' + str(type(os.environ.get('GOOGLE_APPLICATION_CREDENTIALS'))))
-    # print('json.loads(GOOGLE_APPLICATION_CREDENTIALS) --- TYPE ===>')
-    # print(str(type(json.loads(os.environ.get('GOOGLE_APPLICATION_CREDENTIALS')))))
-
-    credentials_raw = os.environ.get('GOOGLE_APPLICATION_CREDENTIALS')
-    dbl_quote_creds = '"' + os.environ.get('GOOGLE_APPLICATION_CREDENTIALS') + '"'
-    print(dbl_quote_creds)
-    print('credentials raw = ' + credentials_raw)
-    dbl_quote_json = json.loads(dbl_quote_creds)
-    print('dbl_quote_json next line')
-    print(dbl_quote_json)
-    # service_account_info = json.loads(json.dumps(credentials_raw))
-    # credentials = service_account.Credentials.from_service_account_info(json.loads(service_account_info))
-    # credentials = service_account.Credentials.from_service_account_info(credentials_raw)
-    with open('client_secret.json', 'w') as json_cred_file:
-        json_cred_file.write(credentials_raw)
-
-    print('tyring to open file')
-
-    with open('client_secret.json', 'r') as json_cred_file:
-        print(json_cred_file.read())
-
-    credentials = ServiceAccountCredentials.from_json_keyfile_name('client_secret.json', scope)
-
+    # print('os.environ.get(\'GOOGLE_APPLICATION_CREDENTIALS\')')
+    # print(str(os.environ.get('GOOGLE_APPLICATION_CREDENTIALS')))
+    # print('GOOGLE_APPLICATION_CREDENTIALS ---- TYPE ===> ' + str(type(os.environ.get('GOOGLE_APPLICATION_CREDENTIALS'))))
+    # # print('json.loads(GOOGLE_APPLICATION_CREDENTIALS) --- TYPE ===>')
+    # # print(str(type(json.loads(os.environ.get('GOOGLE_APPLICATION_CREDENTIALS')))))
+    #
+    # credentials_raw = os.environ.get('GOOGLE_APPLICATION_CREDENTIALS')
+    # dbl_quote_creds = '"' + os.environ.get('GOOGLE_APPLICATION_CREDENTIALS') + '"'
+    # print(dbl_quote_creds)
+    # print('credentials raw = ' + credentials_raw)
+    # dbl_quote_json = json.loads(dbl_quote_creds)
+    # print('dbl_quote_json next line')
+    # print(dbl_quote_json)
+    # # service_account_info = json.loads(json.dumps(credentials_raw))
+    # # credentials = service_account.Credentials.from_service_account_info(json.loads(service_account_info))
+    # # credentials = service_account.Credentials.from_service_account_info(credentials_raw)
+    # with open('client_secret.json', 'w') as json_cred_file:
+    #     json_cred_file.write(credentials_raw)
+    #
+    # print('tyring to open file')
+    #
+    # with open('client_secret.json', 'r') as json_cred_file:
+    #     print(json_cred_file.read())
+    #
+    # credentials = ServiceAccountCredentials.from_json_keyfile_name('client_secret.json', scope)
+    creds = json.loads(os.environ.get('GOOGLE_APPLICATION_CREDENTIALS'))
+    with open('gcreds.json', 'w') as json_file:
+        json.dump(creds, json_file)
+    credentials = ServiceAccountCredentials.from_json_keyfile_name(('gcreds.json', scope))
 else:
     credentials = ServiceAccountCredentials.from_json_keyfile_name('client_secret.json', scope)
 # json_cred = os.getenv('GOOGLE_APPLICATION_CREDS')
