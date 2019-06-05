@@ -133,13 +133,13 @@ def create_app(config_class=Config):
                 auth = (app.config['MAIL_USERNAME'], app.config['MAIL_PASSWORD'])
             secure = None
 
-            if app.config['MAIL_USE_TLS']:
-                secure = ()
+            if app.config['MAIL_USE_TLS'] is True:
+                secure = True
 
             mail_handler = SMTPHandler(
                 mailhost=(app.config['MAIL_SERVER'], app.config['MAIL_PORT']),
                 fromaddr='no-reply@' + app.config['MAIL_SERVER'],
-                toaddr=app.config['ADMINS'],
+                toaddrs=app.config['ADMINS'][0],
                 subject="Volstead's Vault Vexed",
                 credentials=auth,
                 secure=secure)
