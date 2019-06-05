@@ -15,7 +15,7 @@ from oauth2client.service_account import ServiceAccountCredentials
 from google.oauth2 import service_account
 from retrying import retry
 
-
+from vol_app import app
 
 scope = ['https://spreadsheets.google.com/feeds',
          'https://www.googleapis.com/auth/spreadsheets',
@@ -23,7 +23,13 @@ scope = ['https://spreadsheets.google.com/feeds',
 
 credentials = None
 if 'HEROKU_ENV' in os.environ:
+    app.logger('os.environ.get(\'GOOGLE_APPLICATION_CREDENTIALS\')')
+    app.logger(str(os.environ.get('GOOGLE_APPLICATION_CREDENTIALS')))
+    app.logger('GOOGLE_APPLICATION_CREDENTIALS ---- TYPE ===> ' + str(type(os.environ.get('GOOGLE_APPLICATION_CREDENTIALS'))))
+    app.logger('json.loads(GOOGLE_APPLICATION_CREDENTIALS) --- TYPE ===>')
+
     credentials_raw = os.environ.get('GOOGLE_APPLICATION_CREDENTIALS')
+    print('credentials raw = ' + credentials_raw)
     # service_account_info = json.loads(json.dumps(credentials_raw))
     # credentials = service_account.Credentials.from_service_account_info(json.loads(service_account_info))
     credentials = service_account.Credentials.from_service_account_info(credentials_raw)
