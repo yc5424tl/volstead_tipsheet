@@ -7,8 +7,10 @@ class Config(object):
     SECRET_KEY = os.environ.get('VOLSTEADS_SECRET_KEY') or 'eyes-of-the-night-king'
     if 'HEROKU_ENV' in os.environ:
         SERVER_NAME = 'volsteads.herokuapp.com'
+        DEBUG = False
     else:
         SERVER_NAME = 'volsteads.vault:5000'
+        DEBUG = True
     # SQLALCHEMY_DATABASE_URI = os.environ.get('VOL_SQL_DB') or 'sqlite:///' + os.path.join(basedir, 'volsteads_vault.db')
     SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URL') or 'sqlite:///' + os.path.join(basedir, 'volsteads_vault.db')
     # SQLALCHEMY_TRACK_MODIFICATIONS = True
@@ -22,7 +24,6 @@ class Config(object):
     SESSION_COOKIE_DOMAIN = 'localhost.localdomain'
     SESSION_COOKIE_SECURE = False  # True will cause CSRF to fail.
 
-    DEBUG = False
     TEMPLATES_AUTO_RELOAD = True
 
     MAIL_SERVER = os.environ.get('MAIL_SERVER')

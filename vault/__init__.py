@@ -1,12 +1,8 @@
 
 import logging
-from collections import OrderedDict
 from logging.handlers import SMTPHandler, RotatingFileHandler
 import os
 from flask import Flask
-
-
-# from flask_bcrypt import Bcrypt
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 from flask_login import LoginManager
@@ -14,7 +10,7 @@ from flask_mail import Mail
 from flask_bootstrap import Bootstrap
 from flask_babel import Babel, lazy_gettext as _1
 from config import Config
-# import build_users
+from vault.manage import Manager
 
 db = SQLAlchemy()
 migrate = Migrate()
@@ -23,8 +19,8 @@ login.login_view = 'auth.login'
 login.login_message = _1('Authorized Users Must Log In To Access This Page')
 mail = Mail()
 bootstrap = Bootstrap()
-# bcrypt = Bcrypt()
 babel = Babel()
+manager = Manager()
 
 user_first = ['Marley',
               'Jacob',
@@ -106,13 +102,12 @@ def create_app(config_class=Config):
 
     db.init_app(app)
     db.create_all()
-    create_users()
+    # create_users()
 
     migrate.init_app(app, db)
     login.init_app(app)
     mail.init_app(app)
     bootstrap.init_app(app)
-    # bcrypt.init_app(app)
     babel.init_app(app)
 
     from vault.errors import bp as errors_bp
