@@ -23,10 +23,10 @@ scope = ['https://spreadsheets.google.com/feeds',
 
 credentials = None
 if 'HEROKU_ENV' in os.environ:
-    current_app.logger('os.environ.get(\'GOOGLE_APPLICATION_CREDENTIALS\')')
-    current_app.logger(str(os.environ.get('GOOGLE_APPLICATION_CREDENTIALS')))
-    current_app.logger('GOOGLE_APPLICATION_CREDENTIALS ---- TYPE ===> ' + str(type(os.environ.get('GOOGLE_APPLICATION_CREDENTIALS'))))
-    current_app.logger('json.loads(GOOGLE_APPLICATION_CREDENTIALS) --- TYPE ===>')
+    print('os.environ.get(\'GOOGLE_APPLICATION_CREDENTIALS\')')
+    print(str(os.environ.get('GOOGLE_APPLICATION_CREDENTIALS')))
+    print('GOOGLE_APPLICATION_CREDENTIALS ---- TYPE ===> ' + str(type(os.environ.get('GOOGLE_APPLICATION_CREDENTIALS'))))
+    print('json.loads(GOOGLE_APPLICATION_CREDENTIALS) --- TYPE ===>')
 
     credentials_raw = os.environ.get('GOOGLE_APPLICATION_CREDENTIALS')
     print('credentials raw = ' + credentials_raw)
