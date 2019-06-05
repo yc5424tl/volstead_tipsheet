@@ -24,7 +24,7 @@ scope = ['https://spreadsheets.google.com/feeds',
 credentials = None
 if 'HEROKU_ENV' in os.environ:
     credentials_raw = os.environ.get('GOOGLE_APPLICATION_CREDENTIALS')
-    service_account_info = json.loads(credentials_raw)
+    service_account_info = json.loads(json.dumps(credentials_raw))
     credentials = service_account.Credentials.from_service_account_info(service_account_info)
 
 else:
