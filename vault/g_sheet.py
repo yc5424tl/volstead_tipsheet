@@ -26,7 +26,7 @@ if 'HEROKU_ENV' in os.environ:
     print('os.environ.get(\'GOOGLE_APPLICATION_CREDENTIALS\')')
     print(str(os.environ.get('GOOGLE_APPLICATION_CREDENTIALS')))
     print('GOOGLE_APPLICATION_CREDENTIALS ---- TYPE ===> ' + str(type(os.environ.get('GOOGLE_APPLICATION_CREDENTIALS'))))
-    print('json.loads(GOOGLE_APPLICATION_CREDENTIALS) --- TYPE ===>')
+    print('json.loads(GOOGLE_APPLICATION_CREDENTIALS) --- TYPE ===>' + str(type(json.loads('GOOGLE_APPLICATION_CREDENTIALS'))))
 
     credentials_raw = os.environ.get('GOOGLE_APPLICATION_CREDENTIALS')
     print('credentials raw = ' + credentials_raw)
