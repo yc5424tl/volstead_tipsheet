@@ -10,7 +10,7 @@ from flask_mail import Mail
 from flask_bootstrap import Bootstrap
 from flask_babel import Babel, lazy_gettext as _1
 from config import Config
-from vault.manage import Manager
+
 
 db = SQLAlchemy()
 migrate = Migrate()
@@ -20,6 +20,8 @@ login.login_message = _1('Authorized Users Must Log In To Access This Page')
 mail = Mail()
 bootstrap = Bootstrap()
 babel = Babel()
+
+from manage import Manager
 manager = Manager()
 
 user_first = ['Marley',
