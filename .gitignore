@@ -216,7 +216,7 @@ $RECYCLE.BIN/
 
 /venv/
 /google-sheets/credentials.json
-/client_secret.json
+
 /.env
 .flaskenv
 app/errors/templates/
