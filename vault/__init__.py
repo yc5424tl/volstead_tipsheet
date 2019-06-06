@@ -1,16 +1,17 @@
 
 import logging
-from logging.handlers import SMTPHandler, RotatingFileHandler
 import os
+from logging.handlers import SMTPHandler, RotatingFileHandler
+
 from flask import Flask
-from flask_sqlalchemy import SQLAlchemy
-from flask_migrate import Migrate
+from flask_babel import Babel, lazy_gettext as _1
+from flask_bootstrap import Bootstrap
 from flask_login import LoginManager
 from flask_mail import Mail
-from flask_bootstrap import Bootstrap
-from flask_babel import Babel, lazy_gettext as _1
-from config import Config
+from flask_migrate import Migrate
+from flask_sqlalchemy import SQLAlchemy
 
+from config import Config
 
 db = SQLAlchemy()
 migrate = Migrate()
@@ -21,8 +22,6 @@ mail = Mail()
 bootstrap = Bootstrap()
 babel = Babel()
 
-from manage import Manager
-manager = Manager()
 
 user_first = ['Marley',
               'Jacob',
@@ -68,9 +67,6 @@ user_email = ['marleygirl22@gmail.com',
 
 def create_users():
 
-    # exclusive_bound = len(user_email) + 1
-    # r = range(1, exclusive_bound)
-
     user_list = []
     for i in range(len(user_email)):
         d = {'username':user_email[i],'email':user_email[i],'emp_id':emp_id[i],'first_name': user_first[i],'last_name':user_last[i], 'pw':user_pw[i]}
@@ -104,7 +100,6 @@ def create_app(config_class=Config):
 
     db.init_app(app)
     db.create_all()
-    # create_users()
 
     migrate.init_app(app, db)
     login.init_app(app)
@@ -168,8 +163,6 @@ def create_app(config_class=Config):
     @login.user_loader
     def load_user(user_id):
         return User.query.get(int(user_id))
-
-
 
     return app
 

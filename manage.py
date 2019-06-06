@@ -1,12 +1,9 @@
-from flask_script import Manager
-from flask_migrate import Migrate, MigrateCommand
 
-from flask import current_app
-from vault import db
-from vol_app import app
+from flask_migrate import Migrate, MigrateCommand, Manager
+from vault import create_app
 
-migrate = Migrate(app, db)
-manager= Manager(app)
+manager = Manager(create_app)
+manager.add_option("-c", "--config", dest="config_module", required=False)
 manager.add_command('db', MigrateCommand)
 
 if __name__ == '__main__':
