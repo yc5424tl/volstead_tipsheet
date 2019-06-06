@@ -165,7 +165,7 @@ class EmployeeReport(db.Model):
     id          = db.Column(db.Integer(), primary_key=True)
     cash_tips   = db.Column(db.Float())
     cred_tips   = db.Column(db.Float())
-    tip_role    = db.Column(db.Enum('SERVICE', 'SUPPORT'))
+    tip_role    = db.Column(db.Enum('SERVICE', 'SUPPORT', name="tip_role"))
     shift_hours = db.Column(db.Float())
     tip_hours   = db.Column(db.Float())
     employee_id = db.Column(db.Integer(), db.ForeignKey('employees.id'))
