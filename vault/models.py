@@ -23,15 +23,19 @@ class User(UserMixin, db.Model):
 
     __tablename__ = 'users'
 
-    id                 = db.Column(db.Integer(), primary_key=True)
-    username           = db.Column(db.String(128, collation='NOCASE'), nullable=False, unique=True)
+    id = db.Column(db.Integer(), primary_key=True)
+    #***ILIKE***
+    username           = db.Column(db.String(128), nullable=False, unique=True)
+    #***ILIKE***
     active             = db.Column('is_active', db.Boolean(), nullable=False, server_default='1')
     password_hash      = db.Column(db.String(255), nullable=False)
-    email              = db.Column(db.String(255, collation='NOCASE'), nullable=False, unique=True)
+    #***ILIKE***
+    email              = db.Column(db.String(255), nullable=False, unique=True)
+    #***ILIKE***
     email_confirmed_at = db.Column(db.DateTime())
     last_online        = db.Column(db.DateTime(), default=datetime.utcnow)
     employee_id        = db.Column(db.Integer(), db.ForeignKey('employees.id'))
-    employee           = db.relationship('Employee', backref=backref('user_by_employee', uselist=False), primaryjoin="User.employee_id == Employee.id")
+    employee           = db.relationship('qQEmployee', backref=backref('user_by_employee', uselist=False), primaryjoin="User.employee_id == Employee.id")
     roles              = db.relationship('Role', secondary='user_roles')
 
     def __repr__(self):
