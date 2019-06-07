@@ -8,12 +8,14 @@ class Config(object):
     if 'HEROKU_ENV' in os.environ:
         SERVER_NAME = 'volsteads.herokuapp.com'
         DEBUG = False
+        SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URL')
     else:
         SERVER_NAME = 'volsteads.vault:5000'
         DEBUG = True
+        SQLALCHEMY_DATABASE_URI = os.environ.get('VOL_DB_LOCAL')
 
-    SQLALCHEMY_DATABASE_URI = os.environ.get('VOL_DB_LOCAL')
-    DATABASE_URI = os.environ.get('VOL_DB_LOCAL')
+
+    # DATABASE_URI = os.environ.get('VOL_DB_LOCAL')
 
     # SQLALCHEMY_DATABASE_URI = os.environ.get('VOL_SQL_DB') or 'sqlite:///' + os.path.join(basedir, 'volsteads_vault.db')
 
