@@ -6,7 +6,7 @@ from flask_babel import _
 from vault import db, vols_email, Config
 from vault.auth import bp
 from vault.auth.forms import LoginForm, ResetPasswordRequestForm, ResetPasswordForm
-from vault.models import User
+from vault.models import User, Employee, Role
 
 
 @bp.route('/login', methods=['GET', 'POST'])
