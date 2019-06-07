@@ -35,7 +35,7 @@ class User(UserMixin, db.Model):
     email_confirmed_at = db.Column(db.DateTime())
     last_online        = db.Column(db.DateTime(), default=datetime.utcnow)
     employee_id        = db.Column(db.Integer(), db.ForeignKey('employees.id'))
-    employee           = db.relationship('qQEmployee', backref=backref('user_by_employee', uselist=False), primaryjoin="User.employee_id == Employee.id")
+    employee           = db.relationship('Employee', backref=backref('user_by_employee', uselist=False), primaryjoin="User.employee_id == Employee.id")
     roles              = db.relationship('Role', secondary='user_roles')
 
     def __repr__(self):
