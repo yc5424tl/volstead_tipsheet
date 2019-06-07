@@ -6,10 +6,10 @@ from time import time
 import bcrypt
 import jwt
 from flask import current_app
+from flask_bcrypt import generate_password_hash, check_password_hash
 from flask_login import UserMixin
 from sqlalchemy import CheckConstraint
 from sqlalchemy.orm import backref
-
 from vault import db, login
 from vault.main.employee_data_controller import EmployeeDataController
 from vault.main.shift_data_controller import ShiftDataController
@@ -30,22 +30,25 @@ class User(UserMixin, db.Model):
     active             = db.Column('is_active', db.Boolean(), nullable=False, server_default='1')
     password_hash      = db.Column(db.String(255), nullable=False)
     #***ILIKE***
-    email              = db.Column(db.String(255), nullable=False, unique=True)
+    email              = db.Column(db.String(255), nullable=False, unique=True, index=True)
     #***ILIKE***
     email_confirmed_at = db.Column(db.DateTime())
     last_online        = db.Column(db.DateTime(), default=datetime.utcnow)
     employee_id        = db.Column(db.Integer(), db.ForeignKey('employees.id'))
-    employee           = db.relationship('Employee', backref=backref('user_by_employee', uselist=False), primaryjoin="User.employee_id == Employee.id")
-    roles              = db.relationship('Role', secondary='user_roles')
+    # employee           = db.relationship('Employee', backref=backref('user_by_employee', uselist=False), primaryjoin="User.employee_id == Employee.id",
+    employee           = db.relationship('employee', backref=backref('user_by_employee', uselist=False), primaryjoin=(Employee.id == id))
+    roles              = db.relationship('role', secondary='user_roles')
 
     def __repr__(self):
         return '<User {}>'.format(self.username)
 
     def set_password(self, password):
-        self.password_hash = bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt())
+        # self.password_hash = bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt())
+        self.password_hash = generate_password_hash(password)
 
     def check_password(self, password):
-        return bcrypt.checkpw(password.encode('utf-8'), self.password_hash)
+        return check_password_hash(self.password_hash, password)
+        # return bcrypt.checkpw(password.encode('utf-8'), self.password_hash)
 
     def avatar(self, size):
         digest = md5(self.email.lower().encode('utf-8')).hexdigest()
@@ -173,9 +176,9 @@ class EmployeeReport(db.Model):
     shift_hours = db.Column(db.Float())
     tip_hours   = db.Column(db.Float())
     employee_id = db.Column(db.Integer(), db.ForeignKey('employees.id'))
-    employee    = db.relationship('Employee', backref=db.backref('employee_reports', lazy='joined'), primaryjoin="EmployeeReport.employee_id == Employee.id")
+    employee    = db.relationship('employee', backref=db.backref('employee_reports', lazy='joined'), primaryjoin=(employee_id == Employee.id))
     shift_id    = db.Column(db.Integer(), db.ForeignKey('shift_reports.id'))
-    shift       = db.relationship('ShiftReport', backref=db.backref('employee_reports', lazy='joined'), primaryjoin="EmployeeReport.shift_id == ShiftReport.id")
+    shift       = db.relationship('shiftreport', backref=db.backref('employee_reports', lazy='joined'), primaryjoin=(shift_id == ShiftReport.id))
 
 
     __table_args__ = (
@@ -197,12 +200,12 @@ class EmployeeReport(db.Model):
     @staticmethod
     def populate_fields(employee_report: EmployeeDataController, shift_id, employee_id):
         return EmployeeReport(
-        cash_tips=employee_report.cash_tips,
-        cred_tips = employee_report.cred_tips,
-        tip_role  = employee_report.tip_role,
+        cash_tips   = employee_report.cash_tips,
+        cred_tips   = employee_report.cred_tips,
+        tip_role    = employee_report.tip_role,
         shift_hours = employee_report.shift_hours,
-        tip_hours = employee_report.tip_hours,
-        shift_id = shift_id,
+        tip_hours   = employee_report.tip_hours,
+        shift_id    = shift_id,
         employee_id = employee_id
         )
 
