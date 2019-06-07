@@ -141,7 +141,7 @@ class Employee(db.Model):
     created_at      = db.Column(db.DateTime(), default=datetime.utcnow)
 
     __table_args__ = (
-        db.UniqueConstraint('first_name', 'last_name', name='unique_employee_name'),
+        db.UniqueConstraint('first_name', 'last_name', name='first_last_uni_emp'),
     )
 
     def __repr__(self):
