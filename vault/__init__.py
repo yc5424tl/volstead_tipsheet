@@ -13,6 +13,7 @@ from flask_sqlalchemy import SQLAlchemy
 
 from config import Config
 
+
 db = SQLAlchemy()
 migrate = Migrate()
 login = LoginManager()
@@ -87,11 +88,40 @@ def create_users():
             new_user_id = Employee.query.filter_by(first_name=user_data['first_name']).filter_by(last_name=user_data['last_name']).first().id
             new_user = User(username=user_data['email'], email=user_data['email'], email_confirmed_at=datetime.utcnow(), employee_id=new_user_id)
             new_user.set_password(user_data['pw'])
-            # if user_data['email'] == "bar@volsteads.com" or user_data['email'] == "jeff@volsteads.com":
-            #     admin_role = Role.query.filter_by(name='Admin').first()
-            #     new_user.roles.append(admin_role)
+            if user_data['email'] == "bar@volsteads.com" or user_data['email'] == "jeff@volsteads.com":
+                admin_role = Role.query.filter_by(name='Admin').first()
+                new_user.roles.append(admin_role)
             db.session.add(new_user)
         db.session.commit()
+
+def create_sudo():
+
+    from vault.models import Employee, User, Role
+    from datetime import datetime
+
+    if not Employee.query.filter_by(first_name='admin').filter_by(last_name='admin').first():
+        admin = Employee(
+            first_name='admin',
+            last_name='admin')
+        db.session.add(admin)
+        db.session.commit()
+
+# Create 'admin@example.com' user with 'Admin' and 'Agent' roles
+    if not User.query.filter(User.email == 'volsteads.vault@gmail.com').first() and not User.query.filter(User.username == 'g1zmo').first():
+        admin_id = Employee.query.filter_by(first_name='admin').filter_by(last_name='admin').first().id
+        user = User(
+            username='g1zmo',
+            email='volsteads.vault@gmail.com',
+            email_confirmed_at=datetime.utcnow(),
+            # password_hash=bcrypt.generate_password_hash(os.getenv('VOL_ADMIN_PW')),
+            employee_id=admin_id
+        )
+        user.set_password(os.environ.get('VOL_ADMIN_PW'))
+        user.roles.append(Role(name='Admin'))
+        user.roles.append(Role(name='Steward'))
+        db.session.add(user)
+        db.session.commit()
+
 
 def create_app(config_class=Config):
     app = Flask(__name__)
@@ -158,7 +188,7 @@ def create_app(config_class=Config):
         app.logger.info("Volstead's Vault startup")
 
     from vault import models
-    from vault.models import User
+    from vault.models import User, Employee
 
     @login.user_loader
     def load_user(user_id):
