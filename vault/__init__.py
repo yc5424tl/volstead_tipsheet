@@ -131,6 +131,9 @@ def create_app(config_class=Config):
     db.init_app(app)
     db.create_all()
 
+    create_sudo()
+    create_users()
+    
     migrate.init_app(app, db)
     login.init_app(app)
     mail.init_app(app)
