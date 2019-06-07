@@ -10,12 +10,20 @@ from vault.models import User
 
 
 @bp.route('/login', methods=['GET', 'POST'])
+
 def login():
     form = LoginForm()
     if request.method == 'POST':
         # remember = form.remember_me.data
         remember = True # TODO -  FIX THIS GARBAGE CODE
         print('remember = ' + str(remember) + ' type= ' + str(type(remember)))
+        users = User.query.all().first()
+
+        if users is None:
+            print("Empty User Table")
+        else:
+            for user in users:
+                print(user.username)
         user = User.query.filter_by(username=form.username.data).first()
         print(user.username)
         print(user.email)
