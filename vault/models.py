@@ -177,6 +177,7 @@ class Employee(db.Model):
     last_name       = db.Column(db.String(64))
     created_at      = db.Column(db.DateTime(), default=datetime.utcnow)
 
+    #
     # __table_args__ = (
     #     db.UniqueConstraint('first_name', 'last_name', name='first_last_uni_emp'),
     # )
