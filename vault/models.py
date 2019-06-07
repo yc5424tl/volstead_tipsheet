@@ -34,10 +34,10 @@ class User(UserMixin, db.Model):
     #***ILIKE***
     email_confirmed_at = db.Column(db.DateTime())
     last_online        = db.Column(db.DateTime(), default=datetime.utcnow)
-    employee_id        = db.Column(db.Integer(), db.ForeignKey('employees.id'))
+    employee_id        = db.Column(db.Integer(), db.ForeignKey('employee.id'))
     # employee           = db.relationship('Employee', backref=backref('user_by_employee', uselist=False), primaryjoin="User.employee_id == Employee.id",
-    employee           = db.relationship('employee', backref=backref('user_by_employee', uselist=False), primaryjoin=(Employee.id == id))
-    roles              = db.relationship('role', secondary='user_roles')
+    employee           = db.relationship('Employee', backref=backref('user_by_employee', uselist=False), primaryjoin="Employee.id == User.employee_id")
+    roles              = db.relationship('Role', secondary='user_roles')
 
     def __repr__(self):
         return '<User {}>'.format(self.username)
@@ -133,7 +133,7 @@ class ShiftReport(db.Model):
 
 class Employee(db.Model):
 
-    __tablename__ = 'employees'
+    __tablename__ = 'employee'
 
     id              = db.Column(db.Integer(), primary_key=True)
     first_name      = db.Column(db.String(64))
@@ -167,7 +167,7 @@ class Employee(db.Model):
 
 class EmployeeReport(db.Model):
 
-    __tablename__ = 'employee_reports'
+    __tablename__ = 'employee_report'
 
     id          = db.Column(db.Integer(), primary_key=True)
     cash_tips   = db.Column(db.Float())
@@ -175,10 +175,10 @@ class EmployeeReport(db.Model):
     tip_role    = db.Column(db.Enum('SERVICE', 'SUPPORT', name="tip_role"))
     shift_hours = db.Column(db.Float())
     tip_hours   = db.Column(db.Float())
-    employee_id = db.Column(db.Integer(), db.ForeignKey('employees.id'))
-    employee    = db.relationship('employee', backref=db.backref('employee_reports', lazy='joined'), primaryjoin=(employee_id == Employee.id))
+    employee_id = db.Column(db.Integer(), db.ForeignKey('employee.id'))
+    employee    = db.relationship('Employee', backref=db.backref('employee_reports', lazy='joined'), primaryjoin="EmployeeReport.employee_id == Employee.id")
     shift_id    = db.Column(db.Integer(), db.ForeignKey('shift_reports.id'))
-    shift       = db.relationship('shiftreport', backref=db.backref('employee_reports', lazy='joined'), primaryjoin=(shift_id == ShiftReport.id))
+    shift       = db.relationship('ShiftReport', backref=db.backref('employee_reports', lazy='joined'), primaryjoin="EmployeeReport.shift_id == ShiftReport.id")
 
 
     __table_args__ = (
