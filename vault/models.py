@@ -5,15 +5,18 @@ from time import time
 
 import bcrypt
 import jwt
+import os
 from flask import current_app
 from flask_bcrypt import generate_password_hash, check_password_hash
 from flask_login import UserMixin
-from sqlalchemy import CheckConstraint
-from sqlalchemy.orm import backref
+from sqlalchemy import CheckConstraint, create_engine, Index
+from sqlalchemy.orm import backref, sessionmaker
+from sqlalchemy.ext.declarative import declarative_base
 from vault import db, login
 from vault.main.employee_data_controller import EmployeeDataController
 from vault.main.shift_data_controller import ShiftDataController
 
+Base = declarative_base()
 
 ##################################################################################################################################
 ##    USER
@@ -125,11 +128,45 @@ class ShiftReport(db.Model):
         )
 
 
+# class Employee(Base):
+#     __tablename__ = 'employee'
+#     __table_args__ = (
+#         Index(
+#             'unique_full_name',
+#             'first_name', 'last_name',
+#             unique=True
+#         ),
+#     )
+#     id = db.Column(db.Integer, db.Sequence('id_seq'), primary_key=True)
+#     first_name = db.Column(db.String(64))
+#     last_name = db.Column(db.String(64))
+#     created_at = db.Column(db.DateTime(), default=datetime.utcnow)
+#
+#     def __init__(self, first_name, last_name):
+#         self.first_name = first_name
+#         self.last_name = last_name
+#
+#     def __repr__(self):
+#         return '<Employee {} {}>'.format(
+#             self.first_name,
+#             self.last_name
+#         )
+#
+#     @property
+#     def full_name(self):
+#         return '%s %s'.format(self.first_name, self.last_name)
+#
+#     @full_name.setter
+#     def full_name(self, new_name):
+#         self.full_name = new_name
+
 
 
 ##################################################################################################################################
 ##    EMPLOYEE
 ##################################################################################################################################
+
+
 
 class Employee(db.Model):
 
@@ -140,9 +177,9 @@ class Employee(db.Model):
     last_name       = db.Column(db.String(64))
     created_at      = db.Column(db.DateTime(), default=datetime.utcnow)
 
-    __table_args__ = (
-        db.UniqueConstraint('first_name', 'last_name', name='first_last_uni_emp'),
-    )
+    # __table_args__ = (
+    #     db.UniqueConstraint('first_name', 'last_name', name='first_last_uni_emp'),
+    # )
 
     def __repr__(self):
         return '<Employee {} {}>'.format(
@@ -243,3 +280,8 @@ class UserRoles(db.Model):
 
 
 # user_manager = flask_user.UserManager(current_app, db, User)
+# engine = create_engine(os.environ.get('VOL_DB_LOCAL'))
+# Session = sessionmaker(bind=engine)
+# session = Session()
+# # Base.metadata.create_all(engine, Base.metadata.tables["employee"])
+# Base.metadata.create_all(engine, tables=[Employee.__table__])
