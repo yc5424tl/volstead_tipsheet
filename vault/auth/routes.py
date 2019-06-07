@@ -17,7 +17,7 @@ def login():
         # remember = form.remember_me.data
         remember = True # TODO -  FIX THIS GARBAGE CODE
         print('remember = ' + str(remember) + ' type= ' + str(type(remember)))
-        users = User.query.all().first()
+        users = User.query.all()
 
         if users is None:
             print("Empty User Table")
