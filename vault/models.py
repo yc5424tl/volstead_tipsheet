@@ -7,7 +7,7 @@ import bcrypt
 import jwt
 import os
 from flask import current_app
-from flask_bcrypt import generate_password_hash, check_password_hash
+# from flask_bcrypt import generate_password_hash, check_password_hash
 from flask_login import UserMixin
 from sqlalchemy import CheckConstraint, create_engine, Index
 from sqlalchemy.orm import backref, sessionmaker
@@ -46,12 +46,12 @@ class User(UserMixin, db.Model):
         return '<User {}>'.format(self.username)
 
     def set_password(self, password):
-        # self.password_hash = bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt())
-        self.password_hash = generate_password_hash(password)
+        self.password_hash = bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt())
+        # self.password_hash = generate_password_hash(password)
 
     def check_password(self, password):
-        return check_password_hash(self.password_hash, password)
-        # return bcrypt.checkpw(password.encode('utf-8'), self.password_hash)
+        # return check_password_hash(self.password_hash, password)
+        return bcrypt.checkpw(password.encode('utf-8'), self.password_hash)
 
     def avatar(self, size):
         digest = md5(self.email.lower().encode('utf-8')).hexdigest()
