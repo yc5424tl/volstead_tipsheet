@@ -9,11 +9,17 @@ class Config(object):
         SERVER_NAME = 'volsteads.herokuapp.com'
         DEBUG = False
         SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URL')
+        # SESSION_COOKIE_SECURE = True
+        # REMEMBER_COOKIE_SECURE = True
+        # REMEMBER_COOKIE_HTTPONLY = True
+        # SESSION_COOKIE_HTTPONLY = True
     else:
         SERVER_NAME = 'volsteads.vault:5000'
         DEBUG = True
         SQLALCHEMY_DATABASE_URI = os.environ.get('VOL_DB_LOCAL')
-
+        SESSION_TYPE = 'filesystem'
+        SESSION_COOKIE_DOMAIN = 'localhost.localdomain'
+        SESSION_COOKIE_SECURE = False  # True will cause CSRF to fail.
 
     # DATABASE_URI = os.environ.get('VOL_DB_LOCAL')
 
@@ -32,9 +38,6 @@ class Config(object):
     CSRF_ENABLED = False
     # CSRF_ENABLED = True
 
-    SESSION_TYPE = 'filesystem'
-    SESSION_COOKIE_DOMAIN = 'localhost.localdomain'
-    SESSION_COOKIE_SECURE = False  # True will cause CSRF to fail.
 
     TEMPLATES_AUTO_RELOAD = True
 
