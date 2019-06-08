@@ -41,8 +41,8 @@ def login():
         if current_user.is_authenticated:
             return redirect(url_for('main.start_report'))
 
-        form = LoginForm()
-        return render_template('login.html', form=form, title=_('Sign In'))
+        signin_form = LoginForm()
+        return render_template('login.html', form=signin_form, title=_('Sign In'))
 
 
 @bp.route('/logout')
