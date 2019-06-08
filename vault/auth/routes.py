@@ -12,24 +12,26 @@ from vault.models import User, Employee, Role
 @bp.route('/login', methods=['GET', 'POST'])
 
 def login():
-    form = LoginForm()
+    login_form = LoginForm()
     if request.method == 'POST':
         # remember = form.remember_me.data
         remember = True # TODO -  FIX THIS GARBAGE CODE
         print('remember = ' + str(remember) + ' type= ' + str(type(remember)))
-        users = User.query.all()
 
+        users = User.query.all()
         if users is None:
             print("Empty User Table")
         else:
             for user in users:
                 print(user.username)
-        user = User.query.filter_by(username=form.username.data).first()
-        print(user.username)
-        print(user.email)
-        print(str(form.password.data))
-        if not user or not user.check_password(form.password.data):
-            flash('Password/Username Incorrect')
+
+        user = User.query.filter_by(username=login_form.username.data).first()
+        if user:
+            print(user.username)
+            print(user.email)
+            print(str(login_form.password.data))
+        if not user or not user.check_password(login_form.password.data):
+            print('Password/Username Incorrect')
             return redirect(url_for('auth.login', form=LoginForm))
         print('logging in user')
         login_user(user, remember=remember)
