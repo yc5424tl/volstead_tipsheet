@@ -8,13 +8,14 @@ import jwt
 import os
 from flask import current_app
 # from flask_bcrypt import generate_password_hash, check_password_hash
+# from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import UserMixin
 from sqlalchemy import CheckConstraint, create_engine, Index
 from sqlalchemy.orm import backref, sessionmaker
 from sqlalchemy.ext.declarative import declarative_base
-from vault import db, login
-from vault.main.employee_data_controller import EmployeeDataController
-from vault.main.shift_data_controller import ShiftDataController
+from . import db, login
+from .main.employee_data_controller import EmployeeDataController
+from .main.shift_data_controller import ShiftDataController
 
 Base = declarative_base()
 
@@ -42,8 +43,15 @@ class User(UserMixin, db.Model):
     employee           = db.relationship('Employee', backref=backref('user_by_employee', uselist=False), primaryjoin="Employee.id == User.employee_id")
     roles              = db.relationship('Role', secondary='user_roles')
 
-    def __repr__(self):
-        return '<User {}>'.format(self.username)
+    def __init__(self, username, email, emp_id, active=True):
+        self.username = username
+        self.email = email
+        self.active = active
+        self.employee_id = emp_id
+        self.email_confirmed_at = datetime.utcnow()
+
+
+
 
     def set_password(self, password):
         self.password_hash = bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt())
@@ -51,6 +59,7 @@ class User(UserMixin, db.Model):
 
     def check_password(self, password):
         # return check_password_hash(self.password_hash, password)
+        # return bcrypt.checkpw(password.encode('utf-8'), self.password_hash)
         return bcrypt.checkpw(password.encode('utf-8'), self.password_hash)
 
     def avatar(self, size):
@@ -74,7 +83,19 @@ class User(UserMixin, db.Model):
 @login.user_loader
 def load_user(user_id):
     return User.query.get(int(user_id))
-
+# @login.user_loader
+# def load_user(user_id):
+#     try:
+#         # u = User.query.get(user_id)
+#         # return User(id=u.id,
+#         #         username=u.username,
+#         #         password_hash=u.password_hash,
+#         #         email=u.email,
+#         #         email_confirmed_at=u.email_confirmed_at,
+#         #         employee_id=u.employee_id)
+#         return User.get(User.id==user_id)
+#     except User.DoesNotExist:
+#         return None
 
 
 
@@ -176,7 +197,6 @@ class Employee(db.Model):
     first_name      = db.Column(db.String(64))
     last_name       = db.Column(db.String(64))
     created_at      = db.Column(db.DateTime(), default=datetime.utcnow)
-
 
     # __table_args__ = (
     #     db.UniqueConstraint('first_name', 'last_name', name='first_last_uni_emp'),

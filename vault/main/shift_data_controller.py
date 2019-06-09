@@ -1,6 +1,6 @@
 # coding=utf-8
 import json
-from vault.main.employee_data_controller import EmployeeDataController
+from .employee_data_controller import EmployeeDataController
 from datetime import datetime
 
 denominations = {x:0.0 for x in ['0.25', '1.00', '5.00', '10.00', '20.00', '50.00', '100.00']}

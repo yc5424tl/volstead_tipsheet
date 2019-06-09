@@ -2,4 +2,4 @@
 
 from flask import Blueprint
 bp = Blueprint('auth', __name__)
-from vault.auth import routes
+from ..auth import routes

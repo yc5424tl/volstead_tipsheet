@@ -3,6 +3,7 @@ import logging
 import os
 from logging.handlers import SMTPHandler, RotatingFileHandler
 
+import bcrypt
 from flask import Flask
 from flask_babel import Babel, lazy_gettext as _1
 from flask_bootstrap import Bootstrap
@@ -11,7 +12,7 @@ from flask_mail import Mail
 from flask_migrate import Migrate
 from flask_sqlalchemy import SQLAlchemy
 
-from config import Config
+from ..config import Config
 
 
 db = SQLAlchemy()
@@ -66,6 +67,9 @@ user_email = ['marleygirl22@gmail.com',
          'cthompson369@outlook.com',
          'natalie.erin.goodwin@gmail.com']
 
+
+
+
 def create_users():
 
     user_list = []
@@ -74,7 +78,7 @@ def create_users():
         user_list.append(d)
 
 
-    from vault.models import User, Role, Employee
+    from .models import User, Role, Employee
     from datetime import datetime
 
     for user_data in user_list:
@@ -86,7 +90,7 @@ def create_users():
     for user_data in user_list:
         if not User.query.filter_by(email=user_data['email']).first():
             new_user_id = Employee.query.filter_by(first_name=user_data['first_name']).filter_by(last_name=user_data['last_name']).first().id
-            new_user = User(username=user_data['email'], email=user_data['email'], email_confirmed_at=datetime.utcnow(), employee_id=new_user_id)
+            new_user = User(username=user_data['email'], email=user_data['email'], emp_id=new_user_id)
             new_user.set_password(user_data['pw'])
             if user_data['email'] == "bar@volsteads.com" or user_data['email'] == "jeff@volsteads.com":
                 admin_role = Role.query.filter_by(name='Admin').first()
@@ -94,9 +98,9 @@ def create_users():
             db.session.add(new_user)
         db.session.commit()
 
-def create_sudo():
+def create_sudo_employee():
 
-    from vault.models import Employee, User, Role
+    from .models import Employee, User, Role
     from datetime import datetime
 
     if not Employee.query.filter_by(first_name='admin').filter_by(last_name='admin').first():
@@ -104,17 +108,22 @@ def create_sudo():
             first_name='admin',
             last_name='admin')
         db.session.add(admin)
+        print('admin.id = ' + str(admin.id))
         db.session.commit()
+        return admin.id
 
+def create_sudo_user(admin_id):
+    from .models import Employee, User, Role
+    from datetime import datetime
 # Create 'admin@example.com' user with 'Admin' and 'Agent' roles
-    if not User.query.filter(User.email == 'volsteads.vault@gmail.com').first() and not User.query.filter(User.username == 'g1zmo').first():
-        admin_id = Employee.query.filter_by(first_name='admin').filter_by(last_name='admin').first().id
+    if not User.query.filter(User.email == 'volsteads.vault@gmail.com').first() \
+            and not User.query.filter(User.username == 'g1zmo').first():
+        # admin_id = Employee.query.filter_by(first_name='admin').filter_by(last_name='admin').first().id
         user = User(
             username='g1zmo',
             email='volsteads.vault@gmail.com',
-            email_confirmed_at=datetime.utcnow(),
             # password_hash=bcrypt.generate_password_hash(os.getenv('VOL_ADMIN_PW')),
-            employee_id=admin_id
+            emp_id=admin_id
         )
         user.set_password(os.environ.get('VOL_ADMIN_PW'))
         user.roles.append(Role(name='Admin'))
@@ -131,7 +140,8 @@ def create_app(config_class=Config):
     db.init_app(app)
     db.create_all()
 
-    create_sudo()
+    admin_id = create_sudo_employee()
+    create_sudo_user(admin_id)
     create_users()
 
     migrate.init_app(app, db)
@@ -140,63 +150,65 @@ def create_app(config_class=Config):
     bootstrap.init_app(app)
     babel.init_app(app)
 
-    from vault.errors import bp as errors_bp
-    app.register_blueprint(errors_bp)
+    with app.app_context():
 
-    from vault.auth import bp as auth_bp
-    app.register_blueprint(auth_bp, url_prefix='/auth')
+        from .errors import bp as errors_bp
+        app.register_blueprint(errors_bp)
 
-    from vault.main import bp as main_bp
-    app.register_blueprint(main_bp)
+        from .auth import bp as auth_bp
+        app.register_blueprint(auth_bp, url_prefix='/auth')
 
-    if not app.debug and not app.testing:
+        from .main import bp as main_bp
+        app.register_blueprint(main_bp)
 
-        if app.config['MAIL_SERVER']:
-            auth = None
+        if not app.debug and not app.testing:
 
-            if app.config['MAIL_USERNAME'] or app.config['MAIL_PASSWORD']:
-                auth = (app.config['MAIL_USERNAME'], app.config['MAIL_PASSWORD'])
-            secure = None
+            if app.config['MAIL_SERVER']:
+                auth = None
 
-            if app.config['MAIL_USE_TLS'] is True:
-                secure = True
+                if app.config['MAIL_USERNAME'] or app.config['MAIL_PASSWORD']:
+                    auth = (app.config['MAIL_USERNAME'], app.config['MAIL_PASSWORD'])
+                secure = None
 
-            mail_handler = SMTPHandler(
-                mailhost=(app.config['MAIL_SERVER'], app.config['MAIL_PORT']),
-                fromaddr='no-reply@' + app.config['MAIL_SERVER'],
-                toaddrs=app.config['ADMINS'][0],
-                subject="Volstead's Vault Vexed",
-                credentials=auth,
-                secure=secure)
+                if app.config['MAIL_USE_TLS'] is True:
+                    secure = True
 
-            mail_handler.setLevel(logging.ERROR)
-            app.logger.addHandler(mail_handler)
+                mail_handler = SMTPHandler(
+                    mailhost=(app.config['MAIL_SERVER'], app.config['MAIL_PORT']),
+                    fromaddr='no-reply@' + app.config['MAIL_SERVER'],
+                    toaddrs=app.config['ADMINS'][0],
+                    subject="Volstead's Vault Vexed",
+                    credentials=auth,
+                    secure=secure)
 
-        if app.config['LOG_TO_STDOUT']:
-            stream_handler = logging.StreamHandler()
-            stream_handler.setLevel(logging.INFO)
-            app.logger.addHandler(stream_handler)
+                mail_handler.setLevel(logging.ERROR)
+                app.logger.addHandler(mail_handler)
 
-        else:
-            if not os.path.exists('logs'):
-                os.mkdir('logs')
-            file_handler = RotatingFileHandler('logs/volsteads.log', maxBytes=10240, backupCount=10)
-            file_handler.setFormatter(logging.Formatter(
-                '%(asctime)s %(levelname)s: %(message)s '
-                '[in %(pathname)s:%(lineno)d]'))
-            file_handler.setLevel(logging.INFO)
-            app.logger.addHandler(file_handler)
+            if app.config['LOG_TO_STDOUT']:
+                stream_handler = logging.StreamHandler()
+                stream_handler.setLevel(logging.INFO)
+                app.logger.addHandler(stream_handler)
 
-        app.logger.setLevel(logging.INFO)
-        app.logger.info("Volstead's Vault startup")
+            else:
+                if not os.path.exists('logs'):
+                    os.mkdir('logs')
+                file_handler = RotatingFileHandler('logs/volsteads.log', maxBytes=10240, backupCount=10)
+                file_handler.setFormatter(logging.Formatter(
+                    '%(asctime)s %(levelname)s: %(message)s '
+                    '[in %(pathname)s:%(lineno)d]'))
+                file_handler.setLevel(logging.INFO)
+                app.logger.addHandler(file_handler)
 
-    from vault import models
-    from vault.models import User, Employee
+            app.logger.setLevel(logging.INFO)
+            app.logger.info("Volstead's Vault startup")
 
-    @login.user_loader
-    def load_user(user_id):
-        return User.query.get(int(user_id))
+        from . import models
+        from .models import User, Employee
 
-    return app
+        @login.user_loader
+        def load_user(user_id):
+            return User.query.get(int(user_id))
 
-from vault import models
+        return app
+
+from . import models

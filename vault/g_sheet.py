@@ -7,8 +7,8 @@ import os
 import simplejson
 from flask import current_app
 
-from vault.main.employee_data_controller import EmployeeDataController
-from vault.main.shift_data_controller import ShiftDataController
+from .main.employee_data_controller import EmployeeDataController
+from .main.shift_data_controller import ShiftDataController
 from datetime import datetime
 from oauth2client.service_account import ServiceAccountCredentials
 # from oauth2client import service_account

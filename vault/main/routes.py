@@ -7,14 +7,14 @@ from flask_babel import _, get_locale
 from flask_user import roles_required
 
 from numpy import linspace
-from vault.main import bp
-from vault.main.employee_data_controller import EmployeeDataController
+from . import bp
+from .employee_data_controller import EmployeeDataController
 
-from vault.main.shift_data_controller import ShiftDataController
+from .shift_data_controller import ShiftDataController
 # import app.g_sheet as g_sheet
-from vault import models
-from vault import db
-from vault.g_sheet import GoogleSheetsMgr
+from .. import models
+from .. import db
+from ..g_sheet import GoogleSheetsMgr
 shift_hours_range = linspace(0.0, 9.0, num=19, retstep=True)
 employees = EmployeeDataController.instantiate_employees() # list of EmployeeDataController objects
 shift = ShiftDataController(employees)
@@ -23,7 +23,7 @@ g_sheet = GoogleSheetsMgr()
 @bp.before_app_request
 def before_request():
     if current_user.is_authenticated:
-        current_user.last_seen = datetime.now()
+        current_user.last_online = datetime.utcnow()
         db.session.commit()
     g.locale = str(get_locale())
 
