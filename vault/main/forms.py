@@ -3,7 +3,7 @@ from flask_wtf import FlaskForm
 from wtforms import StringField, SubmitField, TextAreaField
 from wtforms.validators import ValidationError, DataRequired, Length
 from flask_babel import _, lazy_gettext as _1
-from ...vault.models import User
+from vault.models import User
 
 
 class EditProfileForm(FlaskForm):

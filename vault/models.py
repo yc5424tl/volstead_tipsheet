@@ -13,9 +13,9 @@ from flask_login import UserMixin
 from sqlalchemy import CheckConstraint, create_engine, Index
 from sqlalchemy.orm import backref, sessionmaker
 from sqlalchemy.ext.declarative import declarative_base
-from . import db, login
-from .main.employee_data_controller import EmployeeDataController
-from .main.shift_data_controller import ShiftDataController
+from vault import db, login
+from vault.main.employee_data_controller import EmployeeDataController
+from vault.main.shift_data_controller import ShiftDataController
 
 Base = declarative_base()
 

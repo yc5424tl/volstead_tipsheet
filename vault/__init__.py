@@ -12,7 +12,7 @@ from flask_mail import Mail
 from flask_migrate import Migrate
 from flask_sqlalchemy import SQLAlchemy
 
-from ..config import Config
+from config import Config
 
 
 db = SQLAlchemy()
@@ -78,7 +78,7 @@ def create_users():
         user_list.append(d)
 
 
-    from .models import User, Role, Employee
+    from vault.models import User, Role, Employee
     from datetime import datetime
 
     for user_data in user_list:
@@ -100,7 +100,7 @@ def create_users():
 
 def create_sudo_employee():
 
-    from .models import Employee, User, Role
+    from vault.models import Employee, User, Role
     from datetime import datetime
 
     if not Employee.query.filter_by(first_name='admin').filter_by(last_name='admin').first():
@@ -113,7 +113,7 @@ def create_sudo_employee():
         return admin.id
 
 def create_sudo_user(admin_id):
-    from .models import Employee, User, Role
+    from vault.models import Employee, User, Role
     from datetime import datetime
 # Create 'admin@example.com' user with 'Admin' and 'Agent' roles
     if not User.query.filter(User.email == 'volsteads.vault@gmail.com').first() \
@@ -152,13 +152,13 @@ def create_app(config_class=Config):
 
     with app.app_context():
 
-        from .errors import bp as errors_bp
+        from vault.errors import bp as errors_bp
         app.register_blueprint(errors_bp)
 
-        from .auth import bp as auth_bp
+        from vault.auth import bp as auth_bp
         app.register_blueprint(auth_bp, url_prefix='/auth')
 
-        from .main import bp as main_bp
+        from vault.main import bp as main_bp
         app.register_blueprint(main_bp)
 
         if not app.debug and not app.testing:
@@ -202,8 +202,8 @@ def create_app(config_class=Config):
             app.logger.setLevel(logging.INFO)
             app.logger.info("Volstead's Vault startup")
 
-        from . import models
-        from .models import User, Employee
+        from vault import models
+        from vault.models import User, Employee
 
         @login.user_loader
         def load_user(user_id):
@@ -211,4 +211,4 @@ def create_app(config_class=Config):
 
         return app
 
-from . import models
+from vault import models

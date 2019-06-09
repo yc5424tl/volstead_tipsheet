@@ -7,14 +7,14 @@ from flask_babel import _, get_locale
 from flask_user import roles_required
 
 from numpy import linspace
-from . import bp
-from .employee_data_controller import EmployeeDataController
+from vault.main import bp
+from vault.main.employee_data_controller import EmployeeDataController
 
-from .shift_data_controller import ShiftDataController
+from vault.main.shift_data_controller import ShiftDataController
 # import app.g_sheet as g_sheet
-from .. import models
-from .. import db
-from ..g_sheet import GoogleSheetsMgr
+from vault import models, db
+from vault.g_sheet import GoogleSheetsMgr
+
 shift_hours_range = linspace(0.0, 9.0, num=19, retstep=True)
 employees = EmployeeDataController.instantiate_employees() # list of EmployeeDataController objects
 shift = ShiftDataController(employees)

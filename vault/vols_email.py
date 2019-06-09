@@ -7,7 +7,7 @@ from email.mime.multipart import MIMEMultipart
 import os
 from flask import current_app, copy_current_request_context
 from flask_mail import Message
-from . import mail
+from vault import mail
 from flask import render_template
 
 # def send_password_reset_email(user):

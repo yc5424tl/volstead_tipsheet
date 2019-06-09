@@ -2,9 +2,9 @@
 
 from flask import render_template, current_app
 from flask_babel import _
-from ...vault import LoginManager
+from vault import LoginManager
 
-from ...vault.vols_email import send_email
+from vault.vols_email import send_email
 
 
 # def send_password_reset_email():

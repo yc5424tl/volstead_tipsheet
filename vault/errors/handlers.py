@@ -1,6 +1,6 @@
 from flask import render_template, request
-from ...vault import db
-from ...vault.errors import bp
+from vault import db
+from vault.errors import bp
 
 @bp.app_errorhandler(404)
 def not_found_error(error):

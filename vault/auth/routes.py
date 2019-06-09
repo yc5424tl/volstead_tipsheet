@@ -6,10 +6,10 @@ from flask_user import roles_required
 from flask_babel import _
 from werkzeug.urls import url_parse
 
-from .. import db, vols_email, Config
-from . import bp
-from .forms import LoginForm, ResetPasswordRequestForm, ResetPasswordForm, RegistrationForm
-from ..models import User, Employee, Role
+from vault import db, vols_email, Config
+from vault.auth import bp
+from vault.auth.forms import LoginForm, ResetPasswordRequestForm, ResetPasswordForm, RegistrationForm
+from vault.models import User, Employee, Role
 
 
 # @bp.route('/login', methods=['GET', 'POST'])
