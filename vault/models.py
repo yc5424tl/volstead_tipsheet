@@ -6,9 +6,10 @@ from time import time
 import bcrypt
 import jwt
 import os
-from flask import current_app
+import argon2
+from flask import current_app, logging
 # from flask_bcrypt import generate_password_hash, check_password_hash
-# from werkzeug.security import generate_password_hash, check_password_hash
+from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import UserMixin
 from sqlalchemy import CheckConstraint, create_engine, Index
 from sqlalchemy.orm import backref, sessionmaker
@@ -18,7 +19,8 @@ from vault.main.employee_data_controller import EmployeeDataController
 from vault.main.shift_data_controller import ShiftDataController
 
 Base = declarative_base()
-
+ROUNDS = 5
+hasher = argon2.PasswordHasher()
 ##################################################################################################################################
 ##    USER
 ##################################################################################################################################
@@ -27,19 +29,15 @@ class User(UserMixin, db.Model):
 
     __tablename__ = 'users'
 
+    # Refactor models subclassing declarative base, which will allow the use of psql ilike and therefore multi-column uniqueness (i.e. first and last name) as a secondary index
     id = db.Column(db.Integer(), primary_key=True)
-    #***ILIKE***
     username           = db.Column(db.String(128), nullable=False, unique=True)
-    #***ILIKE***
     active             = db.Column('is_active', db.Boolean(), nullable=False, server_default='1')
     password_hash      = db.Column(db.String(255), nullable=False)
-    #***ILIKE***
     email              = db.Column(db.String(255), nullable=False, unique=True, index=True)
-    #***ILIKE***
     email_confirmed_at = db.Column(db.DateTime())
     last_online        = db.Column(db.DateTime(), default=datetime.utcnow)
     employee_id        = db.Column(db.Integer(), db.ForeignKey('employee.id'))
-    # employee           = db.relationship('Employee', backref=backref('user_by_employee', uselist=False), primaryjoin="User.employee_id == Employee.id",
     employee           = db.relationship('Employee', backref=backref('user_by_employee', uselist=False), primaryjoin="Employee.id == User.employee_id")
     roles              = db.relationship('Role', secondary='user_roles')
 
@@ -50,17 +48,33 @@ class User(UserMixin, db.Model):
         self.employee_id = emp_id
         self.email_confirmed_at = datetime.utcnow()
 
-
-
-
     def set_password(self, password):
-        self.password_hash = bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt())
-        # self.password_hash = generate_password_hash(password)
+        self.password_hash = hasher.hash(password)
 
     def check_password(self, password):
-        # return check_password_hash(self.password_hash, password)
-        # return bcrypt.checkpw(password.encode('utf-8'), self.password_hash)
-        return bcrypt.checkpw(password.encode('utf-8'), self.password_hash)
+        try:
+            hasher.verify(self.password_hash, password)
+            if hasher.check_needs_rehash(self.password_hash):
+                self.set_password(password)
+            return True
+        except argon2.exceptions.VerifyMismatchError:
+            return False
+        except argon2.exceptions.VerificationError:
+            return False
+        except argon2.exceptions.InvalidHash:
+            return False
+
+
+
+    # def set_password(self, password):
+    #     self.password_hash = bcrypt.hashpw(password.encode('utf-8'), None)
+    #     # self.password_hash = generate_password_hash(password)
+    #
+    # def check_password(self, password):
+    #     # return check_password_hash(self.password_hash, password)
+    #     # return bcrypt.checkpw(password.encode('utf-8'), self.password_hash)
+    #     return self.password_hash == bcrypt.hashpw(password.encode('utf-8')).decode()
+    #     # return bcrypt.checkpw(password, self.password_hash)
 
     def avatar(self, size):
         digest = md5(self.email.lower().encode('utf-8')).hexdigest()

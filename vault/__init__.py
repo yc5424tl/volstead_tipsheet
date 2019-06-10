@@ -12,6 +12,8 @@ from flask_mail import Mail
 from flask_migrate import Migrate
 from flask_sqlalchemy import SQLAlchemy
 from config import Config
+from redis import Redis
+
 
 
 db = SQLAlchemy()
@@ -22,7 +24,7 @@ login.login_message = _1('Authorized Users Must Log In To Access This Page')
 mail = Mail()
 bootstrap = Bootstrap()
 babel = Babel()
-
+redis = Redis()
 
 user_first = ['Marley',
               'Jacob',

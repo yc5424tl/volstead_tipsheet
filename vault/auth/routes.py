@@ -25,6 +25,22 @@ handler.setFormatter(formatter)
 root.addHandler(handler)
 
 
+@bp.route('/login', methods=['GET', 'POST'])
+def login():
+    if current_user.is_authenticated:
+        return redirect(url_for('main.start_report'))
+    form = LoginForm()
+    if form.validate_on_submit():
+        user = User.query.filter_by(username=form.username.data).first()
+        if ( user is None ) or ( not user.check_password(form.password.data) ):
+            flash('Invalid username and/or password')
+            return redirect(url_for('auth.login'))
+        login_user(user, remember=form.remember_me.data)
+        next_page = request.args.get('next')
+        if not next_page or url_parse(next_page).netloc != '':
+            next_page = url_for('main.start_report')
+        return redirect(next_page)
+    return render_template('login.html', title='Sign In', form=form)
 
 # @bp.route('/login', methods=['GET', 'POST'])
 #
@@ -63,39 +79,42 @@ root.addHandler(handler)
 #         signin_form = LoginForm()
 #         return render_template('login.html', form=signin_form, title=_('Sign In'))
 
-@bp.route('/login', methods=['GET', 'POST'])
-def login():
-    if current_user.is_authenticated:
-        return redirect(url_for('main.start_report'))
-    form = LoginForm()
-    if form.validate_on_submit():
-        root.info('in form.validate_on_submit() in auth.routes')
-        user = User.query.filter_by(username=form.username.data).first()
-        root.info('=======================')
-        root.info('form.username.data ->')
-        root.info(form.username.data)
-        root.info('======================')
-        root.info('user ->')
-        root.info(user)
-        root.info('=======================')
-        root.info('form.password.data ->')
-        root.info(form.password.data)
-        root.info('=======================')
-        root.info('request.form.get("password") ->')
-        root.info(request.form.get('password'))
-        root.info('=======================')
-        root.info('request.form.get("username") ->')
-        root.info(request.form.get('username'))
-        root.info('========================')
-        if user is None or not user.check_password(form.password.data):
-            flash('Invalid username and/or password')
-            return redirect(url_for('auth.login'))
-        login_user(user, remember=form.remember_me.data)
-        next_page = request.args.get('next')
-        if not next_page or url_parse(next_page).netloc != '':
-            next_page = url_for('main.start_report')
-        return redirect(next_page)
-    return render_template('login.html', title='Sign In', form=form)
+# @bp.route('/login', methods=['GET', 'POST'])
+# def login():
+#     if current_user.is_authenticated:
+#         return redirect(url_for('main.start_report'))
+#     form = LoginForm()
+#     if form.validate_on_submit():
+#         root.info('in form.validate_on_submit() in auth.routes')
+#         user = User.query.filter_by(username=form.username.data).first()
+#         root.info('=======================')
+#         root.info('form.username.data ->')
+#         root.info(form.username.data)
+#         root.info('======================')
+#         root.info('user ->')
+#         root.info(user)
+#         root.info('=======================')
+#         root.info('form.password.data ->')
+#         root.info(form.password.data)
+#         root.info('=======================')
+#         root.info('request.form.get("password") ->')
+#         root.info(request.form.get('password'))
+#         root.info('=======================')
+#         root.info('request.form.get("username") ->')
+#         root.info(request.form.get('username'))
+#         root.info('========================')
+#         root.info('password_hash ->')
+#         root.info(user.password_hash)
+#         root.info('========================')
+#         if user is None or not user.check_password(form.password.data):
+#             flash('Invalid username and/or password')
+#             return redirect(url_for('auth.login'))
+#         login_user(user, remember=form.remember_me.data)
+#         next_page = request.args.get('next')
+#         if not next_page or url_parse(next_page).netloc != '':
+#             next_page = url_for('main.start_report')
+#         return redirect(next_page)
+#     return render_template('login.html', title='Sign In', form=form)
 
 @bp.route('/logout')
 def logout():
