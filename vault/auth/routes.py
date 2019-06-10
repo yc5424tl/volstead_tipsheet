@@ -45,7 +45,6 @@ def login():
 
 
         if user and user.check_password(form.password.data):
-            user.is_authenticated = True
             db.session.add(user)
             db.session.commit()
             login_mgr.login_user(user, remember=form.remember_me.data)
@@ -158,7 +157,6 @@ def login():
 @login_required
 def logout():
     user = current_user
-    user.authenticated = False
     user.active = False
     db.session.add(user)
     db.session.commit()
