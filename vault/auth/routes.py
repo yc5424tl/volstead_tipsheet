@@ -10,8 +10,10 @@ from vault import db, vols_email, Config
 from vault.auth import bp
 from vault.auth.forms import LoginForm, ResetPasswordRequestForm, ResetPasswordForm, RegistrationForm
 from vault.models import User, Employee, Role
+from logging import Logger, DEBUG
 
-
+log = Logger
+log.level=DEBUG
 
 
 
@@ -58,24 +60,24 @@ def login():
         return redirect(url_for('main.start_report'))
     form = LoginForm()
     if form.validate_on_submit():
-        current_app.logger.debug('in form.validate_on_submit() in auth.routes')
+        log('in form.validate_on_submit() in auth.routes')
         user = User.query.filter_by(username=form.username.data).first()
-        current_app.logger.debug('=======================')
-        current_app.logger.debug('form.username.data ->')
-        current_app.logger.debug(form.username.data)
-        current_app.logger.debug('======================')
-        current_app.logger.debug('user ->')
-        current_app.logger.debug(user)
-        current_app.logger.debug('=======================')
-        current_app.logger.debug('form.password.data ->')
-        current_app.logger.debug(form.password.data)
-        current_app.logger.debug('=======================')
-        current_app.logger.debug('request.form.get("password") ->')
-        current_app.logger.debug(request.form.get('password'))
-        current_app.logger.debug('=======================')
-        current_app.logger.debug('request.form.get("username") ->')
-        current_app.logger.debug(request.form.get('username'))
-        current_app.logger.debug('========================')
+        log('=======================')
+        log('form.username.data ->')
+        log(form.username.data)
+        log('======================')
+        log('user ->')
+        log(user)
+        log('=======================')
+        log('form.password.data ->')
+        log(form.password.data)
+        log('=======================')
+        log('request.form.get("password") ->')
+        log(request.form.get('password'))
+        log('=======================')
+        log('request.form.get("username") ->')
+        log(request.form.get('username'))
+        log('========================')
         if user is None or not user.check_password(form.password.data):
             flash('Invalid username and/or password')
             return redirect(url_for('auth.login'))
