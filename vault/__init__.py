@@ -3,6 +3,9 @@ import logging
 import os
 from logging.handlers import SMTPHandler, RotatingFileHandler
 import gunicorn
+import redis
+from redis_session.flask_session import setup_session
+import redis_session
 from gunicorn import errors
 from flask import Flask
 from flask_babel import Babel, lazy_gettext as _1
@@ -10,10 +13,9 @@ from flask_bootstrap import Bootstrap
 from flask_login import LoginManager
 from flask_mail import Mail
 from flask_migrate import Migrate
+# from flask_sessions import Session
 from flask_sqlalchemy import SQLAlchemy
 from config import Config
-from redis import Redis
-
 
 
 db = SQLAlchemy()
@@ -24,7 +26,8 @@ login.login_message = _1('Authorized Users Must Log In To Access This Page')
 mail = Mail()
 bootstrap = Bootstrap()
 babel = Babel()
-redis = Redis()
+# session = Session()
+
 
 user_first = ['Marley',
               'Jacob',
@@ -147,6 +150,9 @@ def create_app(config_class=Config):
     mail.init_app(app)
     bootstrap.init_app(app)
     babel.init_app(app)
+    # session.init_app(app)
+
+
 
     if __name__ != '__main__':
         gunicorn_logger = logging.getLogger('gunicorn.error')

@@ -137,8 +137,8 @@ def start_report():
 
 
 @bp.route('/register_user', methods=['GET', 'POST'])
-@login_required
 @roles_required('Admin')
+@login_required
 def register_user():
     return render_template('register.html')
 

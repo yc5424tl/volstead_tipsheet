@@ -1,16 +1,19 @@
 # coding=utf-8
-
+# import os
+# import redis
 from flask import render_template, redirect, url_for, flash, request, current_app
 from flask_login import login_user, logout_user, current_user, login_required
 from flask_user import roles_required
 from flask_babel import _
 from werkzeug.urls import url_parse
+# import flask
 
-from vault import db, vols_email, Config
+from vault import db, vols_email, login as login_mgr
 from vault.auth import bp
 from vault.auth.forms import LoginForm, ResetPasswordRequestForm, ResetPasswordForm, RegistrationForm
-from vault.models import User, Employee, Role
-from logging import Logger, DEBUG
+from vault.models import User
+# from config import Config
+# from logging import Logger, DEBUG
 
 import logging
 import sys
@@ -24,22 +27,57 @@ formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(messag
 handler.setFormatter(formatter)
 root.addHandler(handler)
 
+# r = redis.from_url(os.environ.get('REDIS_URL'))
+
+@login_mgr.user_loader
+def user_loader(user_id):
+    return User.query.get(user_id)
 
 @bp.route('/login', methods=['GET', 'POST'])
 def login():
     if current_user.is_authenticated:
+        print('user.is.authenticated at start of login')
         return redirect(url_for('main.start_report'))
     form = LoginForm()
     if form.validate_on_submit():
+        print('in login.form.validate_on_submit')
         user = User.query.filter_by(username=form.username.data).first()
+
+
+        if user and user.check_password(form.password.data):
+            user.is_authenticated = True
+            db.session.add(user)
+            db.session.commit()
+            login_mgr.login_user(user, remember=form.remember_me.data)
+            return redirect(url_for('main.start_report'))
+
         if ( user is None ) or ( not user.check_password(form.password.data) ):
+            print('User ->')
+            print(user)
+
+            print('form.password.data ->')
+            print(form.password.data)
+            print('user.password_hash ->')
+            if user:
+                if user.password_hash:
+                    print(str(user.password_hash))
+                    print('user.check_password(form.password.data ->')
+                    print(user.check_password(form.password.data))
+                else:
+                    print('no user.password_hash')
+            else:
+                print('user is None')
             flash('Invalid username and/or password')
             return redirect(url_for('auth.login'))
-        login_user(user, remember=form.remember_me.data)
+        login_mgr.login_user(user, remember=form.remember_me.data)
+        # flask.session['user_id'] = user.id
         next_page = request.args.get('next')
         if not next_page or url_parse(next_page).netloc != '':
             next_page = url_for('main.start_report')
+        # r.set("username", user.username)
+        flash('Login Successful')
         return redirect(next_page)
+    flash('There was an error processing your submission, please try again.')
     return render_template('login.html', title='Sign In', form=form)
 
 # @bp.route('/login', methods=['GET', 'POST'])
@@ -117,9 +155,22 @@ def login():
 #     return render_template('login.html', title='Sign In', form=form)
 
 @bp.route('/logout')
+@login_required
 def logout():
-    logout_user()
+    user = current_user
+    user.authenticated = False
+    user.active = False
+    db.session.add(user)
+    db.session.commit()
+    login_mgr.logout_user()
+    flash('Sign Out Successful')
     return redirect(url_for('auth.login'))
+
+    # if 'user_id' in session:
+    #     flask.session.pop('user_id')
+    # login_mgr.logout_user()
+    # flash('Sign Out Successful')
+    # return redirect(url_for('auth.login'))
 
 @bp.route('/reset_password_request', methods=['GET', 'POST'])
 def reset_password_request():
@@ -163,8 +214,8 @@ def reset_password(token):
     return render_template('reset_password.html', form=form)
 
 @bp.route('/register', methods=['GET', 'POST'])
-@login_required
 @roles_required('Admin')
+@login_required
 def register():
     form = RegistrationForm()
     if form.validate_on_submit():

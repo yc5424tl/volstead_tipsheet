@@ -3,16 +3,16 @@ from datetime import datetime
 from hashlib import md5
 from time import time
 
-import bcrypt
+# import bcrypt
 import jwt
-import os
+# import os
 import argon2
-from flask import current_app, logging
+from flask import current_app
 # from flask_bcrypt import generate_password_hash, check_password_hash
-from werkzeug.security import generate_password_hash, check_password_hash
+# from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import UserMixin
-from sqlalchemy import CheckConstraint, create_engine, Index
-from sqlalchemy.orm import backref, sessionmaker
+from sqlalchemy import CheckConstraint
+from sqlalchemy.orm import backref
 from sqlalchemy.ext.declarative import declarative_base
 from vault import db, login
 from vault.main.employee_data_controller import EmployeeDataController

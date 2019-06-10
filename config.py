@@ -1,5 +1,4 @@
 import os
-import urllib.parse
 
 basedir = os.path.abspath(os.path.dirname(__file__))
 
@@ -17,10 +16,19 @@ class Config(object):
         SERVER_NAME = 'volsteads.vault:5000'
         DEBUG = True
         SQLALCHEMY_DATABASE_URI = os.environ.get('VOL_DB_LOCAL')
-        SESSION_TYPE = 'filesystem'
-        SESSION_COOKIE_DOMAIN = 'localhost.localdomain'
-        SESSION_COOKIE_SECURE = False  # True will cause CSRF to fail.
+        # SESSION_TYPE = 'filesystem'
+        # SESSION_COOKIE_DOMAIN = 'localhost.localdomain'
+        # SESSION_COOKIE_SECURE = False  # True will cause CSRF to fail.
 
+    # SESSION_TYPE = 'redis'
+    # SESSION_REDIS = redis.StrictRedis.from_url(os.environ.get('REDIS_URL'))
+    # SESSION_REDIS_PREFIX = 'sessionID:'
+    # SESSION_COOKIE_ID = 'volsteads.vault-session-id'
+    # SESSION_COOKIE_HTTP_ONLY = True
+    # SESSION_COOKIE_SECURE = False
+    # SESSION_COOKIE_DOMAIN = '.heroku.com'
+    # SESSION_COOKIE_PATH = '/'
+    # SESSION_EXPIRE = 6000
     # DATABASE_URI = os.environ.get('VOL_DB_LOCAL')
 
     # SQLALCHEMY_DATABASE_URI = os.environ.get('VOL_SQL_DB') or 'sqlite:///' + os.path.join(basedir, 'volsteads_vault.db')
