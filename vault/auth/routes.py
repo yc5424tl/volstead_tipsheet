@@ -47,7 +47,7 @@ def login():
         if user and user.check_password(form.password.data):
             db.session.add(user)
             db.session.commit()
-            login_mgr.login_user(user, remember=form.remember_me.data)
+            login_user(user, remember=form.remember_me.data)
             return redirect(url_for('main.start_report'))
 
         if ( user is None ) or ( not user.check_password(form.password.data) ):
