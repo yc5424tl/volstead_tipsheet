@@ -198,7 +198,9 @@ form {
     background: url("../img/vol_lib_port.jpg") no-repeat;
     /*background: url("../img/vol_lib_port_bar.jpg") repeat-y;*/
     width: 100%;
+    min-height: 80vh;
     margin: 0;
+    bottom: 0;
 }
 
 .denom-label{

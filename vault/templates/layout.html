@@ -57,17 +57,20 @@
                             <div class="collapse navbar-collapse" id="nav-target">
                                 <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
                                     <li class="nav-item">
-                                        <a class="{{ url_for('main.start_report') }}">Start Report</a>
+                                        <a class="{{ url_for('main.start_report') }}"><button class="btn btn-group btn-block">Start Report</button></a>
                                     </li>
                                     {% if current_user.is_authenticated %}
                                         <li class="nav-item">
-                                            <a class="{{ url_for('auth.logout') }}">Logout</a>
+                                            <a class="{{ url_for('auth.logout') }}"><button class="btn btn-group btn-block">Logout</button>></a>
                                         </li>
                                     {% else %}
                                         <li class="nav-item">
-                                            <a class="{{ url_for('auth.login') }}">Login</a>
+                                            <a class="{{ url_for('auth.login') }}"><button class="btn btn-group btn-block">Login</button></a>
                                         </li>
                                     {% endif %}
+                                    <li class="nav-item">
+                                        <a class="{{ url_for('auth.register') }}"><button class="btn btn-group btn-block">Registration</button></a>
+                                    </li>
                                 </ul>
                             </div>
                         </nav>
