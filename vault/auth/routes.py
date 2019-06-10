@@ -12,8 +12,17 @@ from vault.auth.forms import LoginForm, ResetPasswordRequestForm, ResetPasswordF
 from vault.models import User, Employee, Role
 from logging import Logger, DEBUG
 
-log = Logger
-log.level=DEBUG
+import logging
+import sys
+
+root = logging.getLogger()
+root.setLevel(logging.DEBUG)
+
+handler = logging.StreamHandler(sys.stdout)
+handler.setLevel(logging.DEBUG)
+formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+handler.setFormatter(formatter)
+root.addHandler(handler)
 
 
 
@@ -60,24 +69,24 @@ def login():
         return redirect(url_for('main.start_report'))
     form = LoginForm()
     if form.validate_on_submit():
-        log('in form.validate_on_submit() in auth.routes')
+        root.info('in form.validate_on_submit() in auth.routes')
         user = User.query.filter_by(username=form.username.data).first()
-        log('=======================')
-        log('form.username.data ->')
-        log(form.username.data)
-        log('======================')
-        log('user ->')
-        log(user)
-        log('=======================')
-        log('form.password.data ->')
-        log(form.password.data)
-        log('=======================')
-        log('request.form.get("password") ->')
-        log(request.form.get('password'))
-        log('=======================')
-        log('request.form.get("username") ->')
-        log(request.form.get('username'))
-        log('========================')
+        root.info('=======================')
+        root.info('form.username.data ->')
+        root.info(form.username.data)
+        root.info('======================')
+        root.info('user ->')
+        root.info(user)
+        root.info('=======================')
+        root.info('form.password.data ->')
+        root.info(form.password.data)
+        root.info('=======================')
+        root.info('request.form.get("password") ->')
+        root.info(request.form.get('password'))
+        root.info('=======================')
+        root.info('request.form.get("username") ->')
+        root.info(request.form.get('username'))
+        root.info('========================')
         if user is None or not user.check_password(form.password.data):
             flash('Invalid username and/or password')
             return redirect(url_for('auth.login'))
