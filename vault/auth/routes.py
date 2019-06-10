@@ -6,11 +6,12 @@ from flask_user import roles_required
 from flask_babel import _
 from werkzeug.urls import url_parse
 
-from vault import db, vols_email, Config
+from vault import db, vols_email, Config, Logger
 from vault.auth import bp
 from vault.auth.forms import LoginForm, ResetPasswordRequestForm, ResetPasswordForm, RegistrationForm
 from vault.models import User, Employee, Role
 
+log = Logger()
 
 # @bp.route('/login', methods=['GET', 'POST'])
 #
@@ -65,16 +66,13 @@ def login():
         print(user)
         print('=======================')
         print('form.password.data ->')
-        print(form.password.data)
+        log(form.password.data)
         print('=======================')
-        print('request.data ->')
-        print(request.data)
+        print('request.form.get("password") ->')
+        print(request.form.get('password'))
         print('=======================')
-        print('request.form["password"] ->')
-        print(request.form['password'])
-        print('=======================')
-        print('request.form.username ->')
-        print(request.form.username)
+        print('request.form.get("username") ->')
+        print(request.form.get('username'))
         print('========================')
         if user is None or not user.check_password(form.password.data):
             flash('Invalid username and/or password')

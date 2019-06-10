@@ -2,8 +2,8 @@
 import logging
 import os
 from logging.handlers import SMTPHandler, RotatingFileHandler
-
-import bcrypt
+import gunicorn
+from gunicorn import errors
 from flask import Flask
 from flask_babel import Babel, lazy_gettext as _1
 from flask_bootstrap import Bootstrap
@@ -11,7 +11,6 @@ from flask_login import LoginManager
 from flask_mail import Mail
 from flask_migrate import Migrate
 from flask_sqlalchemy import SQLAlchemy
-
 from config import Config
 
 
@@ -66,8 +65,6 @@ user_email = ['marleygirl22@gmail.com',
          'jjsong@gmail.com',
          'cthompson369@outlook.com',
          'natalie.erin.goodwin@gmail.com']
-
-
 
 
 def create_users():
@@ -131,7 +128,6 @@ def create_sudo_user(admin_id):
         db.session.add(user)
         db.session.commit()
 
-
 def create_app(config_class=Config):
     app = Flask(__name__)
     app.config.from_object(config_class)
@@ -149,6 +145,11 @@ def create_app(config_class=Config):
     mail.init_app(app)
     bootstrap.init_app(app)
     babel.init_app(app)
+
+    if __name__ != '__main__':
+        gunicorn_logger = logging.getLogger('gunicorn.error')
+        app.logger.handlers = gunicorn_logger.handlers
+        app.logger.setLevel(gunicorn_logger.level)
 
     with app.app_context():
 
