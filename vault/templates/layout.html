@@ -87,28 +87,28 @@
                         </a>
                     </li>
 
-                    {% if 'Admin' in current_user.roles %}
-                    <li class="nav-item">
-                        <div class="dropdown nav-item btn-nav">
-                            <button class="btn dropdown-toggle" type="button" id="nav-dd-btn">
-                                ADMIN
-                            </button>
-                        </div>
-                        <div class="dropdown-menu">
-                            <a class="dropdown-item nav-link" href='{{ url_for("admin.users.register") }}'>
-                                ADD USER
-                            </a>
-                            <a class="dropdown-item nav-link" href='#' {# {{ url_for("admin.users.update") }} #}>
-                                MODIFY USER
-                            </a>
-                            <a class="dropdown-item nav-link" href='#' {# {{ url_for("admin.users.delete") }} #}>
-                                86 USER
-                            </a>
-                            <a class="dropdown-item nav-link" href='#' {# {{ url_for("admin.gsheet") }} #}>
-                                SHIFT REPORTS
-                            </a>
-                        </div>
-                    </li>
+                    {% if Role.Admin in current_user.roles %}
+                        <li class="nav-item">
+                            <div class="dropdown nav-item btn-nav">
+                                <button class="btn dropdown-toggle" type="button" id="nav-dd-btn">
+                                    ADMIN
+                                </button>
+                            </div>
+                            <div class="dropdown-menu">
+                                <a class="dropdown-item nav-link" href='{{ url_for("admin.users.register") }}'>
+                                    ADD USER
+                                </a>
+                                <a class="dropdown-item nav-link" href='#' {# {{ url_for("admin.users.update") }} #}>
+                                    MODIFY USER
+                                </a>
+                                <a class="dropdown-item nav-link" href='#' {# {{ url_for("admin.users.delete") }} #}>
+                                    86 USER
+                                </a>
+                                <a class="dropdown-item nav-link" href='#' {# {{ url_for("admin.gsheet") }} #}>
+                                    SHIFT REPORTS
+                                </a>
+                            </div>
+                        </li>
                     {% endif %}
 
                 {% else %}

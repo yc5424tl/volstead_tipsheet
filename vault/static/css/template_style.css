@@ -83,15 +83,27 @@ h2 {
     top: 0;
     margin-top: 0;
     padding-top: 0;
-     background-image: linear-gradient(
-            rgba(221,188,10, .02)  37%,
-            rgba(221,188,10, .05)  46%,
-            rgba(221,188,10, 0.1)  55%,
-            rgba(221,188,10, 0.2)  64%,
-            rgba(221,188,10, 0.3)  73%,
-            rgba(221,188,10, 0.4)  82%,
-            rgba(221,188,10, 0.5)  91%,
-            rgba(221,188,10, 0.6)  100%
+
+    background-image: linear-gradient(
+            rgba(60, 160, 178, .02)  37%,
+            rgba(60, 160, 178, .05)  46%,
+            rgba(60, 160, 178, 0.1)  55%,
+            rgba(60, 160, 178, 0.2)  64%,
+            rgba(60, 160, 178, 0.3)  73%,
+            rgba(60, 160, 178, 0.4)  82%,
+            rgba(60, 160, 178, 0.5)  91%,
+            rgba(60, 160, 178, 0.7) 100%
+
+        /*region Alt Gradients*/
+        /*background-image: linear-gradient(*/
+            /*rgba(221,188,10, .02)  37%,*/
+            /*rgba(221,188,10, .05)  46%,*/
+            /*rgba(221,188,10, 0.1)  55%,*/
+            /*rgba(221,188,10, 0.2)  64%,*/
+            /*rgba(221,188,10, 0.3)  73%,*/
+            /*rgba(221,188,10, 0.4)  82%,*/
+            /*rgba(221,188,10, 0.5)  91%,*/
+            /*rgba(221,188,10, 0.6)  100%*/
     /*background-image: linear-gradient(*/
             /*rgba(92,87,80, 0.0)   0%,*/
             /*rgba(92,87,80, 0.1)  60%,*/
@@ -99,6 +111,7 @@ h2 {
             /*rgba(92,87,80, 0.3)  80%,*/
             /*rgba(92,87,80, 0.5)  90%,*/
             /*rgba(221,188,10, 0.7)  100%*/
+        /*endregion*/
     );
       box-shadow: 0 0 8px 8px black inset;
     /*https://codepen.io/komejo/pen/RgwrZb*/
