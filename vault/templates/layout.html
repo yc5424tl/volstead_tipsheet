@@ -87,7 +87,7 @@
                         </a>
                     </li>
 
-                    {% if Role.Admin in current_user.roles %}
+                    {% if ('admin' or 'Admin') in current_user.roles %}
                         <li class="nav-item">
                             <div class="dropdown nav-item btn-nav">
                                 <button class="btn dropdown-toggle" type="button" id="nav-dd-btn">
