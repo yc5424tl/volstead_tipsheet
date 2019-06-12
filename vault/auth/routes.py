@@ -11,7 +11,7 @@ from werkzeug.urls import url_parse
 from vault import db, vols_email, login as login_mgr
 from vault.auth import bp
 from vault.auth.forms import LoginForm, ResetPasswordRequestForm, ResetPasswordForm, RegistrationForm
-from vault.models import User
+from vault.models import User, Role
 # from config import Config
 # from logging import Logger, DEBUG
 
@@ -45,6 +45,7 @@ def login():
 
 
         if user and user.check_password(form.password.data):
+            user.active = True
             db.session.add(user)
             db.session.commit()
             login_user(user, remember=form.remember_me.data)
@@ -160,7 +161,7 @@ def logout():
     user.active = False
     db.session.add(user)
     db.session.commit()
-    login_mgr.logout_user()
+    logout_user()
     flash('Sign Out Successful')
     return redirect(url_for('auth.login'))
 
@@ -212,18 +213,26 @@ def reset_password(token):
     return render_template('reset_password.html', form=form)
 
 @bp.route('/register', methods=['GET', 'POST'])
-@roles_required('Admin')
+# @roles_required('Admin')
 @login_required
 def register():
-    form = RegistrationForm()
-    if form.validate_on_submit():
-        user = User(username=form.username.data, email=form.email.data)
-        user.set_password(form.password.data)
-        db.session.add(user)
-        db.session.commit()
-        flash(user.username + ' successfully registered.')
-        return redirect(url_for('admin_panel'))
-    return render_template('register.html', title='Register New User', form=form)
+    print('current_user.roles ->')
+    print(current_user.roles)
+    for role in current_user.roles:
+        if role.name == 'Admin':
+            form = RegistrationForm()
+            if form.validate_on_submit():
+                user = User(username=form.username.data, email=form.email.data)
+                user.set_password(form.password.data)
+                db.session.add(user)
+                db.session.commit()
+                flash(user.username + ' successfully registered.')
+                return redirect(url_for('auth.login'))
+            flash('Invalid Form Submission, Please Try Again')
+            return render_template('register.html', title='Register New User', form=form)
+    flash('Insufficient Authorization')
+    return redirect(url_for('auth.login'))
+
 
 # @login.user_loader
 # def load_user(user_id):

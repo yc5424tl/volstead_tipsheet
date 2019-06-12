@@ -1,94 +1,210 @@
 {% extends "bootstrap/base.html" %}
-{#<!DOCTYPE html>#}
-{#<html lang="en">#}
-{##}
-{#<head>#}
-    {% block head %}
-        {{ super() }}
 
-        <title>Volstead's Vault {% block title %}{% endblock %}</title>
+{% block head %}
+    {{ super() }}
+    <title>Volstead's Vault{% block title %}
+    {% endblock %}</title>
 
-        {% block metas %}
-            <meta charset="UTF-8">
-            <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-        {% endblock %}
-
-        {% block styles %}
-{#            <link href="{{ bootstrap_find_resource('css/bootstrap.css', cdn='bootstrap') }}" rel="stylesheet">#}
-            <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
-                  rel="stylesheet"
-                  integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
-                  crossorigin="anonymous">
-            <link rel=stylesheet href={{ url_for('static', filename='css/template_style.css') }}>
-            <link href="https://fonts.googleapis.com/css?family=Bilbo+Swash+Caps|Clicker+Script|Euphoria+Script|Italianno|Meddon|Niconne" rel="stylesheet">
-            <link href="https://fonts.googleapis.com/css?family=Almendra+Display|Anaheim|Berkshire+Swash|Economica|Federo|Fondamento|Griffy|Josefin+Sans|Jura|M+PLUS+Rounded+1c|Marmelad|Maven+Pro|Metrophobic|Mystery+Quest|NTR|Niramit|Quattrocento+Sans|Rajdhani|Ruge+Boogie|Saira|Sawarabi+Mincho|Spirax|Stylish|Supermercado+One|Thasadith" rel="stylesheet">
-        {% endblock %}
-
+    {% block metas %}
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     {% endblock %}
-{#</head>#}
 
-{#<body>#}
-    {% with messages = get_flashed_messages() %}
-      {% if messages %}
+    {% block styles %}
+        <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+              rel="stylesheet"
+              integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+              crossorigin="anonymous">
+        <link rel=stylesheet
+              href={{ url_for('static',
+              filename='css/template_style.css') }}>
+        <link href="https://fonts.googleapis.com/css?family=Niconne|Federo|Megrim|Codystar|Monofett|Bungee+Outline|Gugi|Poiret+One|Montserrat+Subrayada|Text+Me+One|Chathura"
+              rel="stylesheet">
+    {% endblock %}
+
+{% endblock %}
+
+{% with messages = get_flashed_messages() %}
+    {% if messages %}
         <ul class=flashes>
-        {% for message in messages %}
-          <li>{{ message }}</li>
-        {% endfor %}
+            {% for message in messages %}
+                <li>{{ message }}</li>
+            {% endfor %}
         </ul>
-      {% endif %}
-    {% endwith %}
+    {% endif %}
+{% endwith %}
 
-    {% block content %}
-        <div class="container">
-            <div class="container-fluid px-0">
-                <div class="row mx-0">
+{% block content %}
 
-                   <div class="col-12 px-0" id="image-div">#}
-                        <img class="img-fluid w-100" id="banner-image" src="{{ url_for('static', filename='img/marquee-Volstead.jpg') }}">
-                    </div>
 
-                    <div class="col-12 nav-wrapper">
-                        <nav class="navbar navbar-expand-sm navbar-dark" role="navigation">
-                           <a class="navbar-brand" href="#">Volstead's Vault</a>
-                            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="nav-target">
-                                <span class="navbar-toggler-icon"></span>
+
+    <div class="col-12 px-0" id="image-div">
+        <img class="img-fluid w-100 h-100" id="banner-image" src="{{ url_for('static', filename='img/marquee-Volstead.jpg') }}">
+    </div>
+
+    <nav class="navbar navbar-expand-md">
+
+{#        <a class="navbar-brand" href="#">#}
+{#            V<span id="nav-span-1">olstead's</span>#}
+{#            V<span id="nav-span-2">ault</span>#}
+{#        </a>#}
+
+        <button class="navbar-toggler p-0 border-0" type="button" data-toggle="offcanvas">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="navbar-collapse offcanvas-collapse" id="sidebar-div">
+
+{#            <hr class="sidebar-hr">#}
+
+            <ul class="navbar-nav flex-container text-center">
+
+                {% if current_user.is_authenticated %}
+
+                    <li class="nav-item">
+                        <a class="nav-link" id="nav-username" href="#">
+                            {% if '@' in current_user.username %}
+                                {{ current_user.username.split('@')[0]|upper }}
+                            {% else %}
+                                {{ current_user.username|upper }}
+                            {% endif %}
+                        </a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link" href='{{ url_for("main.start_report") }}'>
+                            START REPORT
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href='#' {# {{ url_for("user.<username>") }} #}>
+                            PROFILE
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for("auth.logout") }}">
+                            LOGOUT
+                        </a>
+                    </li>
+
+                    {% if 'Admin' in current_user.roles %}
+                    <li class="nav-item">
+                        <div class="dropdown nav-item btn-nav">
+                            <button class="btn dropdown-toggle" type="button" id="nav-dd-btn">
+                                ADMIN
                             </button>
+                        </div>
+                        <div class="dropdown-menu">
+                            <a class="dropdown-item nav-link" href='{{ url_for("admin.users.register") }}'>
+                                ADD USER
+                            </a>
+                            <a class="dropdown-item nav-link" href='#' {# {{ url_for("admin.users.update") }} #}>
+                                MODIFY USER
+                            </a>
+                            <a class="dropdown-item nav-link" href='#' {# {{ url_for("admin.users.delete") }} #}>
+                                86 USER
+                            </a>
+                            <a class="dropdown-item nav-link" href='#' {# {{ url_for("admin.gsheet") }} #}>
+                                SHIFT REPORTS
+                            </a>
+                        </div>
+                    </li>
+                    {% endif %}
 
-                            <div class="collapse navbar-collapse" id="nav-target">
-                                <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
-                                    <li class="nav-item">
-                                        <a class="{{ url_for('main.start_report') }}"><button class="btn btn-group btn-block">Start Report</button></a>
-                                    </li>
-                                    {% if current_user.is_authenticated %}
-                                        <li class="nav-item">
-                                            <a class="{{ url_for('auth.logout') }}"><button class="btn btn-group btn-block">Logout</button>></a>
-                                        </li>
-                                    {% else %}
-                                        <li class="nav-item">
-                                            <a class="{{ url_for('auth.login') }}"><button class="btn btn-group btn-block">Login</button></a>
-                                        </li>
-                                    {% endif %}
-                                    <li class="nav-item">
-                                        <a class="{{ url_for('auth.register') }}"><button class="btn btn-group btn-block">Registration</button></a>
-                                    </li>
-                                </ul>
-                            </div>
-                        </nav>
-                    </div>
-                    <div class="content col-12" id="layout-content-div">
-                        {% block page_content %}{% endblock %}
-                    </div>
-                </div>
-            </div>
+                {% else %}
+                    <li class="nav-item">
+                        <a class="nav-link" href='{{ url_for("auth.login") }}'>
+                            LOGIN
+                        </a>
+                    </li>
+                {% endif %}
+
+                <li class="nav-item">
+                    <a class="nav-link" href="#" role="button">
+                        LINK 1
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">
+                        LINK 2
+                    </a>
+                </li>
+
+            </ul>
         </div>
-    {% endblock %}
-{#</body>#}
+    </nav>
 
 
- {% block scripts %}
+
+    <div class="content col-12 flex-container" id="layout-content-div">#}
+        {% block page_content %}{% endblock %}
+    </div>
+
+    <!--region old.html-->
+    {#    <div class="container">#}
+    {#                <div class="container-fluid px-0">#}
+    {#                    <div class="row mx-0">#}
+    {##}
+    {#                       <div class="col-12 px-0" id="image-div">#}
+    {#                            <img class="img-fluid w-100 h-100" id="banner-image" src="{{ url_for('static', filename='img/marquee-Volstead.jpg') }}">#}
+    {#                        </div>#}
+    {##}
+    {#                        <div class="col-12 nav-wrapper">#}
+    {#                            <nav class="navbar navbar-expand-sm navbar-dark" role="navigation">#}
+    {#                                <a class="navbar-brand" href="#">#}
+    {#                                    V<span id="nav-span-1">olstead's</span>#}
+    {#                                    V<span id="nav-span-2">ault</span>#}
+    {#                                </a>#}
+    {#                                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="nav-target">#}
+    {#                                    <span class="navbar-toggler-icon"></span>#}
+    {#                                </button>#}
+    {##}
+    {#                                <div class="collapse navbar-collapse" id="nav-target">#}
+    {#                                    <ul class="navbar-nav mr-auto mt-2 mt-lg-0">#}
+    {#                                        <li class="nav-item">#}
+    {#                                            <a class="nav-link" href="{{ url_for('main.start_report') }}">#}
+    {#                                                <button class="btn btn-dark btn-group btn-block">Start Report</button>#}
+    {#                                            </a>#}
+    {#                                        </li>#}
+    {#                                        {% if current_user.is_authenticated %}#}
+    {#                                            <li class="nav-item">#}
+    {#                                                <a class="nav-link" href="{{ url_for('auth.logout') }}">#}
+    {#                                                    <button class="btn btn-dark btn-group btn-block">Logout</button>#}
+    {#                                                </a>#}
+    {#                                            </li>#}
+    {#                                        {% else %}#}
+    {#                                            <li class="nav-item">#}
+    {#                                                <a class="nav-link" href="{{ url_for('auth.login') }}">#}
+    {#                                                    <button class="btn btn-dark btn-group btn-block">Login</button>#}
+    {#                                                </a>#}
+    {#                                            </li>#}
+    {#                                        {% endif %}#}
+    {#                                        <li class="nav-item">#}
+    {#                                            <a class="nav-link" href="{{ url_for('auth.register') }}">#}
+    {#                                                <button class="btn btn-dark btn-group btn-block">Registration</button>#}
+    {#                                            </a>#}
+    {#                                        </li>#}
+    {#                                    </ul>#}
+    {#                                </div>#}
+    {#                            </nav>#}
+    {#                        </div>#}
+    {#                        <div class="content col-12" id="layout-content-div">#}
+    {#                            {% block page_content %}{% endblock %}#}
+    {#                        </div>#}
+    {#                    </div>#}
+    {#                </div>#}
+    {#            </div>#}
+    <!--endregion-->
+
+{% endblock %}
+
+
+{% block scripts %}
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+            integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+            integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
 {% endblock %}
 
 

@@ -4,6 +4,7 @@
 /*@media all and (min-width:768px) and (max-width:991px) {}*/
 /*@media all and (min-width:540px) and (max-width: 1199px) {}*/
 
+/*region Font-Families*/
 /*font-family: 'Niconne', cursive;*/
 /*font-family: 'Italianno', cursive;*/
 /*font-family: 'Clicker Script', cursive;*/
@@ -35,6 +36,8 @@
 /*font-family: 'Supermercado One', cursive;*/
 /*font-family: 'Almendra Display', cursive;*/
 /*font-family: 'Ruge Boogie', cursive;*/
+/*font-family: 'Niconne', cursive; */
+/*endregion*/
 
 body {
     background-color: black;
@@ -45,23 +48,17 @@ body {
     height: 100%;
 }
 
-td, tr, thead, table {
-    color: #E2D6C5;
-    font-size: 14pt;
-    text-align: center;
-    align-content: center;
-    border: 1pt solid #E2D6C5;
-    border-collapse: collapse;
-    width: 100%;
-    height: auto;
+#flex-wrapper {
+    display: flex;
 }
+
 
 h2 {
     margin: auto;
     display: block;
-    background-color: #348c9c;
-    color: #E2D6C5;
-    border: 1pt solid #E2D6C5;
+    background-color: rgba(52,140,156,0.80);
+    color: rgb(253,246,227);
+    border: 1pt solid rgb(253,246,227);
     border-collapse: collapse;
     align-content: center;
     text-align: center;
@@ -72,19 +69,6 @@ h2 {
     opacity: 0.8;
 }
 
-div > .form-group.row.role-hours {
-    border: 1pt solid #E2D6C5;
-    border-collapse: collapse;
-    margin-top: 0;
-    margin-bottom: 0;
-    padding-top: 8pt;
-    color: white;
-    /*background-color: rgba(92, 97, 80, 0);*/
-    /*background-color: #5c5750;*/
-    /*opacity: 0.8;*/
-    background-color: rgba(28, 26, 24, 0.7);
-}
-
 #banner-image {
     opacity: 0.3;
 }
@@ -93,92 +77,41 @@ div > .form-group.row.role-hours {
     margin-top: 5vh;
 }
 
-#work-hours-div {
-    /*background-color: #5c5750;*/
-    color: white;
-    /*opacity: 0.8;*/
-}
-
-
-.cash-row {
-    /*border: #E2D6C5 1pt solid;*/
-    margin-top: 0;
-    margin-bottom: 0;
-    border-collapse: collapse;
-}
-
-#cash-totals-input-div {
-    margin-top: 5em;
-}
-
-#daily-tips-total-input-div {
-    margin-top: 5em;
-    align-content: center;
-}
-
-.col-4.col-form-label {
-    align-content: center;
-    text-align: center;
-}
-
-.form-check-label {
-    white-space: nowrap;
-}
-
-.form-check-input {
-    padding: 2em;
-}
-
 #image-div {
     width: 100%;
     height: 100%;
     top: 0;
-    background-image: linear-gradient(
-            rgba(92,87,80, 0.0) 0%,
-            rgba(92,87,80, 0.0) 70%,
-            rgba(92,87,80, 0.2) 80%,
-            rgba(92,87,80, 0.7)  90%,
-            rgba(92,87,80, 0.9)  95%,
-            rgba(92,87,80, 1.0)  100%
+    margin-top: 0;
+    padding-top: 0;
+     background-image: linear-gradient(
+            rgba(221,188,10, .02)  37%,
+            rgba(221,188,10, .05)  46%,
+            rgba(221,188,10, 0.1)  55%,
+            rgba(221,188,10, 0.2)  64%,
+            rgba(221,188,10, 0.3)  73%,
+            rgba(221,188,10, 0.4)  82%,
+            rgba(221,188,10, 0.5)  91%,
+            rgba(221,188,10, 0.6)  100%
+    /*background-image: linear-gradient(*/
+            /*rgba(92,87,80, 0.0)   0%,*/
+            /*rgba(92,87,80, 0.1)  60%,*/
+            /*rgba(92,87,80, 0.2)  70%,*/
+            /*rgba(92,87,80, 0.3)  80%,*/
+            /*rgba(92,87,80, 0.5)  90%,*/
+            /*rgba(221,188,10, 0.7)  100%*/
     );
+      box-shadow: 0 0 8px 8px black inset;
     /*https://codepen.io/komejo/pen/RgwrZb*/
-
 }
 
-form {
-    color:white;
-}
 
-.select-hours, .select-hours > option, select {
-    color: #5c5750;
-}
 
-#button-div{
-    margin-top: 3em;
-    margin-bottom: 3em;
-    align-content: center;
-    text-align: center;
-    width: 100%;
-    display: flex;
-    justify-content: center;
-}
 
-#submit-button, #report-btn {
-    margin: 0 auto;
-    display: block;
-    opacity: 0.9;
-    /*background-image: linear-gradient(120deg, #a1c4fd 0%, #c2e9fb 100%);*/
-    /*background-image: linear-gradient(120deg, #9c4434 0%, #550D00 19%, #678f30 42%, #267240 79%, #348c9c 100%);*/
-    background-image: linear-gradient(120deg, #eea2a2 0%, #bbc1bf 19%, #57c6e1 42%, #b49fda 79%, #7ac5d8 100%);
-    /*background-color: #4E9C68;*/
-    /*background-color: #9C4434;*/
-    /*background-color: #AF3139;*/
-    /*background-color: #935254;*/
-    border: 1pt solid #E2D6C5;
-    padding-top: 4pt;
-}
 
-.col.report-details {
+
+
+.col.report-details,
+.report-details-h2 {
     margin: 0;
     padding: 0;
     text-align: center;
@@ -186,51 +119,60 @@ form {
 }
 
 .report-details-h2 {
-    margin: 0;
     padding: 1em;
-    text-align: center;
-    justify-content: center;
 }
 
 #layout-content-div {
     height: 100%;
     background-size: contain;
     background: url("../img/vol_lib_port.jpg") no-repeat;
-    /*background: url("../img/vol_lib_port_bar.jpg") repeat-y;*/
+    box-shadow: 0 0 8px 8px black inset;
     width: 100%;
     min-height: 80vh;
     margin: 0;
     bottom: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
 }
 
-.denom-label{
-    background-color: #348c9c;
-    color: white;
-    font-size: 1.3em;
-    font-weight: bold;
-    text-align: center;
-    opacity: 0.7;
-    border: 1pt solid white;
+
+/*====================================================================================================================
+      TABLES
+=====================================================================================================================*/
+
+.col-th {
+    border: solid 1pt black;
     border-collapse: collapse;
-    margin-left: 0;
-    margin-right: 0;
-    padding-top: 4pt;
-    padding-bottom: 4pt;
-
+    opacity: 0.7;
 }
 
-.denom-input {
-    background-color: rgba(28, 26, 24, 0.7);
-    color: white;
-    margin-left: 0;
-    margin-right: 0;
-    padding-top: 4pt;
-    padding-bottom: 4pt;
+td,
+tr,
+thead,
+table {
+    color: rgb(253,246,227);
+    font-size: 14pt;
+    text-align: center;
+    align-content: center;
+    border: 1pt solid rgb(253,246,227);
+    border-collapse: collapse;
+    width: 100%;
+    height: auto;
 }
 
-#login-header {
+
+
+
+/*====================================================================================================================
+      SHARED
+=====================================================================================================================*/
+
+.page-header {
     background-color: rgba(28, 26, 24, 0.7);
-    color: white;
+    box-shadow: 0 0 8px 8px rgba(38, 36, 34, .05) inset;
+    border-radius: 5pt;
+    color: lightgrey;
     justify-content: center;
     text-align: center;
     margin-top: 5pt;
@@ -239,106 +181,13 @@ form {
     padding-bottom: 5pt;
 }
 
-.login-footer {
-    background-color: rgba(28, 26, 24, 0.7);
-    color: white;
-    /*text-align: center;*/
-    /*align-content: center;*/
-}
 
+/*=====================================================================================================================
+      INFO
+======================================================================================================================*/
 
-#report-tips, #cash-tips {
-    background-color: rgba(28, 26, 24, 0.7);
-    /*opacity: 0.8;*/
-    color: white;
-}
-
-#report-tips::placeholder {
-    font-weight: lighter;
-    padding-left: 2em;
-    font-size: smaller;
-    opacity: 0.7;
-}
-
-#report-tips::-moz-placeholder {
-    font-weight: lighter;
-    padding-left: 2em;
-    font-size: smaller;
-    opacity: 0.7;
-}
-
-#report-tips:-ms-input-placeholder {
-    font-weight: lighter;
-    padding-left: 2em;
-    font-size: smaller;
-    opacity: 0.7;
-}
-
-#report-tips:-moz-placeholder {
-    font-weight: lighter;
-    padding-left: 2em;
-    font-size: smaller;
-    opacity: 0.7;
-}
-
-
-#report-tips::-webkit-input-placeholder {
-    font-weight: lighter;
-    padding-left: 2em;
-    font-size: smaller;
-    opacity: 0.7;
-}
-#cash-tips {
-    margin-bottom: 5vh;
-}
-
-#daily-row {
-    padding-top: 8pt;
-}
-
-input::placeholder, #report-tips::placeholder, .form-control.denom-input::placeholder, ::placeholder {
-    color: white;
-    opacity: 0.7;
-    padding-left: 2em;
-    font-weight: lighter;
-    font-size: smaller;
-}
-input:-ms-input-placeholder, #report-tips:-ms-input-placeholder, .form-control.denom-input:-ms-input-placeholder,
-:-ms-input-placeholder {
-    color: white;
-    opacity: 0.7;
-    padding-left: 2em;
-    font-weight: lighter;
-    font-size: smaller;
-}
-
-input::-webkit-input-placeholder, #report-tips::-webkit-input-placeholder, .form-control.denom-input::-webkit-input-placeholder, ::-webkit-input-placeholder {
-    color: white;
-    opacity: 0.7;
-    padding-left: 2em;
-    font-weight: lighter;
-    font-size: smaller;
-}
-
-input::-moz-placeholder, #report-tips::-moz-placeholder, .form-control.denom-input::-moz-placeholder, ::-moz-placeholder {
-    color: white;
-    opacity: 1;
-    padding-left: 2em;
-    font-weight: lighter;
-    font-size: smaller;
-}
-
-input:-moz-placeholder, #report-tips:-moz-placeholder, .form-control.denom-input:-moz-placeholder, :-moz-placeholder {
-    color: white;
-    opacity: 0.7;
-    padding-left: 2em;
-    font-weight: lighter;
-    font-size: smaller;
-}
-
-
-#shift-date {
-    margin-top: 5vh;
+.alert.alert-warning {
+    color:  rgb(253,246,227);
 }
 
 .error {
@@ -351,17 +200,152 @@ input:-moz-placeholder, #report-tips:-moz-placeholder, .form-control.denom-input
     font-size: 2em;
 }
 
-.col-th {
-    border: solid 1pt black;
+
+/*=====================================================================================================================
+REPORT PAGE
+======================================================================================================================*/
+
+
+select,                                         /*TODO shared selector*/
+.select-hours,
+.select-hours > option {
+    color: rgb(253,246,227);
+}
+
+
+div > .form-group.row.role-hours {
+    border: 1pt solid rgb(253,246,227);
     border-collapse: collapse;
+    margin-top: 0;
+    margin-bottom: 0;
+    padding-top: 8pt;
+    color: rgb(253,246,227);
+    background-color: rgba(28, 26, 24, 0.7);
+}
+
+.cash-row {
+    margin-top: 0;
+    margin-bottom: 0;
+    border-collapse: collapse;
+}
+
+#shift-date {
+    margin-top: 5vh;
+}
+
+#cash-tips {
+    margin-bottom: 5vh;
+}
+
+#daily-row {
+    padding-top: 8pt;
+}
+
+#report-tips,
+#cash-tips,
+.dark-content-div {                             /*TODO shared selector*/
+    padding: 8pt;
+    color: rgb(253,246,227);
+    border-radius: 5pt;
+    background-color: rgba(28, 26, 24, 0.7);
+}
+
+#work-hours-div {
+    color: rgb(253,246,227);
+}
+
+#cash-totals-input-div {
+    margin-top: 5em;
+}
+
+#daily-tips-total-input-div {
+    margin-top: 5em;
+    align-content: center;
+}
+
+.denom-label{
     opacity: 0.7;
+    margin-left: 0;
+    margin-right: 0;
+    padding-top: 4pt;
+    font-size: 1.3em;
+    font-weight: bold;
+    text-align: center;
+    padding-bottom: 4pt;
+    color: rgb(253,246,227);
+    border-collapse: collapse;
+    background-color:rgba(52,140,156,0.80);
+    border: 1pt solid rgb(253,246,227);
+}
+
+#report-tips::placeholder,
+#report-tips:-moz-placeholder,
+#report-tips::-moz-placeholder,
+#report-tips:-ms-input-placeholder,
+#report-tips::-webkit-input-placeholder {
+    opacity: 0.7;
+    padding-left: 2em;
+    font-size: smaller;
+    font-weight: lighter;
+}
+
+/*<editor-fold desc="Description">*/
+/*#report-tips:-moz-placeholder {*/
+    /*font-weight: lighter;*/
+    /*padding-left: 2em;*/
+    /*font-size: smaller;*/
+    /*opacity: 0.7;*/
+/*}*/
+/*#report-tips::-moz-placeholder {*/
+    /*font-weight: lighter;*/
+    /*padding-left: 2em;*/
+    /*font-size: smaller;*/
+    /*opacity: 0.7;*/
+/*}*/
+/*#report-tips:-ms-input-placeholder {*/
+    /*font-weight: lighter;*/
+    /*padding-left: 2em;*/
+    /*font-size: smaller;*/
+    /*opacity: 0.7;*/
+/*}*/
+/*#report-tips::-webkit-input-placeholder {*/
+    /*font-weight: lighter;*/
+    /*padding-left: 2em;*/
+    /*font-size: smaller;*/
+    /*opacity: 0.7;*/
+/*}*/
+/*</editor-fold>*/
+
+/*=====================================================================================================================
+LOGIN PAGE
+======================================================================================================================*/
+
+#login-sandbag {
+    flex-grow: 1;
+}
+
+.login-form input[type=submit] {
+    display: block;
+    margin: 0 auto;
 }
 
 .login-form {
-    /*margin-top: 5vh;*/
-    /*margin-bottom: 5vh;*/
     margin: 0;
 }
+
+.login-footer {
+    min-width: 100%;
+    min-height: 100%;
+    border-radius: 5pt;
+    color: rgb(253,246,227);
+    background-color: rgba(28, 26, 24, 0.7);
+}
+
+
+
+/*=====================================================================================================================
+     MEDIA QUERIES
+======================================================================================================================*/
 
 @media only screen
 and (orientation: landscape)
@@ -386,9 +370,362 @@ and (-webkit-min-device-pixel-ratio: 2) {
     }
 }
 
-.nav-item, .navbar {
-    color: #E2D6C5;
+@media only screen
+and (min-device-width: 768px) {
+    .sidebar-hr {
+        display: none;
+    }
 }
-/*.nav-wrapper {*/
-    /*background: url('../img/marquee-Volstead.jpg') no-repeat scroll 0 0;*/
+
+
+
+/*=====================================================================================================================
+     FORMS
+======================================================================================================================*/
+
+form {
+    color: rgb(253,246,227);
+}
+
+.col-4.col-form-label {
+    align-content: center;
+    text-align: center;
+}
+
+.form-check-label {
+    white-space: nowrap;
+}
+
+.form-check-input {
+    padding: 2em;
+}
+
+
+
+
+
+
+
+
+
+
+/*=====================================================================================================================
+     BUTTONS
+======================================================================================================================*/
+
+#button-div{
+    width: 100%;
+    display: flex;
+    margin-top: 3em;
+    margin-bottom: 3em;
+    text-align: center;
+    align-content: center;
+    justify-content: center;
+}
+
+/*.btn,*/
+/*button,*/
+input[type=submit],
+.login-form input[type=submit] {
+    color: rgba(253,246,227,0.9);
+    background-color: rgba(52,140,156,0.70);
+    border: 1pt solid rgba(52,140,156,0.70);
+}
+
+/*.btn:hover,*/
+/*button:hover,*/
+input[type=submit]:hover {
+    transition: 600ms;
+    color: white;
+    background-color: transparent;
+    border: 1pt solid white;
+}
+
+#submit-button,
+#report-btn {
+    margin: 0 auto;
+    display: block;
+    opacity: 0.9;
+    padding-top: 4pt;
+    border: 1pt solid rgb(253,246,227);
+    background-image: linear-gradient(120deg, #eea2a2 0%, #bbc1bf 19%, #57c6e1 42%, #b49fda 79%, #7ac5d8 100%);
+    /*region Alt Gradients*/
+    /*background-image: linear-gradient(120deg, #a1c4fd 0%, #c2e9fb 100%);*/
+    /*background-image: linear-gradient(120deg, #9c4434 0%, #550D00 19%, #678f30 42%, #267240 79%, #348c9c 100%);*/
+    /*background-color: #4E9C68;*/
+    /*background-color: #9C4434;*/
+    /*background-color: #AF3139;*/
+    /*background-color: #935254;*/
+    /*endregion*/
+}
+
+#report-btn:focus,
+#report-btn:hover,
+#submit-btn:focus,
+#submit-btn:hover {
+  background-image: linear-gradient(120deg, #9c4434 0%, #550D00 19%, #678f30 42%, #267240 79%, #348c9c 100%);
+}
+
+
+/*.btn-nav {*/
+    /*background-color: black;*/
+    /*border: 1pt solid black ;*/
+    /*color: rgb(253,246,227);*/
 /*}*/
+
+.btn-nav:focus,
+.btn-nav:hover {
+    background-color: rgba(52,140,156,0.70);
+    border: 1pt solid  rgb(253,246,227);
+    color: black;
+    transition: 600ms;
+}
+
+
+
+
+
+
+
+/*=====================================================================================================================
+     INPUTS
+======================================================================================================================*/
+
+
+
+/*.dark-input,*/
+/*.denom-input,*/
+/*input[type=text],*/
+/*input[type=password],*/
+/*#registration-form > input {*/
+input[type=text],
+input[type=number],
+input[type=password],
+select {
+    margin-left: 0;
+    margin-right: 0;
+    padding-top: 4pt;
+    color: rgba(253,246,227,0.95);
+    padding-bottom: 4pt;
+    background-color: rgba(28, 26, 24, 0.7);
+}
+
+/*.dark-input:focus,*/
+/*.denom-input:focus,*/
+/*input[type=text]:focus,*/
+/*input[type=password]:focus,*/
+/*#registration-form > input:focus,*/
+input[type=password]:focus,
+input[type=text]:focus,
+input[type=number]:focus,
+select:focus {
+    transition: 600ms;
+    color: rgba(253,246,227,0.95);
+    background-color: rgba(52,140,156,0.7);
+}
+
+input[type=checkbox]:checked {
+    transition: 600ms;
+    box-shadow: 0 0 3px rgba(52,140,156,0.70), 0 0 6px rgba(253,246,227,0.95);
+}
+
+input[type=checkbox]:checked~label~div {
+    transition: 600ms;
+    color: rgba(52,140,156,0.70);
+    box-shadow: 0 0 3px rgba(253,246,227, 0.95);
+
+}
+
+
+.input-wrapper{
+    padding: 0;
+    border-collapse: collapse;
+    color: rgba(253,246,227,0.95);
+    background-color: rgba(28, 26, 24, 0.7);
+
+}
+
+.input-wrapper > input {
+    margin: 0;
+    height: 100%;
+    width: 100%;
+    border-collapse: collapse;
+    color: rgba(253,246,227,0.95);
+    background-color: rgba(28, 26, 24, 0.7);
+
+}
+
+::placeholder,
+input::placeholder,
+#report-tips::placeholder,
+.form-control.denom-input::placeholder {
+    opacity: 0.7;
+    padding-left: 2em;
+    font-weight: lighter;
+    font-size: smaller;
+    color: rgb(253,246,227);
+}
+
+:-ms-input-placeholder,
+input:-ms-input-placeholder,
+#report-tips:-ms-input-placeholder,
+.form-control.denom-input:-ms-input-placeholder {
+    opacity: 0.7;
+    padding-left: 2em;
+    font-size: smaller;
+    font-weight: lighter;
+    color: rgb(253,246,227);
+}
+
+input::-webkit-input-placeholder, #report-tips::-webkit-input-placeholder, .form-control.denom-input::-webkit-input-placeholder, ::-webkit-input-placeholder {
+    color: rgb(253,246,227);
+    opacity: 0.7;
+    padding-left: 2em;
+    font-weight: lighter;
+    font-size: smaller;
+}
+
+input::-moz-placeholder, #report-tips::-moz-placeholder, .form-control.denom-input::-moz-placeholder, ::-moz-placeholder {
+    color: rgb(253,246,227);
+    opacity: 1;
+    padding-left: 2em;
+    font-weight: lighter;
+    font-size: smaller;
+}
+
+input:-moz-placeholder, #report-tips:-moz-placeholder, .form-control.denom-input:-moz-placeholder, :-moz-placeholder {
+    color: rgb(253,246,227);
+    opacity: 0.7;
+    padding-left: 2em;
+    font-weight: lighter;
+    font-size: smaller;
+}
+
+
+/*=====================================================================================================================
+     NAVIGATION
+======================================================================================================================*/
+
+.nav-item {
+    color: rgb(253,246,227);
+}
+
+.navbar {
+    background-color: rgba(28, 26, 24, 0.7);
+}
+
+/*nav,*/
+/*.btn-nav,*/
+/*.nav-item,*/
+/*.nav-link,*/
+/*.btn.btn-block.btn-nav*/
+/*.btn-nav:link*/
+
+a.nav-link {
+    /* CURSIVE
+    Niconne|Federo|Megrim|Codystar|Monofett|Bungee+Outline|Gugi|Poiret+One|
+
+    SANS SERIF
+    Montserrat+Subrayada|Text+Me+One|Chathura*/
+    font-size: 2em;
+    font-weight: bolder;
+    font-family: "Megrim", cursive;
+    /*font-family: "Montserrat Subrayada", sans-serif;*/
+    text-shadow: 0 1px 14px rgb(255,255,255);
+    background-color: transparent;
+    color: rgba(60, 160, 178,.7);
+    margin-left: 0;
+    padding-left: 0;
+    -webkit-animation-name: blues;
+    -webkit-animation-duration: 600ms;
+}
+
+@keyframes blues {
+    from {color: rgba(1,220,230,0.9);}
+    to {color: rgba(60, 160, 178,.7);}
+    /*from {text-shadow: 0 1px 12px rgb(255,255,255);}*/
+    /*to {text-shadow: 0 1px 4px rgb(255,255,255);}*/
+    /*from {background-image: radial-gradient(circle,rgba(255,255,255,0.95), rgba(255,255,255,0));}*/
+    /*to {background-image: radial-gradient(circle,rgba(255,255,255,0), rgba(255,255,255,0));}*/
+}
+
+a.nav-link:hover,
+a.nav-link:focus {
+    color: rgba(1,220,230,0.9);
+    text-shadow: 0 1px 4px rgb(255,255,255);
+    -webkit-animation-name: bluer;
+    -webkit-animation-duration: 600ms;
+}
+@keyframes bluer {
+    from {color: rgba(60, 160, 178,.7);}
+    to {color: rgba(1,220,230,0.9);}
+    /*from {text-shadow: 0 1px 4px rgb(255,255,255);}*/
+    /*to {text-shadow: 0 1px 12px rgb(255,255,255);}*/
+    /*from {background-image: radial-gradient(circle,rgba(255,255,255,0), rgba(255,255,255,0));}*/
+    /*to {background-image: radial-gradient(circle,rgba(255,255,255,0.95), rgba(255,255,255,0));}*/
+}
+
+#nav-username {
+    color: rgba(140,20,38,.7);
+    text-shadow: 0 1px 4px rgb(255,255,255);
+    -webkit-animation-name: reds;
+    -webkit-animation-duration: 600ms;
+}
+
+@keyframes reds {
+    from {color: rgba(252,20,5,0.9);}
+    to {color: rgba(140,20,38,.7);}
+    /*from {text-shadow: 0 1px 12px rgb(255,255,255);}*/
+    /*to {text-shadow: 0 1px 4px rgb(255,255,255);}*/
+    /*from {background-image: radial-gradient(circle,rgba(255,255,255,0.95), rgba(255,255,255,0));}*/
+    /*to {background-image: radial-gradient(circle,rgba(255,255,255,0), rgba(255,255,255,0));}*/
+
+
+}
+
+#nav-username:hover,
+#nav-username:focus {
+    color: rgba(252,20,5,0.9);
+    text-shadow: 0 1px 4px rgb(255,255,255);
+    transition: 600ms;
+    -webkit-animation-name: redder;
+    -webkit-animation-duration: 600ms;
+}
+
+@keyframes redder {
+    from {color: rgba(140,20,38,.7);}
+    to {color: rgba(252,20,5,0.9);}
+    /*from {text-shadow: 0 1px 12px rgb(255,255,255);}*/
+    /*to {text-shadow: 0 1px 4px rgb(255,255,255);}*/
+    /*from {background-image: radial-gradient(circle,rgba(255,255,255,0), rgba(255,255,255,0));}*/
+    /*to {background-image: radial-gradient(circle,rgba(255,255,255,0.95), rgba(255,255,255,0));}*/
+}
+
+ul.flex-container {
+    display: flex;
+    justify-content: space-around;
+    margin-left:0 ;
+    padding-left: 0;
+}
+
+
+
+.navbar-brand {
+    font-size: 3em;
+    font-family: 'Niconne', cursive;
+}
+
+#nav-span-1,
+#nav-span-2 {
+    font-size: small;
+}
+
+.sidebar-hr {
+    margin: 1.5em;
+    border: rgb(253,246,227) ridge 2px;
+}
+
+.navbar-collapse {
+    display: flex;
+    justify-content: space-evenly;
+}

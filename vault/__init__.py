@@ -2,20 +2,15 @@
 import logging
 import os
 from logging.handlers import SMTPHandler, RotatingFileHandler
-# import gunicorn
-# import redis
-# from redis_session.flask_session import setup_session
-# import redis_session
-# from gunicorn import errors
 from flask import Flask
 from flask_babel import Babel, lazy_gettext as _1
 from flask_bootstrap import Bootstrap
 from flask_login import LoginManager
 from flask_mail import Mail
 from flask_migrate import Migrate
-# from flask_sessions import Session
 from flask_sqlalchemy import SQLAlchemy
 from config import Config
+from flask_user import UserManager
 
 
 db = SQLAlchemy()
@@ -26,7 +21,8 @@ login.login_message = _1('Authorized Users Must Log In To Access This Page')
 mail = Mail()
 bootstrap = Bootstrap()
 babel = Babel()
-# session = Session()
+
+
 
 
 user_first = ['Marley',
@@ -75,14 +71,11 @@ user_email = ['marleygirl22@gmail.com',
 def create_users():
 
     user_list = []
+
     for i in range(len(user_email)):
         d = {'username':user_email[i],'email':user_email[i],'emp_id':emp_id[i],'first_name': user_first[i],'last_name':user_last[i], 'pw':user_pw[i]}
         user_list.append(d)
-
-
     from vault.models import User, Role, Employee
-    from datetime import datetime
-
     for user_data in user_list:
         if not Employee.query.filter_by(first_name=user_data['first_name']).filter_by(last_name=user_data['last_name']).first():
             new_emp = Employee(first_name=user_data['first_name'], last_name=user_data['last_name'])
@@ -150,7 +143,11 @@ def create_app(config_class=Config):
     mail.init_app(app)
     bootstrap.init_app(app)
     babel.init_app(app)
-    # session.init_app(app)
+
+    from vault.models import User
+    # user_manager = UserManager(app, db, User)
+
+
 
 
 
