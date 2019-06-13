@@ -5,7 +5,7 @@ from logging.handlers import SMTPHandler, RotatingFileHandler
 from flask import Flask
 from flask_babel import Babel, lazy_gettext as _1
 from flask_bootstrap import Bootstrap
-from flask_login import LoginManager
+from flask_login import LoginManager, current_user
 from flask_mail import Mail
 from flask_migrate import Migrate
 from flask_sqlalchemy import SQLAlchemy
@@ -144,11 +144,25 @@ def create_app(config_class=Config):
     bootstrap.init_app(app)
     babel.init_app(app)
 
-    from vault.models import User
+    from vault.models import User, Role
     # user_manager = UserManager(app, db, User)
 
 
+    @app.context_processor
+    def utility_processor():
+        def get_roles():
+            users = User.query.all();
+            user_roles = {u.username:[role.name for role in u.roles] for u in users}
+            target_user = current_user
+            try:
+                return user_roles[target_user.username]
+            except AttributeError:
+                return []
+        return dict(get_roles=get_roles())
 
+
+        # user_roles = {u.username:[role.name for role in u.roles] for u in users}
+        # return user_roles
 
 
     if __name__ != '__main__':
@@ -218,3 +232,4 @@ def create_app(config_class=Config):
         return app
 
 from vault import models
+

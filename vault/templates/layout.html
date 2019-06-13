@@ -50,7 +50,7 @@
 {#        </a>#}
 
         <button class="navbar-toggler p-0 border-0" type="button" data-toggle="offcanvas">
-            <span class="navbar-toggler-icon"></span>
+            <span class="navbar-toggler-icon navbar-dark"></span>
         </button>
 
         <div class="navbar-collapse offcanvas-collapse" id="sidebar-div">
@@ -76,39 +76,42 @@
                             START REPORT
                         </a>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href='#' {# {{ url_for("user.<username>") }} #}>
-                            PROFILE
-                        </a>
-                    </li>
+{#                    <li class="nav-item">#}
+{#                        <a class="nav-link" href='#' {# {{ url_for("user.<username>") }} #}
+{#                            PROFILE#}
+{#                        </a>#}
+{#                    </li>#}
                     <li class="nav-item">
                         <a class="nav-link" href="{{ url_for("auth.logout") }}">
                             LOGOUT
                         </a>
                     </li>
-
-                    {% if ('admin' or 'Admin') in current_user.roles %}
-                        <li class="nav-item">
-                            <div class="dropdown nav-item btn-nav">
-                                <button class="btn dropdown-toggle" type="button" id="nav-dd-btn">
-                                    ADMIN
-                                </button>
-                            </div>
-                            <div class="dropdown-menu">
-                                <a class="dropdown-item nav-link" href='{{ url_for("admin.users.register") }}'>
-                                    ADD USER
-                                </a>
-                                <a class="dropdown-item nav-link" href='#' {# {{ url_for("admin.users.update") }} #}>
-                                    MODIFY USER
-                                </a>
-                                <a class="dropdown-item nav-link" href='#' {# {{ url_for("admin.users.delete") }} #}>
-                                    86 USER
-                                </a>
-                                <a class="dropdown-item nav-link" href='#' {# {{ url_for("admin.gsheet") }} #}>
-                                    SHIFT REPORTS
-                                </a>
-                            </div>
-                        </li>
+                    {% if current_user.username %}
+                        {% if 'Admin' in get_roles  %}
+    {#                    {% if 'Admin' in user_roles[current_user.username] %}#}
+                            <li class="nav-item" id="dd-nav-item">
+                                <div class="dropdown" id="admin-dropown-div">
+                                    <a class="btn dropdown-toggle" role="button" id="nav-dd-btn" data-toggle="dropdown">
+                                        ADMIN
+                                    </a>
+                                    <div class="dropdown-menu" id="admin-dd-menu">
+                                        <a class="dropdown-item nav-link dd-content" href="#">
+        {#                                   href='{{ url_for("admin.users.register")}}'#}
+                                            ADD USER
+                                        </a>
+                                        <a class="dropdown-item nav-link dd-content" href='#' {# {{ url_for("admin.users.update") }} #}>
+                                            MODIFY USER
+                                        </a>
+                                        <a class="dropdown-item nav-link dd-content" href='#' {# {{ url_for("admin.users.delete") }} #}>
+                                            86 USER
+                                        </a>
+                                        <a class="dropdown-item nav-link dd-content" href='#' {# {{ url_for("admin.gsheet") }} #}>
+                                            SHIFT REPORTS
+                                        </a>
+                                    </div>
+                                </div>
+                            </li>
+                        {% endif %}
                     {% endif %}
 
                 {% else %}
@@ -136,7 +139,7 @@
 
 
 
-    <div class="content col-12 flex-container" id="layout-content-div">#}
+    <div class="content col-12 flex-container" id="layout-content-div">
         {% block page_content %}{% endblock %}
     </div>
 
@@ -205,6 +208,7 @@
             integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
             integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    <script src="{{ url_for('static', filename='js/offcanvas.js') }}"></script>
 {% endblock %}
 
 

@@ -85,13 +85,13 @@ h2 {
     padding-top: 0;
 
     background-image: linear-gradient(
-            rgba(60, 160, 178, .02)  37%,
-            rgba(60, 160, 178, .05)  46%,
-            rgba(60, 160, 178, 0.1)  55%,
-            rgba(60, 160, 178, 0.2)  64%,
-            rgba(60, 160, 178, 0.3)  73%,
-            rgba(60, 160, 178, 0.4)  82%,
-            rgba(60, 160, 178, 0.5)  91%,
+            rgba(60, 160, 178, .02)  20%,
+            rgba(60, 160, 178, .05)  40%,
+            rgba(60, 160, 178, 0.1)  60%,
+            rgba(60, 160, 178, 0.2)  80%,
+            rgba(60, 160, 178, 0.3)  85%,
+            rgba(60, 160, 178, 0.4)  90%,
+            rgba(60, 160, 178, 0.5)  95%,
             rgba(60, 160, 178, 0.7) 100%
 
         /*region Alt Gradients*/
@@ -390,6 +390,44 @@ and (min-device-width: 768px) {
     }
 }
 
+/*@media screen and (max-width: 768px) {*/
+
+    /*#sidebar-div {*/
+        /*display : none;*/
+    /*}*/
+
+    /*#sidebar-div.in {*/
+        /*display       : block;*/
+        /*position      : relative;*/
+        /*z-index       : 1030;*/
+        /*top           : 0;*/
+        /*bottom        : 0;*/
+        /*overflow-y    : auto;*/
+        /*border-radius : 0;*/
+        /*padding       : 0;*/
+        /*min-height    : 100%;*/
+    /*}*/
+/*}*/
+    /*position: fixed;*/
+    /*top: 56px; !* Height of navbar *!*/
+    /*bottom: 0;*/
+    /*width: 100%;*/
+    /*padding-right: 1rem;*/
+    /*padding-left: 1rem;*/
+    /*overflow-y: auto;*/
+    /*background-color: var(--gray-dark);*/
+    /*transition: -webkit-transform .3s ease-in-out;*/
+    /*transition: transform .3s ease-in-out;*/
+    /*transition: transform .3s ease-in-out, -webkit-transform .3s ease-in-out;*/
+    /*-webkit-transform: translateX(100%);*/
+    /*transform: translateX(100%);*/
+  /*}*/
+  /*.offcanvas-collapse.open {*/
+    /*-webkit-transform: translateX(-1rem);*/
+    /*transform: translateX(-1rem); !* Account for horizontal padding on navbar *!*/
+  /*}*/
+/*}*/
+
 
 
 /*=====================================================================================================================
@@ -634,7 +672,38 @@ input:-moz-placeholder, #report-tips:-moz-placeholder, .form-control.denom-input
 /*.btn.btn-block.btn-nav*/
 /*.btn-nav:link*/
 
-a.nav-link {
+
+#nav-dd-btn, #nav-dd-btn:focus, #nav-dd-btn:hover {
+    border: none;
+}
+
+#admin-dd-menu {
+    background-color: rgba(28, 26, 24, 0.7);
+    box-shadow: 0 1px 4px white;
+    border-radius: 5pt;
+    -webkit-animation-name: dropdown-white;
+    -webkit-animation-duration: 600ms;
+}
+
+@keyframes dropdown-white {
+    from {box-shadow: 0 1px 4px rgba(1,220,230,0.9)}
+    to {box-shadow: 0 1px 4px white}
+}
+
+#admin-dd-menu:hover,
+#admin-dd-menu:focus,
+#admin-dd-menu:active {
+    box-shadow: 0 1px 4px rgba(1,220,230,0.9);
+    -webkit-animation-name: dropdown-blue;
+    -webkit-animation-duration: 600ms;
+}
+
+@keyframes dropdown-blue {
+    from {box-shadow: 0 1px 4px white}
+    to {box-shadow: 0 1px 4px rgba(1,220,230,0.9)}
+}
+
+a.nav-link, #nav-dd-btn {
     /* CURSIVE
     Niconne|Federo|Megrim|Codystar|Monofett|Bungee+Outline|Gugi|Poiret+One|
 
@@ -644,11 +713,11 @@ a.nav-link {
     font-weight: bolder;
     font-family: "Megrim", cursive;
     /*font-family: "Montserrat Subrayada", sans-serif;*/
-    text-shadow: 0 1px 14px rgb(255,255,255);
+    text-shadow: 0 1px 4px rgb(255,255,255);
     background-color: transparent;
     color: rgba(60, 160, 178,.7);
-    margin-left: 0;
-    padding-left: 0;
+    /*margin-left: 0;*/
+    /*padding-left: 0;*/
     -webkit-animation-name: blues;
     -webkit-animation-duration: 600ms;
 }
@@ -662,8 +731,27 @@ a.nav-link {
     /*to {background-image: radial-gradient(circle,rgba(255,255,255,0), rgba(255,255,255,0));}*/
 }
 
+a.dropdown-item.nav-link:focus,
+a.dropdown-item.nav-link:hover {
+
+    /*background-color: rgba(28, 26, 24, 0.7);*/
+    background-color : transparent;
+}
+
+
+.dropdown-menu {
+    background-color: rgba(28, 26, 24, 0.7); /*background-color: transparent;*/
+    padding: 1em;
+}
+
+.dropdown {
+    background-color: transparent;
+}
+
 a.nav-link:hover,
-a.nav-link:focus {
+a.nav-link:focus,
+#nav-dd-btn:hover,
+#nav-dd-btn:focus {
     color: rgba(1,220,230,0.9);
     text-shadow: 0 1px 4px rgb(255,255,255);
     -webkit-animation-name: bluer;
@@ -741,4 +829,56 @@ ul.flex-container {
 .navbar-collapse {
     display: flex;
     justify-content: space-evenly;
+}
+
+.dd-content {
+    background-color: rgba(28, 26, 24, 0.9);
+    color: rgba(60, 160, 178,.7);
+    text-shadow: 0 1px 4px rgb(255,255,255);
+    -webkit-animation-name: dd-content-whiter;
+    -webkit-animation-duration: 600ms;
+}
+
+@keyframes dd-content-whiter {
+    from {color: rgba(1,220,230,0.9)}
+    to {color: rgba(60,160,178,0.7)}
+}
+
+.dd-content:hover,
+.dd-content:focus {
+    color                      : rgba(1,220,230,0.9);
+    -webkit-animation-name     : dd-content-bluer;
+    -webkit-animation-duration : 600ms;
+    /*background                 : transparent none;*/
+}
+
+@keyframes bluer {
+    from {color: rgba(60,160,178,0.7)}
+    to {color: rgba(1,220,230,0.9)}
+}
+
+/*.container .dropdown .dropdown-menu a:hover {*/
+    /*background : transparent none;*/
+/*}*/
+
+.navbar-toggler-icon,
+.navbar-toggler {
+    color: rgba(60,160,178,0.7);
+    border-color: rgba(60,160,178,0.7)
+}
+
+.navbar-toggler-icon:hover,
+.navbar-toggler-icon:focus,
+.navbar-toggler:hover,
+.navbar-toggler:focus {
+    color: rgba(1,220,230,0.9);
+    border-color: rgba(1,220,230,0.9);
+    transition: transform 1s;
+}
+
+#dd-nav-item {
+    padding: 0;
+}
+.navbar-toggler {
+
 }
