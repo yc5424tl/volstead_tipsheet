@@ -69,6 +69,8 @@ EmployeeDataController
 
 
 
+Ringers = [
+Geoff Kemp, Joe Goff, Samantha Mackahey(?), Brian Arnold, Stephen Engler, Korey Erikson, Matt Miotke, Marcelo Matos, Max Matekis]
 
 
 INSERT INTO users(username, password_hash, email, email_confirmed_at, employee_id)

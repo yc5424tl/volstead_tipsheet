@@ -12,6 +12,7 @@ from flask_sqlalchemy import SQLAlchemy
 from config import Config
 from flask_user import UserManager
 
+from vault.models import Employee
 
 db = SQLAlchemy()
 migrate = Migrate()
@@ -54,18 +55,15 @@ user_last = ['Bartlett',
 emp_id = [9, 2, 4, 12, 5, 7, 11, 10, 14, 3, 6, 8, 13]
 user_pw = os.getenv('VOL_PW_LIST').split()
 user_email = ['marleygirl22@gmail.com',
-         'jkboline@gmail.com',
-         'ina.dale55408@gmail.com',
-         'harrisonbryc7@gmail.com',
-         'egjohnson9@gmail.com',
-         'lundgren.heidi@gmail.com',
-         'rebeccamogck@gmail.com',
-         'padamlantz@gmail.com',
-         'jeff@volsteads.com',
-         'bar@volsteads.com',
-         'jjsong@gmail.com',
-         'cthompson369@outlook.com',
-         'natalie.erin.goodwin@gmail.com']
+              'jkboline@gmail.com',
+              'ina.dale55405@gmail.com',
+              'harrisonbryc7@gmail.com',
+              'egjohnson9@gmail.com',
+              'lundgren.heidi@gmail.com',
+              'rebeccamogck@gmail.com','padamlantz@gmail.com','jeff@volsteads.com','bar@volsteads.com','jjsong@gmail.com','cthompson369@outlook.com','natalie.erin.goodwin@gmail.com']
+ringer_dict = {'Geoff':'Kemp', 'Joe':'Goff', 'Samantha':'Mulcahy', 'Brian':'Arnold', 'Stephen':'Engler', 'Korey':'Erikson','Matt':'Miotke','Marcelo':'Matos','Max':'Metakis'}
+
+
 
 
 def create_users():
@@ -93,38 +91,40 @@ def create_users():
             db.session.add(new_user)
         db.session.commit()
 
+
 def create_sudo_employee():
 
     from vault.models import Employee, User, Role
-    from datetime import datetime
 
     if not Employee.query.filter_by(first_name='admin').filter_by(last_name='admin').first():
-        admin = Employee(
-            first_name='admin',
-            last_name='admin')
+        admin = Employee(first_name='admin', last_name='admin')
         db.session.add(admin)
-        print('admin.id = ' + str(admin.id))
         db.session.commit()
         return admin.id
 
 def create_sudo_user(admin_id):
     from vault.models import Employee, User, Role
-    from datetime import datetime
-# Create 'admin@example.com' user with 'Admin' and 'Agent' roles
     if not User.query.filter(User.email == 'volsteads.vault@gmail.com').first() \
             and not User.query.filter(User.username == 'g1zmo').first():
-        # admin_id = Employee.query.filter_by(first_name='admin').filter_by(last_name='admin').first().id
-        user = User(
-            username='g1zmo',
-            email='volsteads.vault@gmail.com',
-            # password_hash=bcrypt.generate_password_hash(os.getenv('VOL_ADMIN_PW')),
-            emp_id=admin_id
-        )
+        user = User(username='g1zmo', email='volsteads.vault@gmail.com',emp_id=admin_id)
         user.set_password(os.environ.get('VOL_ADMIN_PW'))
         user.roles.append(Role(name='Admin'))
         user.roles.append(Role(name='Steward'))
         db.session.add(user)
         db.session.commit()
+
+
+def create_ringers(name_dict: dict) -> bool:
+    if name_dict and isinstance(name_dict, dict):
+        for first in name_dict:
+            new_emp = Employee(first_name=first,
+                               last_name=name_dict[first],
+                               ringer=True)
+            db.session.add(new_emp)
+        db.session.commit()
+        return True
+    else:
+        return False
 
 def create_app(config_class=Config):
     app = Flask(__name__)
@@ -137,6 +137,7 @@ def create_app(config_class=Config):
     admin_id = create_sudo_employee()
     create_sudo_user(admin_id)
     create_users()
+    create_ringers(ringer_dict)
 
     migrate.init_app(app, db)
     login.init_app(app)
@@ -145,7 +146,7 @@ def create_app(config_class=Config):
     babel.init_app(app)
 
     from vault.models import User, Role
-    # user_manager = UserManager(app, db, User)
+
 
 
     @app.context_processor

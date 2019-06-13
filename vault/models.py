@@ -211,15 +211,17 @@ class Employee(db.Model):
     first_name      = db.Column(db.String(64))
     last_name       = db.Column(db.String(64))
     created_at      = db.Column(db.DateTime(), default=datetime.utcnow)
+    ringer          = db.Column(db.Boolean(), default=False)
 
     # __table_args__ = (
     #     db.UniqueConstraint('first_name', 'last_name', name='first_last_uni_emp'),
     # )
 
     def __repr__(self):
-        return '<Employee {} {}>'.format(
+        return '<Employee: {} {}; Is_Ringer:>'.format(
             self.first_name,
-            self.last_name
+            self.last_name,
+            self.is_ringer
         )
 
     @property
