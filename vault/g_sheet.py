@@ -26,9 +26,15 @@ scope = ['https://spreadsheets.google.com/feeds',
 if 'HEROKU_ENV' in os.environ:
     # credentials = ServiceAccountCredentials.from_json_keyfile_name('client_secret.json', scope)
     json_creds = os.getenv("G_SRV_ACCT_CRED")
-    creds_dict = json.loads(json_creds)
-    creds_dict["private_key"] = creds_dict["private_key"].replace("\\\n", "\n")
-    creds = ServiceAccountCredentials.from_json_keyfile_dict(creds_dict, scope)
+    print('json_creds ->')
+    print(json_creds)
+    with open('g_srv_acct_cred.json', 'w+') as json_file:
+        json_file.write(json_creds)
+        json_file.close()
+    # creds_dict = json.loads(json_creds)
+    # creds_dict["private_key"] = creds_dict["private_key"].replace("\\\n", "\n")
+    # creds = ServiceAccountCredentials.from_json_keyfile_dict(creds_dict, scope)
+    creds = ServiceAccountCredentials.from_json_keyfile_name('g_srv_acct_cred.json', scope)
     client = gspread.authorize(creds)
     sheet = client.open('Copy of Tips').sheet1
     tips_sheet = sheet.spreadsheet.get_worksheet(1)
