@@ -36,6 +36,8 @@ if 'HEROKU_ENV' in os.environ:
     # creds = ServiceAccountCredentials.from_json_keyfile_dict(creds_dict, scope)
 
     json_creds = json.loads(os.environ.get('G_SRV_ACCT_CRED'))
+    json_creds.replace("'", '"')
+    json_creds = "'" + json_creds[1:-2] + "'"
     credentials = ServiceAccountCredentials.from_json(json_creds)
     client = gspread.authorize(credentials)
 
