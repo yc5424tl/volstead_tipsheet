@@ -16,7 +16,7 @@ from vault.models import Employee, Role
 
 
 # primary_staff = Employee.query.filter_by(role_id=1).all()
-primary_staff = db.session.query(Employee, Role).join(id=Role.id).all()
+primary_staff = Employee.query.filter_by(role_id=3)
 
 
 staff_data = []
