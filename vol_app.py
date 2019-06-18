@@ -6,7 +6,7 @@ from vault import create_app
 app = create_app()
 app.app_context().push()
 
-from vault.models import User, ShiftReport, Employee, EmployeeReport, UserRoles, Role
+from vault.models import User, ShiftReport, Employee, EmployeeReport, Role
 
 # def create_admin():
 #
@@ -103,5 +103,4 @@ def make_shell_context():
             'ShiftReport': ShiftReport,
             'Employee': Employee,
             'EmployeeReport': EmployeeReport,
-            'Role': Role,
-            'UserRoles': UserRoles}
+            'Role': Role}

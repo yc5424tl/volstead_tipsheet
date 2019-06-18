@@ -1,8 +1,6 @@
 {% extends 'layout.html' %}
 
-{% block styles %}
-
-{% endblock %}
+{% block styles %}{{ super() }}{% endblock %}
 
 {% block page_content %}
     <div id="index-div">
@@ -15,6 +13,4 @@
     </div>
 {% endblock %}
 
-{% block scripts %}
-
-{% endblock %}
+{% block scripts %}{{ super() }}{% endblock %}

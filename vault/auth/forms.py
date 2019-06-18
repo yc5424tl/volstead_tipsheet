@@ -1,9 +1,9 @@
+
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, BooleanField, SubmitField
 from wtforms.validators import ValidationError, DataRequired, Email, EqualTo, InputRequired
 from flask_babel import _, lazy_gettext as _1
 from vault.models import User
-
 
 
 class LoginForm(FlaskForm):
@@ -27,20 +27,24 @@ class RegistrationForm(FlaskForm):
         if user is not None:
             raise ValidationError(_('Please use a different username.'))
 
+
     @staticmethod
     def validate_email(email):
         user = User.query.filter_by(email=email.data).first()
         if user is not None:
             raise ValidationError(_('Please use a different email address.'))
 
+
 class ResetPasswordRequestForm(FlaskForm):
     email = StringField(_1('Email'), validators=[DataRequired(), Email()])
     submit = SubmitField(_1('Request Password Reset'))
+
 
 class ResetPasswordForm(FlaskForm):
     password = PasswordField(_1('Password'), validators=[DataRequired()])
     password2 = PasswordField(_1('Repeat Password'), validators=[DataRequired(), EqualTo('password')])
     submit = SubmitField(_1('Request Password Reset'))
+
 
 class EditProfileForm(FlaskForm):
     username = StringField('Username', validators=[DataRequired()])

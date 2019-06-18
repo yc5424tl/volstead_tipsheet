@@ -1,5 +1,5 @@
 
-from flask_migrate import Migrate, MigrateCommand, Manager
+from flask_migrate import MigrateCommand, Manager
 from vault import create_app
 
 manager = Manager(create_app)

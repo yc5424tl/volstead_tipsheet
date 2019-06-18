@@ -1,158 +1,64 @@
 # coding=utf-8
-# import os
-# import redis
-from flask import render_template, redirect, url_for, flash, request, current_app
+
+from flask import render_template, redirect, url_for, flash, request
 from flask_login import login_user, logout_user, current_user, login_required
-from flask_user import roles_required
 from flask_babel import _
 from werkzeug.urls import url_parse
-# import flask
 
 from vault import db, vols_email, login as login_mgr
 from vault.auth import bp
 from vault.auth.forms import LoginForm, ResetPasswordRequestForm, ResetPasswordForm, RegistrationForm
-from vault.models import User, Role
-# from config import Config
-# from logging import Logger, DEBUG
+from vault.models import User
 
 import logging
 import sys
 
 root = logging.getLogger()
 root.setLevel(logging.DEBUG)
-
 handler = logging.StreamHandler(sys.stdout)
 handler.setLevel(logging.DEBUG)
 formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
 handler.setFormatter(formatter)
 root.addHandler(handler)
 
-# r = redis.from_url(os.environ.get('REDIS_URL'))
 
 @login_mgr.user_loader
 def user_loader(user_id):
     return User.query.get(user_id)
 
+
 @bp.route('/login', methods=['GET', 'POST'])
 def login():
     if current_user.is_authenticated:
-        print('user.is.authenticated at start of login')
         return redirect(url_for('main.start_report'))
     form = LoginForm()
     if form.validate_on_submit():
-        print('in login.form.validate_on_submit')
         user = User.query.filter_by(username=form.username.data).first()
 
 
         if user and user.check_password(form.password.data):
             user.active = True
             db.session.add(user)
-            db.session.commit()
+            db.session.copmmit()
             login_user(user, remember=form.remember_me.data)
             return redirect(url_for('main.start_report'))
 
         if ( user is None ) or ( not user.check_password(form.password.data) ):
-            print('User ->')
-            print(user)
-
-            print('form.password.data ->')
-            print(form.password.data)
-            print('user.password_hash ->')
-            if user:
-                if user.password_hash:
-                    print(str(user.password_hash))
-                    print('user.check_password(form.password.data ->')
-                    print(user.check_password(form.password.data))
-                else:
-                    print('no user.password_hash')
-            else:
-                print('user is None')
             flash('Invalid username and/or password')
             return redirect(url_for('auth.login'))
+
         login_mgr.login_user(user, remember=form.remember_me.data)
-        # flask.session['user_id'] = user.id
         next_page = request.args.get('next')
+
         if not next_page or url_parse(next_page).netloc != '':
             next_page = url_for('main.start_report')
-        # r.set("username", user.username)
+
         flash('Login Successful')
         return redirect(next_page)
+
     flash('There was an error processing your submission, please try again.')
     return render_template('login.html', title='Sign In', form=form)
 
-# @bp.route('/login', methods=['GET', 'POST'])
-#
-# def login():
-#     if current_user.is_authenticated:
-#         return redirect(url_for('main.start_report'))
-#     login_form = LoginForm(request.form)
-#     if request.method == 'POST':
-#         # remember = form.remember_me.data
-#         remember = True # TODO -  FIX THIS GARBAGE CODE
-#         print('remember = ' + str(remember) + ' type= ' + str(type(remember)))
-#
-#         users = User.query.all()
-#         if users is None:
-#             print("Empty User Table")
-#         else:
-#             for user in users:
-#                 print(user.username)
-#
-#         user = User.query.filter_by(username=login_form.username.data).first()
-#         if user:
-#             print(user.username)
-#             print(user.email)
-#             print(str(login_form.password.data))
-#         if not user or not user.check_password(login_form.password.data):
-#             print('Password/Username Incorrect')
-#             return redirect(url_for('auth.login', form=LoginForm))
-#         print('logging in user')
-#         login_user(user, remember=remember)
-#         return redirect(url_for('main.start_report'))
-#
-#     if request.method == 'GET':
-#         # if current_user.is_authenticated:
-#         #     return redirect(url_for('main.start_report'))
-#
-#         signin_form = LoginForm()
-#         return render_template('login.html', form=signin_form, title=_('Sign In'))
-
-# @bp.route('/login', methods=['GET', 'POST'])
-# def login():
-#     if current_user.is_authenticated:
-#         return redirect(url_for('main.start_report'))
-#     form = LoginForm()
-#     if form.validate_on_submit():
-#         root.info('in form.validate_on_submit() in auth.routes')
-#         user = User.query.filter_by(username=form.username.data).first()
-#         root.info('=======================')
-#         root.info('form.username.data ->')
-#         root.info(form.username.data)
-#         root.info('======================')
-#         root.info('user ->')
-#         root.info(user)
-#         root.info('=======================')
-#         root.info('form.password.data ->')
-#         root.info(form.password.data)
-#         root.info('=======================')
-#         root.info('request.form.get("password") ->')
-#         root.info(request.form.get('password'))
-#         root.info('=======================')
-#         root.info('request.form.get("username") ->')
-#         root.info(request.form.get('username'))
-#         root.info('========================')
-#         root.info('password_hash ->')
-#         root.info(user.password_hash)
-#         root.info('========================')
-#         if user is None or not user.check_password(form.password.data):
-#             flash('Invalid username and/or password')
-#             return redirect(url_for('auth.login'))
-#         login_user(user, remember=form.remember_me.data)
-#         next_page = request.args.get('next')
-#         if not next_page or url_parse(next_page).netloc != '':
-#             next_page = url_for('main.start_report')
-#         return redirect(next_page)
-#     return render_template('login.html', title='Sign In', form=form)
 
 @bp.route('/logout')
 @login_required
@@ -165,11 +71,6 @@ def logout():
     flash('Sign Out Successful')
     return redirect(url_for('auth.login'))
 
-    # if 'user_id' in session:
-    #     flask.session.pop('user_id')
-    # login_mgr.logout_user()
-    # flash('Sign Out Successful')
-    # return redirect(url_for('auth.login'))
 
 @bp.route('/reset_password_request', methods=['GET', 'POST'])
 def reset_password_request():
@@ -181,26 +82,10 @@ def reset_password_request():
         flash(_('Check your email for instructions to reset your password'))
         return redirect(url_for('auth.login'))
     return render_template('reset_password_request.html', title=_('Reset Password'), form=form)
-    # if request.method == 'GET':
-    #     form = ResetPasswordRequestForm()
-    #     return render_template('reset_password_request.html', form=form)
-    #
-    # if request.method == 'POST':
-    #     form = request.form
-    #     if form.validate_on_submit():
-    #         user = User.query.filter_by(email=form.email.data).first()
-    #         if user:
-    #             vols_email.send_password_reset_email(user)
-    # flash(_('Check your email for instructions to reset your password'))
-    # return redirect(url_for('auth.login'))
-        # flash(_('Check your email for instructions to reset your password'))
-        # return render_template('reset_password_request.html', title=_('Reset Password'), form=form)
 
 
 @bp.route('/reset_password/<token>', methods=['GET', 'POST'])
 def reset_password(token):
-    # if current_user.is_authenticated:
-    #     return redirect(url_for('main.start_report'))
     user = User.verify_reset_password_token(token)
     if not user:
         return redirect(url_for('auth.login'))
@@ -212,12 +97,11 @@ def reset_password(token):
         return redirect(url_for('auth.login'))
     return render_template('reset_password.html', form=form)
 
+
 @bp.route('/register', methods=['GET', 'POST'])
 # @roles_required('Admin')
 @login_required
 def register():
-    print('current_user.roles ->')
-    print(current_user.roles)
     for role in current_user.roles:
         if role.name == 'Admin':
             form = RegistrationForm()
@@ -232,13 +116,3 @@ def register():
             return render_template('register.html', title='Register New User', form=form)
     flash('Insufficient Authorization')
     return redirect(url_for('auth.login'))
-
-
-# @login.user_loader
-# def load_user(user_id):
-#     return User.query.get(int(user_id))
-#
-# @login.unauthorized_handler
-# def unauthorized():
-#     flash('Restricted Access: Login/Authorization')
-#     return redirect(url_for('auth.login'))

@@ -3,43 +3,47 @@ from datetime import datetime
 from hashlib import md5
 from time import time
 
-# import bcrypt
+
 import jwt
-# import os
 import argon2
 from flask import current_app
-# from flask_bcrypt import generate_password_hash, check_password_hash
-# from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import UserMixin
 from sqlalchemy import CheckConstraint
 from sqlalchemy.orm import backref
-from sqlalchemy.ext.declarative import declarative_base
-from vault import db, login
-from vault.main.employee_data_controller import EmployeeDataController
-from vault.main.shift_data_controller import ShiftDataController
+# from sqlalchemy.ext.declarative import declarative_base
+from vault import db
+# from vault.main.employee_data_controller import EmployeeDataController
+# from vault.main.shift_data_controller import ShiftDataController
 
-Base = declarative_base()
+# Base = declarative_base()
 ROUNDS = 5
 hasher = argon2.PasswordHasher()
+
+
+
+
 ##################################################################################################################################
 ##    USER
 ##################################################################################################################################
 
 class User(UserMixin, db.Model):
 
-    __tablename__ = 'users'
+    __tablename__ = 'user'
 
     # Refactor models subclassing declarative base, which will allow the use of psql ilike and therefore multi-column uniqueness (i.e. first and last name) as a secondary index
     id = db.Column(db.Integer(), primary_key=True)
     username           = db.Column(db.String(128), nullable=False, unique=True)
-    active             = db.Column('is_active', db.Boolean(), nullable=False, server_default='1')
+    active             = db.Column('is_active', db.Boolean(), nullable=False, server_default='0')
     password_hash      = db.Column(db.String(255), nullable=False)
     email              = db.Column(db.String(255), nullable=False, unique=True, index=True)
     email_confirmed_at = db.Column(db.DateTime())
     last_online        = db.Column(db.DateTime(), default=datetime.utcnow)
     employee_id        = db.Column(db.Integer(), db.ForeignKey('employee.id'))
     employee           = db.relationship('Employee', backref=backref('user_by_employee', uselist=False), primaryjoin="Employee.id == User.employee_id")
-    roles              = db.relationship('Role', secondary='user_roles')
+    authorization_id   = db.Column(db.Integer(), db.ForeignKey('authorization.id'))
+    authorization      = db.relationship('Authorization', backref=backref('authorization', uselist=False))
+
+
 
     def __init__(self, username, email, emp_id, active=True):
         self.username = username
@@ -65,17 +69,6 @@ class User(UserMixin, db.Model):
             return False
 
 
-
-    # def set_password(self, password):
-    #     self.password_hash = bcrypt.hashpw(password.encode('utf-8'), None)
-    #     # self.password_hash = generate_password_hash(password)
-    #
-    # def check_password(self, password):
-    #     # return check_password_hash(self.password_hash, password)
-    #     # return bcrypt.checkpw(password.encode('utf-8'), self.password_hash)
-    #     return self.password_hash == bcrypt.hashpw(password.encode('utf-8')).decode()
-    #     # return bcrypt.checkpw(password, self.password_hash)
-
     def avatar(self, size):
         digest = md5(self.email.lower().encode('utf-8')).hexdigest()
         return 'https://www.gravatar.com/avatar/{}?d=identicon&s={}'.format(digest, size)
@@ -94,33 +87,13 @@ class User(UserMixin, db.Model):
         return User.query.get(user_id)
 
 
-# @login.user_loader
-# def load_user(user_id):
-#     return User.query.get(int(user_id))
-# @login.user_loader
-# def load_user(user_id):
-#     try:
-#         # u = User.query.get(user_id)
-#         # return User(id=u.id,
-#         #         username=u.username,
-#         #         password_hash=u.password_hash,
-#         #         email=u.email,
-#         #         email_confirmed_at=u.email_confirmed_at,
-#         #         employee_id=u.employee_id)
-#         return User.get(User.id==user_id)
-#     except User.DoesNotExist:
-#         return None
-
-
-
-
 ################################################################################################################################
 ##    SHIFT REPORT
 ##################################################################################################################################
 
 class ShiftReport(db.Model):
 
-    __tablename__ = 'shift_reports'
+    __tablename__ = 'shift_report'
 
     id               = db.Column(db.Integer(), primary_key=True)
     cash_tip_pool    = db.Column(db.Float())
@@ -151,7 +124,7 @@ class ShiftReport(db.Model):
         return '<Shift Report {}>'.format(self.start_date)
 
     @staticmethod
-    def populate_fields(shift: ShiftDataController):
+    def populate_fields(shift):
         return ShiftReport(
             cash_tip_pool = shift.cash_tip_pool,
             cash_tip_wage = shift.cash_tip_wage,
@@ -201,27 +174,40 @@ class ShiftReport(db.Model):
 ##    EMPLOYEE
 ##################################################################################################################################
 
+# class EmpRoles(db.Model):
+#
+#     __tablename__ = 'emp_roles'
+#
+#     role_id = db.Column(db.Integer, db.ForeignKey('role.id'), primary_key=True)
+#     employee_id = db.Column(db.Integer, db.ForeignKey('employee.id'), primary_key=True)
 
 
 class Employee(db.Model):
 
     __tablename__ = 'employee'
 
-    id              = db.Column(db.Integer(), primary_key=True)
-    first_name      = db.Column(db.String(64))
-    last_name       = db.Column(db.String(64))
-    created_at      = db.Column(db.DateTime(), default=datetime.utcnow)
-    ringer          = db.Column(db.Boolean(), default=False)
+    id               = db.Column(db.Integer(), primary_key=True)
+    first_name       = db.Column(db.String(64))
+    last_name        = db.Column(db.String(64))
+    default_tip_role = db.Column(db.Enum('SERVICE', 'SUPPORT', name='TIP_ROLE'))
+    created_at       = db.Column(db.DateTime(), default=datetime.utcnow)
+    role_id = db.Column(db.Integer(), db.ForeignKey('role.id'))
+    role = db.relationship('Role', backref=backref('role', uselist=False))
+    # roles            = db.relationship('Role', secondary=employee_roles,
+    #                                    primaryjoin=(employee_roles.c.employee_id == id),
+    #                                    secondaryjoin=(employee_roles.c.role_id == id),
+    #                                    backref=db.backref('role', lazy='dynamic'), lazy='dynamic')
+    # roles            = db.relationship('Role', secondary='employee_role')
+    # emp_roles = db.relationship('Role', secondary='emp_roles', lazy='subquery', backref=db.backref('employees', lazy=True))
 
     # __table_args__ = (
     #     db.UniqueConstraint('first_name', 'last_name', name='first_last_uni_emp'),
     # )
 
     def __repr__(self):
-        return '<Employee: {} {}; Is_Ringer:>'.format(
+        return '<Employee: {} {}>'.format(
             self.first_name,
-            self.last_name,
-            self.is_ringer
+            self.last_name
         )
 
     @property
@@ -231,6 +217,47 @@ class Employee(db.Model):
     @full_name.setter
     def full_name(self, new_name):
         self.full_name = new_name
+
+# class EmployeeRoles(db.Model):
+#     __tablename__ = 'employee_roles'
+#
+#     employee_id = db.Column(db.Integer, db.ForeignKey(Employee.id), primary_key=True)
+#     role_id = db.Column(db.Integer, db.ForeignKey(Role.id), primary_key=True)
+#     )
+
+
+###################################################################################################################################
+##    ROLE
+##################################################################################################################################
+
+
+class Role(db.Model):
+    __tablename__ = 'role'
+
+    id = db.Column(db.Integer(), primary_key=True)
+    name = db.Column(db.String(50), unique=True)
+
+    def __repr__(self):
+        return "<Role {}".format(self.name)
+
+
+###################################################################################################################################
+##    EMPLOYEE ROLE
+##################################################################################################################################
+
+
+
+# class EmployeeRole(db.Model):
+#     __tablename__ = 'employee_role'
+#
+#     id      = db.Column(db.Integer(), primary_key=True)
+#     role_id = db.Column(db.Integer(), db.ForeignKey('role.id', ondelete='CASCADE'))
+#     employee_id = db.Column(db.Integer(), db.ForeignKey('employee.id', ondelete='CASCADE'))
+#
+#     def __repr__(self):
+#         return "<Employee Role {}>".format(self.name)
+
+
 
 
 
@@ -251,7 +278,7 @@ class EmployeeReport(db.Model):
     tip_hours   = db.Column(db.Float())
     employee_id = db.Column(db.Integer(), db.ForeignKey('employee.id'))
     employee    = db.relationship('Employee', backref=db.backref('employee_reports', lazy='joined'), primaryjoin="EmployeeReport.employee_id == Employee.id")
-    shift_id    = db.Column(db.Integer(), db.ForeignKey('shift_reports.id'))
+    shift_id    = db.Column(db.Integer(), db.ForeignKey('shift_report.id'))
     shift       = db.relationship('ShiftReport', backref=db.backref('employee_reports', lazy='joined'), primaryjoin="EmployeeReport.shift_id == ShiftReport.id")
 
 
@@ -272,7 +299,7 @@ class EmployeeReport(db.Model):
         )
 
     @staticmethod
-    def populate_fields(employee_report: EmployeeDataController, shift_id, employee_id):
+    def populate_fields(employee_report, shift_id, employee_id):
         return EmployeeReport(
         cash_tips   = employee_report.cash_tips,
         cred_tips   = employee_report.cred_tips,
@@ -287,33 +314,33 @@ class EmployeeReport(db.Model):
 
 
 ###################################################################################################################################
-##    ROLE
+##    AUTHORIZATION
 ##################################################################################################################################
 
-class Role(db.Model):
+class Authorization(db.Model):
 
-    __tablename__ = 'roles'
+    __tablename__ = 'authorization'
 
     id   = db.Column(db.Integer(), primary_key=True)
     name = db.Column(db.String(50), unique=True)
 
     def __repr__(self):
-        return '<Role {}>'.format(self.name)
+        return '<Authorization {}>'.format(self.name)
 
 
 
 
 ###################################################################################################################################
-##    USER ROLES
+##    USER AUTHORIZATION
 ###################################################################################################################################
 
-class UserRoles(db.Model):
-
-    __tablename__ = 'user_roles'
-
-    id      = db.Column(db.Integer(), primary_key=True)
-    role_id = db.Column(db.Integer(), db.ForeignKey('roles.id', ondelete='CASCADE'))
-    user_id = db.Column(db.Integer(), db.ForeignKey('users.id', ondelete='CASCADE'))
+# class UserAuth(db.Model):
+#
+#     __tablename__ = 'user_auth'
+#
+#     id      = db.Column(db.Integer(), primary_key=True)
+#     auth_id = db.Column(db.Integer(), db.ForeignKey('authorization.id', ondelete='CASCADE'))
+#     user_id = db.Column(db.Integer(), db.ForeignKey('user.id', ondelete='CASCADE'))
 
 
 # user_manager = flask_user.UserManager(current_app, db, User)

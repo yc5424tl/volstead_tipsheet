@@ -5,20 +5,32 @@ from flask import render_template, copy_current_request_context, url_for, reques
 from flask_login import current_user, login_required
 from flask_babel import _, get_locale
 from flask_user import roles_required
-
 from numpy import linspace
 from vault.main import bp
 from vault.main.employee_data_controller import EmployeeDataController
-
 from vault.main.shift_data_controller import ShiftDataController
-# import app.g_sheet as g_sheet
-from vault import models, db
+from vault import db, models
+# from vault.models import Employee, ShiftReport, EmployeeReport
 from vault.g_sheet import GoogleSheetsMgr
+from vault.models import Employee, Role
+
+
+primary_staff = Employee.query.filter_by(role_id=1).all()
+staff_data = []
+for emp in primary_staff:
+    staff_data.append([emp.first_name, emp.last_name, emp.default_tip_role])
+    # print('in staff loop, current employee is ' + emp.first_name)
+
+employee_data = [EmployeeDataController(emp.first_name, emp.last_name, emp.default_tip_role) for emp in primary_staff]
+
+
 
 shift_hours_range = linspace(0.0, 9.0, num=19, retstep=True)
-employees = EmployeeDataController.instantiate_employees() # list of EmployeeDataController objects
-shift = ShiftDataController(employees)
+# employees = EmployeeDataController.instantiate_employees(employee_data) # list of EmployeeDataController objects
+shift = ShiftDataController(employee_data)
 g_sheet = GoogleSheetsMgr()
+# ringers = models.Employee.query.filter_by(ringer=True)
+
 
 @bp.before_app_request
 def before_request():
@@ -87,8 +99,8 @@ def start_report():
         shift.shift_hours = 0.0
         shift.tip_hours = 0.0
 
-        for emp in shift.staff:
-            hours_tag_id = emp.first_name + '-hours'
+        for staff in shift.staff:
+            hours_tag_id = staff.first_name + '-hours'
             hours = float(rf[hours_tag_id])
             tip_hours += hours
 
@@ -118,8 +130,8 @@ def start_report():
 
         if shift.cred_tip_pool > 0.00:
             shift.cred_tip_wage = float(Decimal(shift.cred_tip_pool / shift.tip_hours).quantize(Decimal('.01'), rounding=ROUND_HALF_UP))
-            for emp in shift.staff:
-                emp._cred_tips = float(Decimal(Decimal(shift.cred_tip_wage) * Decimal(emp.tip_hours)).quantize(Decimal('.01'), rounding=ROUND_HALF_UP))
+            for staff in shift.staff:
+                staff._cred_tips = float(Decimal(Decimal(shift.cred_tip_wage) * Decimal(staff.tip_hours)).quantize(Decimal('.01'), rounding=ROUND_HALF_UP))
 
         today = datetime.today()
         if int(datetime.now().strftime('%H')) >= 17:
@@ -145,8 +157,8 @@ def register_user():
 
 def list_of_emp(emp_list) -> bool:
     if isinstance(emp_list, list):
-        for emp in emp_list:
-            if not isinstance(emp, EmployeeDataController):
+        for emp_data in emp_list:
+            if not isinstance(emp.MMAFI, EmployeeDataController):
                 return False
         return True
     return False
@@ -158,16 +170,16 @@ def submit_report():
 
     if request.method == 'POST':
 
-        if list_of_emp(employees) and isinstance(shift, ShiftDataController):
-
+        # if list_of_emp(employees) and isinstance(shift, ShiftDataController):
+        if list_of_emp(employee_data) and isinstance(shift, ShiftDataController):
 
             new_shift_report = models.ShiftReport.populate_fields(shift)
             db.session.add(new_shift_report)
             new_shift_id = new_shift_report.id
 
             for employee_report in shift.staff:
-                emp = models.Employee.query.filter_by(first_name=employee_report.first_name).filter_by(last_name=employee_report.last_name).first()
-                new_employee_report = models.EmployeeReport.populate_fields(employee_report=employee_report, shift_id=new_shift_id, employee_id=emp.id)
+                current_emp = models.Employee.query.filter_by(first_name=employee_report.first_name).filter_by(last_name=employee_report.last_name).first()
+                new_employee_report = models.EmployeeReport.populate_fields(employee_report=employee_report, shift_id=new_shift_id, employee_id=current_emp.id)
                 db.session.add(new_employee_report)
 
             db.session.commit()
@@ -175,7 +187,6 @@ def submit_report():
             g_sheet.insert_new_row_for_shift(shift)
             g_sheet.check_previous_subtotals(shift.start_date)
             g_sheet.end_of_period_check(shift.start_date)
-
 
             return render_template('report_archived_confirmation.html', daily_report=shift)
 
