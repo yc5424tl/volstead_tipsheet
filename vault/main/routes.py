@@ -15,11 +15,14 @@ from vault.g_sheet import GoogleSheetsMgr
 from vault.models import Employee, Role
 
 
-primary_staff = Employee.query.filter_by(role_id=1).all()
+# primary_staff = Employee.query.filter_by(role_id=1).all()
+primary_staff = db.session.query(Employee, Role).join(id=Role.id).all()
+
+
 staff_data = []
 for emp in primary_staff:
     staff_data.append([emp.first_name, emp.last_name, emp.default_tip_role])
-    # print('in staff loop, current employee is ' + emp.first_name)
+    print('in staff loop, current employee is {} {}. Role={}'.format(emp.first_name, emp.last_name, emp.role_id))
 
 employee_data = [EmployeeDataController(emp.first_name, emp.last_name, emp.default_tip_role) for emp in primary_staff]
 
