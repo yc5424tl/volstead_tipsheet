@@ -16,9 +16,10 @@ from vault.models import Employee, Role
 
 
 # primary_staff = Employee.query.filter_by(role_id=1).all()
-primary_staff = Employee.query.filter_by(role_id=3)
+# primary_staff = Employee.query.filter_by(==1).all()
+# primary_staff = db.Session.query(db.Employee, db.    Role).join(Role).filter(id=1).all()
 
-
+primary_staff = db.session.query(Employee).filter(Employee.role_id==Role.id).filter(Role.id==1)
 staff_data = []
 for emp in primary_staff:
     staff_data.append([emp.first_name, emp.last_name, emp.default_tip_role])
@@ -32,7 +33,9 @@ shift_hours_range = linspace(0.0, 9.0, num=19, retstep=True)
 # employees = EmployeeDataController.instantiate_employees(employee_data) # list of EmployeeDataController objects
 shift = ShiftDataController(employee_data)
 g_sheet = GoogleSheetsMgr()
-# ringers = models.Employee.query.filter_by(ringer=True)
+# ringers  = db.Session.query()
+
+# primary_staff = db.session.query(Employee).filter(Employee.role_id==Role.id).filter(Role.id==1)
 
 
 @bp.before_app_request

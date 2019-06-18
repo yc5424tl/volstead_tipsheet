@@ -48,73 +48,74 @@ if 'HEROKU_ENV' in os.environ:
     tips_sheet = sheet.spreadsheet.get_worksheet(1)
 
 else:
-    print('not in heroku env')
+    # print('not in heroku env')
     # credentials = ServiceAccountCredentials.from_json_keyfile_name('client_secret.json', scope)
-    # credentials = ServiceAccountCredentials.from_json
-    json_pycharm = os.environ.get('G_SRV_ACCT_CRED')
-    print('json_pycharm ->')
-    print(json_pycharm)
-    for x in range(0,5):
-        print('')
-    json_1 = os.environ.get('G_SRV_ACCT_CRED_1')
-    print('json_1 ->')
-    print(json_1)
-    for x in range(0,5):
-        print('')
-    json_2 = os.environ.get('G_SRV_ACCT_CRED_2')
-    print('json_2 ->')
-    print(json_2)
-    for x in range(0,5):
-        print('')
+    # # credentials = ServiceAccountCredentials.from_json
+    # json_pycharm = os.environ.get('G_SRV_ACCT_CRED')
+    # print('json_pycharm ->')
+    # print(json_pycharm)
+    # for x in range(0,5):
+    #     print('')
+    # json_1 = os.environ.get('G_SRV_ACCT_CRED_1')
+    # print('json_1 ->')
+    # print(json_1)
+    # for x in range(0,5):
+    #     print('')
+    # json_2 = os.environ.get('G_SRV_ACCT_CRED_2')
+    # print('json_2 ->')
+    # print(json_2)
+    # for x in range(0,5):
+    #     print('')
+    #
+    # full_json = json_1.join(json_2)
+    #
+    # print('before config:set')
+    # os.system('heroku config:set PRIVATE_KEY=%s' % full_json)
+    # print('after config:set')
+    # # credentials = ServiceAccountCredentials.from_json()
+    # json_data = os.environ.get('G_SRV_ACCT_CRED_1').join(os.environ.get('G_SRV_ACCT_CRED_2'))
+    # print('json_data ->')
+    # print(json_data)
+    # print('type json_data = ' + str(type(json_data)))
 
-    full_json = json_1.join(json_2)
+    # try:
+    #     lit_eval = ast.literal_eval(json_data)
+    #     print('lit_eval type == ' + str(type(lit_eval)))
+    #     print(lit_eval)
+    #     print('end lit_eval')
+    #     print('')
+    # except:
+    #     print('exception with lit eval')
 
-    print('before config:set')
-    os.system('heroku config:set PRIVATE_KEY=%s' % full_json)
-    print('after config:set')
-    # credentials = ServiceAccountCredentials.from_json()
-    json_data = os.environ.get('G_SRV_ACCT_CRED_1').join(os.environ.get('G_SRV_ACCT_CRED_2'))
-    print('json_data ->')
-    print(json_data)
-    print('type json_data = ' + str(type(json_data)))
-
-    try:
-        lit_eval = ast.literal_eval(json_data)
-        print('lit_eval type == ' + str(type(lit_eval)))
-        print(lit_eval)
-        print('end lit_eval')
-        print('')
-    except:
-        print('exception with lit eval')
-
-    try:
-        json_data_eval = eval(json_data)
-        print('json_data_eval ->')
-        print(json_data_eval)
-        print('type = ' + str(type(json_data_eval)))
-        print('')
-    except:
-        print('exception eval json_data')
+    # try:
+    #     json_data_eval = eval(json_data)
+    #     print('json_data_eval ->')
+    #     print(json_data_eval)
+    #     print('type = ' + str(type(json_data_eval)))
+    #     print('')
+    # except:
+    #     print('exception eval json_data')
 
 
-    print()
-    for x in range(0,5):
-        print('')
+    # print()
+    # for x in range(0,5):
+    #     print('')
+    #
+    # print('json_pycharm == json_1.join(json_2) ->')
+    # print(json_pycharm == json_1.join(json_2))
 
-    print('json_pycharm == json_1.join(json_2) ->')
-    print(json_pycharm == json_1.join(json_2))
-
-    credentials = service_account.ServiceAccountCredentials.from_json(json.dumps(ast.literal_eval(json_data)))
-    print('credentials type = ' + str(type(credentials)))
-    cred_dict = dict(credentials)
-    print('cred_dict type = ' + str(type(cred_dict)))
-    print('')
-    print('cred_dict ->')
-    for key in cred_dict:
-        print('KEY---> ' + key)
-        print('VALUE-> ' + cred_dict[key])
-    for x in range(0,3):
-        print('')
+    # credentials = ServiceAccountCredentials.from_json(json.dumps(ast.literal_eval(json_data)))
+    # print('credentials type = ' + str(type(credentials)))
+    # cred_dict = dict(credentials)
+    # print('cred_dict type = ' + str(type(cred_dict)))
+    # print('')
+    # print('cred_dict ->')
+    # for key in cred_dict:
+    #     print('KEY---> ' + key)
+    #     print('VALUE-> ' + cred_dict[key])
+    # for x in range(0,3):
+    #     print('')
+    credentials = ServiceAccountCredentials.from_json_keyfile_name('volsteads-80ce98cc6e0b.json', scope)
     client = gspread.authorize(credentials)
     sheet = client.open('Copy of Tips').sheet1
 
