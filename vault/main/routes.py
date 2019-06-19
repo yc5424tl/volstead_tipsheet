@@ -13,6 +13,7 @@ from vault import db, models
 # from vault.models import Employee, ShiftReport, EmployeeReport
 from vault.g_sheet import GoogleSheetsMgr
 from vault.models import Employee, Role
+from retrying import retry
 
 
 # primary_staff = Employee.query.filter_by(role_id=1).all()
@@ -21,21 +22,28 @@ from vault.models import Employee, Role
 # primary_staff = db.session.query(Employee).filter(Employee.role_id==Role.id).filter(Role.id==1)
 
 primary_staff =  Employee.query.filter_by(role_id=1)
+# alternate_staff = Employee.query.filter_by(role_id=2)
 
 
 
-staff_data = []
+# primary_staff_data = []
+# for emp in primary_staff:
+#     primary_staff_data.append([emp.first_name, emp.last_name, emp.default_tip_role])
+#     print('in staff loop, current employee is {} {}. Role={}'.format(emp.first_name, emp.last_name, emp.role_id))
+primary_staff_data = []
 for emp in primary_staff:
-    staff_data.append([emp.first_name, emp.last_name, emp.default_tip_role])
     print('in staff loop, current employee is {} {}. Role={}'.format(emp.first_name, emp.last_name, emp.role_id))
+    new_emp_data_ctrl = EmployeeDataController(first_name=emp.first_name, last_name=emp.last_name, tip_role=emp.default_tip_role)
+    primary_staff_data.append(new_emp_data_ctrl)
 
-employee_data = [EmployeeDataController(emp.first_name, emp.last_name, emp.default_tip_role) for emp in primary_staff]
+# employee_data = [EmployeeDataController(emp.first_name, emp.last_name, emp.default_tip_role) for emp in primary_staff]
 
 
 
 shift_hours_range = linspace(0.0, 9.0, num=19, retstep=True)
 # employees = EmployeeDataController.instantiate_employees(employee_data) # list of EmployeeDataController objects
-shift = ShiftDataController(employee_data)
+# shift = ShiftDataController(employee_data)
+shift = ShiftDataController(primary_staff_data)
 g_sheet = GoogleSheetsMgr()
 # ringers  = db.Session.query()
 
@@ -168,7 +176,7 @@ def register_user():
 def list_of_emp(emp_list) -> bool:
     if isinstance(emp_list, list):
         for emp_data in emp_list:
-            if not isinstance(emp.MMAFI, EmployeeDataController):
+            if not isinstance(emp_data, EmployeeDataController):
                 return False
         return True
     return False
@@ -181,7 +189,7 @@ def submit_report():
     if request.method == 'POST':
 
         # if list_of_emp(employees) and isinstance(shift, ShiftDataController):
-        if list_of_emp(employee_data) and isinstance(shift, ShiftDataController):
+        if list_of_emp(primary_staff_data) and isinstance(shift, ShiftDataController):
 
             new_shift_report = models.ShiftReport.populate_fields(shift)
             db.session.add(new_shift_report)

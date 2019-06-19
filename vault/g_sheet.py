@@ -1,137 +1,47 @@
 # coding=utf-8
 
-import string
-import gspread
-import os
-import simplejson
 import json
-import ast
+import os
+import string
+from datetime import datetime
+
+import gspread
+import simplejson
+from oauth2client.service_account import ServiceAccountCredentials
+from retrying import retry
 
 from vault.main.employee_data_controller import EmployeeDataController
 from vault.main.shift_data_controller import ShiftDataController
-from datetime import datetime
-from oauth2client.service_account import ServiceAccountCredentials
-# from oauth2client import service_account
-from retrying import retry
-from google.oauth2 import service_account
-from google.oauth2.service_account import Credentials, _service_account_info
-
 
 
 scope = ['https://spreadsheets.google.com/feeds',
          'https://www.googleapis.com/auth/spreadsheets',
          'https://www.googleapis.com/auth/drive']
 
-
 if 'HEROKU_ENV' in os.environ:
-    # credentials = ServiceAccountCredentials.from_json_keyfile_name('client_secret.json', scope)
-    # json_creds = os.getenv("G_SRV_ACCT_CRED")
-    # print('json_creds ->')
-    # print(json_creds)
-    # with open('g_srv_acct_cred.json', 'w+') as json_file:
-    #     json_file.write(json_creds)
-    #     json_file.close()
-    # creds_dict = json.loads(json_creds)
-    # creds_dict["private_key"] = creds_dict["private_key"].replace("\\\n", "\n")
-    # creds = ServiceAccountCredentials.from_json_keyfile_dict(creds_dict, scope)
-
-    json_creds = json.loads(os.environ.get('G_SRV_ACCT_CRED'))
-    print('json_creds ->')
-    print(json_creds)
-    # json_creds = "'" + json_creds + "'"
-    credentials = ServiceAccountCredentials.from_json_keyfile_dict(keyfile_dict=json_creds, scopes=scope)
+    json_cred = json.loads(os.environ.get('G_SRV_ACCT_CRED'))
+    credentials = ServiceAccountCredentials.from_json_keyfile_dict(keyfile_dict=json_cred, scopes=scope)
     client = gspread.authorize(credentials)
-
-    # creds = ServiceAccountCredentials.from_json_keyfile_name('g_srv_acct_cred.json', scope)
-    # client = gspread.authorize(creds)
     sheet = client.open('Copy of Tips').sheet1
     tips_sheet = sheet.spreadsheet.get_worksheet(1)
 
 else:
-    # print('not in heroku env')
-    # credentials = ServiceAccountCredentials.from_json_keyfile_name('client_secret.json', scope)
-    # # credentials = ServiceAccountCredentials.from_json
-    # json_pycharm = os.environ.get('G_SRV_ACCT_CRED')
-    # print('json_pycharm ->')
-    # print(json_pycharm)
-    # for x in range(0,5):
-    #     print('')
-    # json_1 = os.environ.get('G_SRV_ACCT_CRED_1')
-    # print('json_1 ->')
-    # print(json_1)
-    # for x in range(0,5):
-    #     print('')
-    # json_2 = os.environ.get('G_SRV_ACCT_CRED_2')
-    # print('json_2 ->')
-    # print(json_2)
-    # for x in range(0,5):
-    #     print('')
-    #
-    # full_json = json_1.join(json_2)
-    #
-    # print('before config:set')
-    # os.system('heroku config:set PRIVATE_KEY=%s' % full_json)
-    # print('after config:set')
-    # # credentials = ServiceAccountCredentials.from_json()
-    # json_data = os.environ.get('G_SRV_ACCT_CRED_1').join(os.environ.get('G_SRV_ACCT_CRED_2'))
-    # print('json_data ->')
-    # print(json_data)
-    # print('type json_data = ' + str(type(json_data)))
-
-    # try:
-    #     lit_eval = ast.literal_eval(json_data)
-    #     print('lit_eval type == ' + str(type(lit_eval)))
-    #     print(lit_eval)
-    #     print('end lit_eval')
-    #     print('')
-    # except:
-    #     print('exception with lit eval')
-
-    # try:
-    #     json_data_eval = eval(json_data)
-    #     print('json_data_eval ->')
-    #     print(json_data_eval)
-    #     print('type = ' + str(type(json_data_eval)))
-    #     print('')
-    # except:
-    #     print('exception eval json_data')
-
-
-    # print()
-    # for x in range(0,5):
-    #     print('')
-    #
-    # print('json_pycharm == json_1.join(json_2) ->')
-    # print(json_pycharm == json_1.join(json_2))
-
-    # credentials = ServiceAccountCredentials.from_json(json.dumps(ast.literal_eval(json_data)))
-    # print('credentials type = ' + str(type(credentials)))
-    # cred_dict = dict(credentials)
-    # print('cred_dict type = ' + str(type(cred_dict)))
-    # print('')
-    # print('cred_dict ->')
-    # for key in cred_dict:
-    #     print('KEY---> ' + key)
-    #     print('VALUE-> ' + cred_dict[key])
-    # for x in range(0,3):
-    #     print('')
-    credentials = ServiceAccountCredentials.from_json_keyfile_name('volsteads-80ce98cc6e0b.json', scope)
+    credentials = ServiceAccountCredentials.from_json_keyfile_name('volsteads-f7fca2360881.json', scope)
     client = gspread.authorize(credentials)
-    tips_sheet = client.open('Copy of Tips').sheet1
-
+    sheet = client.open('Copy of Tips').sheet1
+    tips_sheet = sheet.spreadsheet.get_worksheet(1)
 
 ref_date = datetime(year=2018, month=12, day=30)
 col_map = dict(enumerate(string.ascii_uppercase, 1))
 
 
 class GoogleSheetsMgr(object):
-
     def __init__(self):
         self.emp_col_dict = self.refresh_emp_col_dict()
         self.title_row_offset = 1
 
-    @retry(wait_exponential_multiplier=1000, wait_exponential_max=10000, stop_max_attempt_number=35)
     # 305 secs total, just over the documented 5 min window used by Google to rate limit API calls
+    @retry(wait_exponential_multiplier=1000, wait_exponential_max=10000, stop_max_attempt_number=35)
     def refresh_emp_col_dict(self):
         self.emp_col_dict = {}
         col_titles = tips_sheet.row_values(row=1)
@@ -146,7 +56,6 @@ class GoogleSheetsMgr(object):
         full_periods_remainder = timedelta_days % 14
         target_row_int = ((16 * full_pay_period_row_groups) + full_periods_remainder) + self.title_row_offset
         return target_row_int
-
 
     @staticmethod
     @retry(wait_exponential_multiplier=1000, wait_exponential_max=10000, stop_max_attempt_number=35)
@@ -171,7 +80,6 @@ class GoogleSheetsMgr(object):
             return True
         return False
 
-
     @retry(wait_exponential_multiplier=1000, wait_exponential_max=10000, stop_max_attempt_number=35)
     def insert_shift_pool(self, shift_row: int, shift_pool: float) -> bool:
         if shift_row > 1 and shift_pool > 0:
@@ -181,20 +89,20 @@ class GoogleSheetsMgr(object):
             return True
         return False
 
-
     @staticmethod
+    @retry(wait_exponential_multiplier=1000, wait_exponential_max=10000, stop_max_attempt_number=35)
     def insert_date_for_shift(shift_row: int, shift_date: datetime) -> bool:
         if shift_row > 1 and (datetime.today() - shift_date).days >= 0:
             tips_sheet.update_cell(row=shift_row, col=1, value=shift_date.strftime('%m/%d/%Y'))
             return True
         return False
 
+    @retry(wait_exponential_multiplier=1000, wait_exponential_max=10000, stop_max_attempt_number=35)
     def insert_new_row_for_shift(self, shift: ShiftDataController) -> bool:
         shift_timedelta = self.get_timedelta_days(shift.start_date)
         shift_row = self.get_row_by_timedelta(shift_timedelta)
         insert_pool = self.insert_shift_pool(shift_row, shift.cred_tip_pool)
         insert_date = self.insert_date_for_shift(shift_row, shift.start_date)
-
         if insert_pool and insert_date:
             for emp in shift.staff:
                 cont = self.insert_shift_for_emp(shift_row=shift_row, employee=emp)
@@ -203,6 +111,7 @@ class GoogleSheetsMgr(object):
             return True
 
     @staticmethod
+    @retry(wait_exponential_multiplier=1000, wait_exponential_max=10000, stop_max_attempt_number=35)
     def insert_subtotals_row(target_row: int) -> bool:
         try:
             tips_sheet.update_cell(row=target_row, col=1, value='Period Totals')
@@ -218,13 +127,11 @@ class GoogleSheetsMgr(object):
                         subtotal += float(int(cell.value))
                 tips_sheet.update_cell(row=target_row, col=col_num, value=subtotal)
             return True
-
         except gspread.exceptions.APIError:
             print('gspread.exceptions.APIError in insert_subtotals_row')
             pass
 
-
-
+    @retry(wait_exponential_multiplier=1000, wait_exponential_max=10000, stop_max_attempt_number=35)
     def check_previous_subtotals(self, shift_date: datetime):
         timedelta_d = self.get_timedelta_days(shift_date)
         completed_periods = timedelta_d // 16
@@ -236,7 +143,7 @@ class GoogleSheetsMgr(object):
                 if period_pool_subtotal is None or period_pool_subtotal is '':
                     self.insert_subtotals_row(subtotal_row)
 
-
+    @retry(wait_exponential_multiplier=1000, wait_exponential_max=10000, stop_max_attempt_number=35)
     def end_of_period_check(self, shift_date: datetime):
         timedelta_days = self.get_timedelta_days(shift_date)
         period_index = timedelta_days % 14

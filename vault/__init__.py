@@ -9,7 +9,7 @@ from flask_login import LoginManager, current_user
 from flask_mail import Mail
 from flask_migrate import Migrate
 from flask_sqlalchemy import SQLAlchemy
-
+from flask_user import UserManager
 from config import Config
 
 
@@ -18,6 +18,7 @@ migrate = Migrate()
 login = LoginManager()
 login.login_view = 'auth.login'
 login.login_message = _1('Authorized Users Must Log In To Access This Page')
+# user_manager = UserManager()
 mail = Mail()
 bootstrap = Bootstrap()
 babel = Babel()
@@ -129,6 +130,10 @@ def create_app(config_class=Config):
 
     migrate.init_app(app, db)
     login.init_app(app)
+
+    # from vault.models import User
+
+    # user_manager.init_app(app, db, User)
     mail.init_app(app)
     bootstrap.init_app(app)
     babel.init_app(app)
@@ -139,12 +144,12 @@ def create_app(config_class=Config):
     def utility_processor():
         def get_authorizations():
             users = User.query.all()
-            user_auths = {u.username:[authorization.name for authorization in u.authorizations] for u in users}
+            user_auth = {u.username:u.authorization.name for u in users}
             target_user = current_user
             try:
-                return user_auths[target_user.username]
+                return user_auth[target_user.username]
             except AttributeError:
-                return []
+                return 'READ_ONLY'
         return dict(get_authorizations = get_authorizations())
 
     if __name__ != '__main__':

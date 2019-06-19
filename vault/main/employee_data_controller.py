@@ -11,7 +11,7 @@ class TipShare(Enum):
 
 class EmployeeDataController(object):
 
-    def __init__(self, first_name: str, last_name: str, tip_role: str) -> ClassVar:
+    def __init__(self, first_name: str, last_name: str, tip_role: str):
         self._first_name = first_name
         self._last_name = last_name
         self._tip_role = tip_role
@@ -22,7 +22,7 @@ class EmployeeDataController(object):
 
     @property
     def full_name(self):
-        return self.first_name + ' ' + self.last_name
+        return self._first_name + ' ' + self._last_name
 
     @full_name.setter
     def full_name(self, new_full_name):
@@ -30,36 +30,36 @@ class EmployeeDataController(object):
 
     @property
     def first_name(self) -> str:
-        return self.first_name
+        return self._first_name
 
     @first_name.setter
     def first_name(self, new_first_name):
-        self.first_name = new_first_name
+        self._first_name = new_first_name
 
     @property
     def last_name(self) -> str:
-        return self.last_name
+        return self._last_name
 
     @last_name.setter
     def last_name(self, new_last_name):
-        self.last_name = new_last_name
+        self._last_name = new_last_name
 
     @property
     def shift_hours(self):
-        return self.shift_hours
+        return self._shift_hours
 
     @shift_hours.setter
     def shift_hours(self, new_shift_hours):
-        self.shift_hours = new_shift_hours
+        self._shift_hours = new_shift_hours
 
     @property
     def tip_role(self):
-        return self.tip_role
+        return self._tip_role
 
     @tip_role.setter
     def tip_role(self, new_role):
         if new_role == "SERVICE" or "SUPPORT" or "MANAGEMENT":
-            self.tip_role = new_role
+            self._tip_role = new_role
 
     @property
     def tip_hours(self):
@@ -89,7 +89,7 @@ class EmployeeDataController(object):
     @property
     def shift_details(self):
         details = "NAME: %s  SHIFT: %f hours  ROLE: %s  TIP-HOURS: %f hours  CC-TIPS: $%f  CASH-TIPS: $%f" \
-                  % (self.first_name + ' ' + self.last_name, float(Decimal(self.shift_hours).quantize(Decimal('.01'))), self.tip_role, float(Decimal(self.tip_hours).quantize(Decimal('.01'))), float(Decimal(self.cred_tips).quantize(Decimal('.01'))), float(Decimal(self.cash_tips).quantize(Decimal('.01'))))
+                  % (self._first_name + ' ' + self._last_name, float(Decimal(self._shift_hours).quantize(Decimal('.01'))), self._tip_role, float(Decimal(self._tip_hours).quantize(Decimal('.01'))), float(Decimal(self._cred_tips).quantize(Decimal('.01'))), float(Decimal(self._cash_tips).quantize(Decimal('.01'))))
         return details
 
     @staticmethod

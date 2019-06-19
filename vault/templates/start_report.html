@@ -53,7 +53,8 @@
                                                 {% if x == 0.0 %}
                                                     selected
                                                 {% endif %}
-                                            >{{ x }}</option>
+                                                >{{ x }}
+                                            </option>
                                         {% endfor %}
                                     </select>
                                 </div>
@@ -243,5 +244,5 @@
 {% block scripts %}
     {{ super() }}
     <script src="{{ url_for('static', filename='js/highlight_row.js') }}"></script>
-    <script src="{{ url_for('static', filename='js/collapse.js') }}"></script>
+{#    <script src="{{ url_for('static', filename='js/collapse.js') }}"></script>#}
 {% endblock %}
