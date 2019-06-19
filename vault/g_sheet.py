@@ -117,7 +117,7 @@ else:
     #     print('')
     credentials = ServiceAccountCredentials.from_json_keyfile_name('volsteads-80ce98cc6e0b.json', scope)
     client = gspread.authorize(credentials)
-    sheet = client.open('Copy of Tips').sheet1
+    tips_sheet = client.open('Copy of Tips').sheet1
 
 
 ref_date = datetime(year=2018, month=12, day=30)

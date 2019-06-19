@@ -9,6 +9,7 @@ from flask_login import LoginManager, current_user
 from flask_mail import Mail
 from flask_migrate import Migrate
 from flask_sqlalchemy import SQLAlchemy
+
 from config import Config
 
 
@@ -137,7 +138,7 @@ def create_app(config_class=Config):
     @app.context_processor
     def utility_processor():
         def get_authorizations():
-            users = User.query.all();
+            users = User.query.all()
             user_auths = {u.username:[authorization.name for authorization in u.authorizations] for u in users}
             target_user = current_user
             try:

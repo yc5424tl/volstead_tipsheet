@@ -18,8 +18,12 @@ from vault.models import Employee, Role
 # primary_staff = Employee.query.filter_by(role_id=1).all()
 # primary_staff = Employee.query.filter_by(==1).all()
 # primary_staff = db.Session.query(db.Employee, db.    Role).join(Role).filter(id=1).all()
+# primary_staff = db.session.query(Employee).filter(Employee.role_id==Role.id).filter(Role.id==1)
 
-primary_staff = db.session.query(Employee).filter(Employee.role_id==Role.id).filter(Role.id==1)
+primary_staff =  Employee.query.filter_by(role_id=1)
+
+
+
 staff_data = []
 for emp in primary_staff:
     staff_data.append([emp.first_name, emp.last_name, emp.default_tip_role])
