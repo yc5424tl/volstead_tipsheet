@@ -21,7 +21,7 @@ from retrying import retry
 # primary_staff = db.Session.query(db.Employee, db.    Role).join(Role).filter(id=1).all()
 # primary_staff = db.session.query(Employee).filter(Employee.role_id==Role.id).filter(Role.id==1)
 
-primary_staff =  Employee.query.filter_by(role_id=1)
+primary_staff =  Employee.query.filter_by(role_id = 1)
 # alternate_staff = Employee.query.filter_by(role_id=2)
 
 
