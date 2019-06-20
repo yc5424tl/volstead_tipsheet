@@ -230,7 +230,7 @@ def submit_report():
     # if request.method == 'POST':
 
 
-    # if list_of_emp(employees) and isinstance(shift, ShiftDataController):
+
     if list_of_emp(primary_staff_data) and isinstance(shift, ShiftDataController):
 
 
