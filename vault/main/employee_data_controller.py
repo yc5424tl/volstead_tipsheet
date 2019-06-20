@@ -11,14 +11,26 @@ class TipShare(Enum):
 
 class EmployeeDataController(object):
 
-    def __init__(self, first_name: str, last_name: str, tip_role: str):
+    def __init__(self, first_name: str, last_name: str, tip_role: str, shift_hours=0.00, tip_hours=0.00, cash_tips=0.00, cred_tips=0.00):
         self._first_name = first_name
         self._last_name = last_name
         self._tip_role = tip_role
-        self._shift_hours = 0.00
-        self._tip_hours = 0.00
-        self._cash_tips = 0.00
-        self._cred_tips = 0.00
+        self._shift_hours = shift_hours
+        self._tip_hours = tip_hours
+        self._cash_tips = cash_tips
+        self._cred_tips = cred_tips
+
+    def serialize(self):
+        return {
+            'first_name': self.first_name,
+            'last_name': self.last_name,
+            'tip_role': self.tip_role,
+            'shift_hours': self.shift_hours,
+            'tip_hours': self.tip_hours,
+            'cash_tips': self.cash_tips,
+            'cred_tips': self.cred_tips
+        }
+
 
     @property
     def full_name(self):

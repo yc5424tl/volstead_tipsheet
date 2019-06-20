@@ -14,9 +14,9 @@ import logging
 import sys
 
 root = logging.getLogger()
-root.setLevel(logging.DEBUG)
+root.setLevel(logging.INFO)
 handler = logging.StreamHandler(sys.stdout)
-handler.setLevel(logging.DEBUG)
+handler.setLevel(logging.INFO)
 formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
 handler.setFormatter(formatter)
 root.addHandler(handler)
@@ -39,7 +39,7 @@ def login():
         if user and user.check_password(form.password.data):
             user.active = True
             db.session.add(user)
-            db.session.copmmit()
+            db.session.commit()
             login_user(user, remember=form.remember_me.data)
             return redirect(url_for('main.start_report'))
 

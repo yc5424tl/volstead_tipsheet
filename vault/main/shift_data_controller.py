@@ -6,17 +6,28 @@ from datetime import datetime
 denominations = {x:0.0 for x in ['0.25', '1.00', '5.00', '10.00', '20.00', '50.00', '100.00']}
 
 class ShiftDataController(object):
-
-    def __init__(self, staff: [EmployeeDataController]):
+    def __init__(self, staff: [EmployeeDataController], shift_hours = 0.00, tip_hours=0.00, cash_tip_pool=0.00, cred_tip_pool=0.00, cash_tip_wage=0.00, cred_tip_wage=0.00, start_date=None, cash_subtotals=denominations):
         self._staff = staff
-        self._shift_hours = 0.00
-        self._tip_hours = 0.00
-        self._cash_tip_pool = 0.00
-        self._cred_tip_pool = 0.00
-        self._cash_tip_wage = 0.00
-        self._cred_tip_wage = 0.00
-        self._start_date = None
-        self._cash_subtotals = denominations
+        self._shift_hours = shift_hours
+        self._tip_hours = tip_hours
+        self._cash_tip_pool = cash_tip_pool
+        self._cred_tip_pool = cred_tip_pool
+        self._cash_tip_wage = cash_tip_wage
+        self._cred_tip_wage = cred_tip_wage
+        self._start_date = start_date
+        self._cash_subtotals = cash_subtotals
+
+    def serialize(self):
+
+        return {
+            'staff': [e.serialize() for e in self.staff],
+            'shift_hours': self.shift_hours,
+            'tip_hours': self.tip_hours,
+            'cash_tip_pool': self.cash_tip_pool,
+            'cred_tip_pool': self.cred_tip_pool,
+            'cash_tip_wage': self.cash_tip_wage,
+            'cred_tip_wage': self.cred_tip_wage
+        }
 
     def get_cash_tip_pool(self):
         tip_pool = 0.00

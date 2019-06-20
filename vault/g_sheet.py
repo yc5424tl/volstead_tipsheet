@@ -18,18 +18,22 @@ scope = ['https://spreadsheets.google.com/feeds',
          'https://www.googleapis.com/auth/spreadsheets',
          'https://www.googleapis.com/auth/drive']
 
-if 'HEROKU_ENV' in os.environ:
-    json_cred = json.loads(os.environ.get('G_SRV_ACCT_CRED'))
-    credentials = ServiceAccountCredentials.from_json_keyfile_dict(keyfile_dict=json_cred, scopes=scope)
-    client = gspread.authorize(credentials)
-    sheet = client.open('Copy of Tips').sheet1
-    tips_sheet = sheet.spreadsheet.get_worksheet(1)
+# if 'HEROKU_ENV' in os.environ:
+#     json_cred = json.loads(os.environ.get('G_SRV_ACCT_CRED'))
+#     credentials = ServiceAccountCredentials.from_json_keyfile_dict(keyfile_dict=json_cred, scopes=scope)
+#     client = gspread.authorize(credentials)
+#     sheet = client.open('Copy of Tips').sheet1
+#     tips_sheet = sheet.spreadsheet.get_worksheet(1)
+#
+# else:
+#     credentials = ServiceAccountCredentials.from_json_keyfile_name('volsteads-f7fca2360881.json', scope)
+#     client = gspread.authorize(credentials)
+#     # sheet = client.open('Copy of Tips').sheet1
+#     # tips_sheet = sheet.spreadsheet.get_worksheet(1)
+#     ss = client.open('Copy of Tips')
+#     tips_sheet = ss.worksheets()[1]
+#     print(tips_sheet.get_all_values())
 
-else:
-    credentials = ServiceAccountCredentials.from_json_keyfile_name('volsteads-f7fca2360881.json', scope)
-    client = gspread.authorize(credentials)
-    sheet = client.open('Copy of Tips').sheet1
-    tips_sheet = sheet.spreadsheet.get_worksheet(1)
 
 ref_date = datetime(year=2018, month=12, day=30)
 col_map = dict(enumerate(string.ascii_uppercase, 1))
@@ -37,16 +41,38 @@ col_map = dict(enumerate(string.ascii_uppercase, 1))
 
 class GoogleSheetsMgr(object):
     def __init__(self):
+        self.tips_sheet = self.get_worksheet()
         self.emp_col_dict = self.refresh_emp_col_dict()
         self.title_row_offset = 1
+        self.credentials = None
+        self.client = None
+        self.tips_sheet = None
+
+    def get_worksheet(self):
+        if 'HEROKU_ENV' in os.environ:
+            json_cred = json.loads(os.environ.get('G_SRV_ACCT_CRED'))
+            self.credentials = ServiceAccountCredentials.from_json_keyfile_dict(keyfile_dict=json_cred, scopes=scope)
+            self.client = gspread.authorize(self.credentials)
+            sheet = self.client.open('Copy of Tips').sheet1
+            tips_sheet = sheet.spreadsheet.get_worksheet(1)
+            return tips_sheet
+
+        else:
+            self.credentials = ServiceAccountCredentials.from_json_keyfile_name('volsteads-f7fca2360881.json', scope)
+            self.client = gspread.authorize(self.credentials)
+            # sheet = client.open('Copy of Tips').sheet1
+            # tips_sheet = sheet.spreadsheet.get_worksheet(1)
+            sheet = self.client.open('Copy of Tips').sheet1
+            tips_sheet = sheet.spreadsheet.get_worksheet(1)
+            return tips_sheet
 
     # 305 secs total, just over the documented 5 min window used by Google to rate limit API calls
     @retry(wait_exponential_multiplier=1000, wait_exponential_max=10000, stop_max_attempt_number=35)
     def refresh_emp_col_dict(self):
         self.emp_col_dict = {}
-        col_titles = tips_sheet.row_values(row=1)
+        col_titles = self.tips_sheet.row_values(row=1)
         for col in col_titles[2:-2]:
-            col_num = tips_sheet.find(col).col
+            col_num = self.tips_sheet.find(col).col
             self.emp_col_dict[col] = col_num
         return self.emp_col_dict
 
@@ -67,65 +93,82 @@ class GoogleSheetsMgr(object):
         numeric_day_gap = timedelta_day_gap.days
         return numeric_day_gap
 
-    @staticmethod
     @retry(wait_exponential_multiplier=1000, wait_exponential_max=10000, stop_max_attempt_number=35)
-    def get_first_match(query: str) -> gspread.Cell or None:
-        return tips_sheet.find(query)
+    def get_first_match(self, query: str) -> gspread.Cell or None:
+        return self.tips_sheet.find(query)
 
     @retry(wait_exponential_multiplier=1000, wait_exponential_max=10000, stop_max_attempt_number=35)
     def insert_shift_for_emp(self, shift_row: int, employee: EmployeeDataController) -> bool:
-        emp_col = self.emp_col_dict[employee.full_name.casefold()]
+        emp_col = self.emp_col_dict[employee.full_name]
         if emp_col:
-            tips_sheet.update_cell(row=shift_row, col=emp_col, value=simplejson.dumps(employee.cred_tips, use_decimal=True))
+            self.tips_sheet.update_cell(row=shift_row, col=emp_col, value=simplejson.dumps(employee.cred_tips, use_decimal=True))
             return True
         return False
 
     @retry(wait_exponential_multiplier=1000, wait_exponential_max=10000, stop_max_attempt_number=35)
     def insert_shift_pool(self, shift_row: int, shift_pool: float) -> bool:
+        print('in insert_shift_pool')
         if shift_row > 1 and shift_pool > 0:
-            pool_col = self.get_first_match('Total Pool').col
+            print('inside inner if')
+            pool_col = self.get_first_match('TOTAL POOL').col
+            print('pool_col ->')
+            print(str(pool_col))
             if pool_col:
-                tips_sheet.update_cell(row=shift_row, col=pool_col, value=shift_pool)
+                self.tips_sheet.update_cell(row=shift_row, col=pool_col, value=shift_pool)
             return True
         return False
 
-    @staticmethod
+
     @retry(wait_exponential_multiplier=1000, wait_exponential_max=10000, stop_max_attempt_number=35)
-    def insert_date_for_shift(shift_row: int, shift_date: datetime) -> bool:
+    def insert_date_for_shift(self, shift_row: int, shift_date: datetime) -> bool:
         if shift_row > 1 and (datetime.today() - shift_date).days >= 0:
-            tips_sheet.update_cell(row=shift_row, col=1, value=shift_date.strftime('%m/%d/%Y'))
+            self.tips_sheet.update_cell(row=shift_row, col=1, value=shift_date.strftime('%m/%d/%Y'))
             return True
         return False
 
     @retry(wait_exponential_multiplier=1000, wait_exponential_max=10000, stop_max_attempt_number=35)
     def insert_new_row_for_shift(self, shift: ShiftDataController) -> bool:
+        print('in insert_new_row_for_shift')
         shift_timedelta = self.get_timedelta_days(shift.start_date)
+        print(shift_timedelta)
         shift_row = self.get_row_by_timedelta(shift_timedelta)
+        print(shift_row)
         insert_pool = self.insert_shift_pool(shift_row, shift.cred_tip_pool)
+        print('past insert_pool')
+        print(insert_pool)
         insert_date = self.insert_date_for_shift(shift_row, shift.start_date)
+        print(insert_date)
+        print('past insert_date')
         if insert_pool and insert_date:
+            print('in if insert_pool and insert_date')
             for emp in shift.staff:
+                print(' inf for emp in shift.staff')
                 cont = self.insert_shift_for_emp(shift_row=shift_row, employee=emp)
+                print('cont ->')
+                print(cont)
                 if not cont:
                     return False
             return True
+        else:
+            print('NOT insert_pool and insert_date')
+            return False
 
-    @staticmethod
+
     @retry(wait_exponential_multiplier=1000, wait_exponential_max=10000, stop_max_attempt_number=35)
-    def insert_subtotals_row(target_row: int) -> bool:
+    def insert_subtotals_row(self, target_row: int) -> bool:
         try:
-            tips_sheet.update_cell(row=target_row, col=1, value='Period Totals')
-            target_cols = tips_sheet.row_values(row=1)
+            self.tips_sheet.update_cell(row=target_row, col=1, value='Period Totals')
+            target_cols = self.tips_sheet.row_values(row=1)
             first_row = target_row - 14
             last_row = target_row - 1
             for col in target_cols[1:-2]:
-                col_num = tips_sheet.find(col).col
-                data_subset = tips_sheet.range(first_row, col_num, last_row, col_num)
+                col_num = self.tips_sheet.find(col).col
+                data_subset = self.tips_sheet.range(first_row, col_num, last_row, col_num)
                 subtotal = 0.0
                 for cell in data_subset:
                     if cell.value != '':
                         subtotal += float(int(cell.value))
-                tips_sheet.update_cell(row=target_row, col=col_num, value=subtotal)
+                self.tips_sheet.update_cell(row=target_row, col=col_num, value=subtotal)
             return True
         except gspread.exceptions.APIError:
             print('gspread.exceptions.APIError in insert_subtotals_row')
@@ -135,11 +178,11 @@ class GoogleSheetsMgr(object):
     def check_previous_subtotals(self, shift_date: datetime):
         timedelta_d = self.get_timedelta_days(shift_date)
         completed_periods = timedelta_d // 16
-        pool_col = self.get_first_match('Total Pool').col
+        pool_col = self.get_first_match('TOTAL POOL').col
         if completed_periods >= 1:
             for period in range(1, completed_periods + 1):
                 subtotal_row = period * 16  # do not add 1 for offset
-                period_pool_subtotal = tips_sheet.cell(row=subtotal_row, col=pool_col).value
+                period_pool_subtotal = self.tips_sheet.cell(row=subtotal_row, col=pool_col).value
                 if period_pool_subtotal is None or period_pool_subtotal is '':
                     self.insert_subtotals_row(subtotal_row)
 

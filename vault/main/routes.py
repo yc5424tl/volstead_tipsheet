@@ -1,11 +1,15 @@
 
 from decimal import Decimal, ROUND_HALF_UP
 from datetime import datetime, timedelta
+import time
+
+import gspread
+from flask import session, flash
 from flask import render_template, copy_current_request_context, url_for, request, g
 from flask_login import current_user, login_required
 from flask_babel import _, get_locale
 from flask_user import roles_required
-from numpy import linspace
+from numpy import linspace, os
 from vault.main import bp
 from vault.main.employee_data_controller import EmployeeDataController
 from vault.main.shift_data_controller import ShiftDataController
@@ -21,11 +25,9 @@ from retrying import retry
 # primary_staff = db.Session.query(db.Employee, db.    Role).join(Role).filter(id=1).all()
 # primary_staff = db.session.query(Employee).filter(Employee.role_id==Role.id).filter(Role.id==1)
 
-primary_staff =  Employee.query.filter_by(role_id = 1)
+# primary_staff =  Employee.query.filter_by(role_id = 1)
 # alternate_staff = Employee.query.filter_by(role_id=2)
-
-
-
+primary_staff = db.session.query(Employee).filter(Employee.role_id == 1)
 # primary_staff_data = []
 # for emp in primary_staff:
 #     primary_staff_data.append([emp.first_name, emp.last_name, emp.default_tip_role])
@@ -43,8 +45,9 @@ for emp in primary_staff:
 shift_hours_range = linspace(0.0, 9.0, num=19, retstep=True)
 # employees = EmployeeDataController.instantiate_employees(employee_data) # list of EmployeeDataController objects
 # shift = ShiftDataController(employee_data)
-shift = ShiftDataController(primary_staff_data)
+# shift = ShiftDataController(primary_staff_data)
 g_sheet = GoogleSheetsMgr()
+g_sheet.tips_sheet = g_sheet.get_worksheet()
 # ringers  = db.Session.query()
 
 # primary_staff = db.session.query(Employee).filter(Employee.role_id==Role.id).filter(Role.id==1)
@@ -68,6 +71,8 @@ def stringify_date(date: datetime):
 @bp.route('/index', methods=['GET', 'POST'])
 @login_required
 def start_report():
+    shift = ShiftDataController(primary_staff_data)
+
     @copy_current_request_context
     def analyze_hours(working_shift: ShiftDataController, req_form: request.form):
         for target_emp in working_shift.staff:
@@ -158,6 +163,7 @@ def start_report():
             yesterday = today - timedelta(days=1)
             shift._start_date = yesterday
 
+        session['shift'] = shift.serialize()
         return render_template('view_report.html',
                                denominations=shift.cash_subtotals,
                                employees=shift.staff,
@@ -182,31 +188,96 @@ def list_of_emp(emp_list) -> bool:
     return False
 
 
-@bp.route('/submit_report', methods=['POST'])
+@bp.route('/submit_report', methods=['GET','POST'])
 @login_required
 def submit_report():
 
-    if request.method == 'POST':
 
-        # if list_of_emp(employees) and isinstance(shift, ShiftDataController):
-        if list_of_emp(primary_staff_data) and isinstance(shift, ShiftDataController):
+    @copy_current_request_context
+    @retry(wait_exponential_multiplier=1000, wait_exponential_max=10000, stop_max_attempt_number=35)
+    def write_to_g_sheets():
+        g_sheet_mgr = GoogleSheetsMgr()
+        g_sheet_mgr.tips_sheet = g_sheet_mgr.get_worksheet()
+        print('before g_sheet funcs')
+        print(g_sheet_mgr.insert_new_row_for_shift(shift))
+        print('after insert_new_row_for_shift')
+        g_sheet_mgr.check_previous_subtotals(shift.start_date)
+        print('after check_previous_subtotals')
+        g_sheet_mgr.end_of_period_check(shift.start_date)
+        print('after end_of_period_check')
 
-            new_shift_report = models.ShiftReport.populate_fields(shift)
-            db.session.add(new_shift_report)
-            new_shift_id = new_shift_report.id
+        return render_template('report_archived_confirmation.html', daily_report=shift)
 
-            for employee_report in shift.staff:
-                current_emp = models.Employee.query.filter_by(first_name=employee_report.first_name).filter_by(last_name=employee_report.last_name).first()
-                new_employee_report = models.EmployeeReport.populate_fields(employee_report=employee_report, shift_id=new_shift_id, employee_id=current_emp.id)
-                db.session.add(new_employee_report)
+    @copy_current_request_context
+    def get_start_date():
+        today = datetime.today()
+        if int(datetime.now().strftime('%H')) >= 17:
+            return today
+        else:
+            yesterday = today - timedelta(days=1)
+            return yesterday
 
-            db.session.commit()
+    shift_data = session['shift']
+    emp_list = [EmployeeDataController(first_name=e['first_name'], last_name=e['last_name'], tip_role=e['tip_role'], shift_hours=e['shift_hours'], tip_hours=e['tip_hours'], cash_tips=e['cash_tips'], cred_tips=e['cred_tips']) for e in shift_data['staff']]
 
-            g_sheet.insert_new_row_for_shift(shift)
-            g_sheet.check_previous_subtotals(shift.start_date)
-            g_sheet.end_of_period_check(shift.start_date)
+    shift = ShiftDataController(staff=emp_list, shift_hours=shift_data['shift_hours'], tip_hours=shift_data['tip_hours'], cash_tip_pool=shift_data['cash_tip_pool'], cred_tip_pool=shift_data['cred_tip_pool'], cash_tip_wage=shift_data['cash_tip_wage'], cred_tip_wage=shift_data['cred_tip_wage'], start_date=get_start_date())
 
-            return render_template('report_archived_confirmation.html', daily_report=shift)
+    # shift_data = request.form['shift_data']
+    # print(shift_data)
+    # print(str(type(shift_data)))
+    # print(shift_data.staff)
+    # print(str(shift_data.shift_hours))
+    # print(str(shift_data.tip_hours))
+    # print(str(shift_data.cash_tip_pool))
+    # print(str(shift_data.cash_tip_wage))
+
+    # if request.method == 'POST':
+
+
+    # if list_of_emp(employees) and isinstance(shift, ShiftDataController):
+    if list_of_emp(primary_staff_data) and isinstance(shift, ShiftDataController):
+
+
+        new_shift_report = models.ShiftReport.populate_fields(shift)
+        db.session.add(new_shift_report)
+        db.session.commit()
+        new_shift_id = new_shift_report.id
+
+
+        for employee_report in shift.staff:
+            current_emp = models.Employee.query.filter_by(first_name=employee_report.first_name).filter_by(last_name=employee_report.last_name).first()
+            new_employee_report = models.EmployeeReport.populate_fields(employee_report=employee_report, shift_id=new_shift_id, employee_id=current_emp.id)
+            db.session.add(new_employee_report)
+
+        db.session.commit()
+
+        try:
+            write_to_g_sheets()
+            # g_sheet_mgr = GoogleSheetsMgr()
+            # g_sheet_mgr.tips_sheet = g_sheet_mgr.get_worksheet()
+            #
+            # print('before g_sheet funcs')
+            # print(g_sheet_mgr.insert_new_row_for_shift(shift))
+            # print('after insert_new_row_for_shift')
+            # g_sheet_mgr.check_previous_subtotals(shift.start_date)
+            # print('after check_previous_subtotals')
+            # g_sheet_mgr.end_of_period_check(shift.start_date)
+            # print('after end_of_period_check')
+            #
+            # return render_template('report_archived_confirmation.html', daily_report=shift)
+
+        except gspread.exceptions.APIError:
+            msg = 'Resource Unavailable Temporarily, Wait 5 Minutes before navigating away from this page.'
+            flash(msg)
+            time.sleep(301)
+            write_to_g_sheets()
+
+
+
+
+# else:
+#     print('ERR - request method is ->')
+#     print(request.method)
 
 
 @bp.route('/privacy_policy', methods=['GET'])
