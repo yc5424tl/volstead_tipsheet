@@ -1,8 +1,0 @@
-
-$(function() {
-    document.onchange = () => {
-        if(event.target.matches('.tip-share-radio')) {
-            let tip_role = event.target.closest()
-        }
-    }
-})

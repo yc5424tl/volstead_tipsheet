@@ -1,16 +1,19 @@
 {% extends 'layout.html' %}
 
-{% block styles %}{{ super() }}{% endblock %}
+{% block styles %}
+    {{ super() }}
+{% endblock %}
 
 {% block page_content %}
     <div id="index-div">
         {% if current_user.is_anonymous %}
             <a href="{{ url_for('auth.login') }}">Login</a>
         {% else %}
-{#            <a href="{{ url_for('auth.user', username=current_user.username) }}">Profile</a>#}
             <a href="{{ url_for('auth.logout') }}">Logout</a>
         {% endif %}
     </div>
 {% endblock %}
 
-{% block scripts %}{{ super() }}{% endblock %}
+{% block scripts %}
+    {{ super() }}
+{% endblock %}

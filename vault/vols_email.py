@@ -1,14 +1,14 @@
 # coding=utf-8
-import smtplib
-from threading import Thread
-from email import message
-from email.mime.text import MIMEText
-from email.mime.multipart import MIMEMultipart
 import os
-from flask import current_app, copy_current_request_context
+import smtplib
+from email.mime.multipart import MIMEMultipart
+from email.mime.text import MIMEText
+from threading import Thread
+
+from flask import current_app, render_template
 from flask_mail import Message
+
 from vault import mail
-from flask import render_template
 
 
 def send_password_reset_email(user_source):

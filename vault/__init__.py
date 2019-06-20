@@ -9,7 +9,6 @@ from flask_login import LoginManager, current_user
 from flask_mail import Mail
 from flask_migrate import Migrate
 from flask_sqlalchemy import SQLAlchemy
-from flask_user import UserManager
 from config import Config
 
 
@@ -18,102 +17,11 @@ migrate = Migrate()
 login = LoginManager()
 login.login_view = 'auth.login'
 login.login_message = _1('Authorized Users Must Log In To Access This Page')
-# user_manager = UserManager()
+
 mail = Mail()
 bootstrap = Bootstrap()
 babel = Babel()
 
-# user_first_list = os.environ.get('VOL_EMP_LIST_1')###
-# user_last_list = os.environ.get('VOL_EMP_LIST_2')   ####
-# emp_id_list = os.environ.get('VOL_EMP_ID_LIST') ###
-# user_pw_list = os.environ.get('VOL_PW_LIST').split()###
-# user_email_list = os.environ.get('VOL_USER_EMAIL_LIST')###
-# ringer_dict = os.environ.get('VOL_RINGER_DICT')
-#
-# def create_users():
-#
-#     from vault import models
-#
-#     user_list = []
-#     starter = models.Role.query.filter_by(name='STARTER').first()
-#     manager = models.Role.query.filter_by(name='MANAGER').first()
-#
-#     for i in range(len(user_email_list)):
-#         n = i - 1
-#         d = {'username':user_email_list[n],'email':user_email_list[n],'emp_id':emp_id_list[n],
-#              'first_name': user_first_list[n],'last_name':user_last_list[n], 'pw':user_pw_list[n]}
-#         if user_first_list[n] == 'Jeff' and user_last_list[n] == 'Petrovich':
-#             d['roles'] = manager
-#         else:
-#             d['roles'] = starter
-#         user_list.append(d)
-#
-#     for ringer in ringer_dict:
-#         r = {''}
-#
-#     emp_to_commit = False
-#
-#     for user_data in user_list:
-#         if not models.Employee.query.filter_by(first_name=user_data['first_name']).filter_by(last_name=user_data['last_name']).first():
-#             new_emp = models.Employee(first_name=user_data['first_name'], last_name=user_data['last_name'])
-#             db.session.add(new_emp)
-#             print('setting emp_to_commit to True')
-#             emp_to_commit = True
-#
-#     print('checking emp_to_commit before commiting session')
-#     print('emp_to_commit = ' + str(emp_to_commit))
-#     if emp_to_commit:
-#         db.session.commit()
-#
-#     user_to_commit = False
-#     for user_data in user_list:
-#         if not models.User.query.filter_by(email=user_data['email']).first():
-#             new_user_id = models.Employee.query.filter_by(first_name=user_data['first_name']).filter_by(last_name=user_data['last_name']).first().id
-#             new_user = models.User(username=user_data['email'], email=user_data['email'], emp_id=new_user_id)
-#             new_user.set_password(user_data['pw'])
-#             if user_data['email'] == "bar@volsteads.com" or user_data['email'] == "jeff@volsteads.com":
-#                 admin_auth = models.Authorization.query.filter_by(name='Admin').first()
-#                 new_user.Authorizations.append(admin_auth)
-#             db.session.add(new_user)
-#             user_to_commit = True
-#     if user_to_commit:
-#         db.session.commit()
-#
-#
-# def create_sudo_employee():
-#
-#     from .models import Employee, User, Role
-#
-#     if not Employee.query.filter_by(first_name='admin').filter_by(last_name='admin').first():
-#         admin = Employee(first_name='admin', last_name='admin')
-#         db.session.add(admin)
-#         db.session.commit()
-#         return admin.id
-#
-# def create_sudo_user(admin_id):
-#     from vault.models import Employee, User, Authorization
-#     if not User.query.filter(User.email == 'volsteads.vault@gmail.com').first() \
-#             and not User.query.filter(User.username == 'g1zmo').first():
-#         user = User(username='g1zmo', email='volsteads.vault@gmail.com',emp_id=admin_id)
-#         user.set_password(os.environ.get('VOL_ADMIN_PW'))
-#         user.authorizations.append(Authorization(name='Admin'))
-#         user.authorizations.append(Authorization(name='Steward'))
-#         db.session.add(user)
-#         db.session.commit()
-
-
-# def create_ringers(name_dict: dict) -> bool:
-#     from vault.models import Employee
-#     if name_dict and isinstance(name_dict, dict):
-#         for first in name_dict:
-#             new_emp = Employee(first_name=first,
-#                                last_name=name_dict[first],
-#                                ringer=True)
-#             db.session.add(new_emp)
-#         db.session.commit()
-#         return True
-#     else:
-#         return False
 
 def create_app(config_class=Config):
     app = Flask(__name__)
@@ -123,22 +31,11 @@ def create_app(config_class=Config):
     db.init_app(app)
     db.create_all()
 
-    # admin_id = create_sudo_employee()
-    # create_sudo_user(admin_id)
-    # create_users()
-    # create_ringers(ringer_dict)
-
     migrate.init_app(app, db)
     login.init_app(app)
-
-    # from vault.models import User
-
-    # user_manager.init_app(app, db, User)
     mail.init_app(app)
     bootstrap.init_app(app)
     babel.init_app(app)
-
-
 
     @app.context_processor
     def utility_processor():

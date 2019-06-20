@@ -1,8 +1,6 @@
 # coding=utf-8
-from enum import Enum
-from typing import ClassVar
 from decimal import Decimal
-from vault.models import Employee
+from enum import Enum
 
 
 class TipShare(Enum):
@@ -104,35 +102,6 @@ class EmployeeDataController(object):
                   % (self._first_name + ' ' + self._last_name, float(Decimal(self._shift_hours).quantize(Decimal('.01'))), self._tip_role, float(Decimal(self._tip_hours).quantize(Decimal('.01'))), float(Decimal(self._cred_tips).quantize(Decimal('.01'))), float(Decimal(self._cash_tips).quantize(Decimal('.01'))))
         return details
 
-    @staticmethod
-    def instantiate_employees(employee_data_list):
 
-        return [EmployeeDataController(emp.first_name, emp.last_name, emp.default_tip_role) for emp in employee_data_list]
-        # employee_dict = dict(JACOB=(   "BOLINE",   "SERVICE"),
-        #                      CORY=(    "SCHULLER", "SERVICE"),
-        #                      INA=(     "DALE",     "SERVICE"),
-        #                      ELEANOR=( "JOHNSON",  "SERVICE"),
-        #                      JENNIE=(  "SONG",     "SERVICE"),
-        #                      HEIDI=(   "LUNDGREN", "SERVICE"),
-        #                      CHRIS=(   "THOMPSON", "SERVICE"),
-        #                      MARLEY=(  "BARTLETT", "SERVICE"),
-        #                      ADAM=  (  "O'BRIEN",  "SUPPORT"),
-        #                      REBECCA=( "MOGCK",    "SUPPORT"),
-        #                      HARRISON=("EASTON",   "SERVICE"),
-        #                      NATALIE=( 'GOODWIN',  "SUPPORT"))
-        # return [EmployeeDataController(emp, employee_dict[emp][0], employee_dict[emp][1]) for emp in employee_dict]
-        # print('in instantiate emps')
-        # primary_employees = Employee
-        # for emp in primary_employees:
-        #     print('in for loop')
-        #     print('printing emp')
-        #     print(emp)
-        #     print('after printing emp')
-        #     print(emp.first_name)
-        #     print(emp.last_name)
-        #     print(str(type(emp)))
-        # print('after emp loop')
-        #
-        # return [EmployeeDataController(emp.first_name, emp.last_name, emp.default_tip_role) for emp in primary_employees]
 
 

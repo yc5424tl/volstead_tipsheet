@@ -3,7 +3,6 @@ import os
 
 from vault.models import User, Employee, Role
 from datetime import datetime
-# from vol_app import app
 from flask import current_app
 
 
@@ -68,13 +67,7 @@ def populate_staff():
             if new_user.username == 'cschuller' or new_user.username == 'jpetrovich':
                 new_user.roles.append(Role(name='Admin'))
         current_app.db.commit()
-
-    print('end populate_staff')
     return
-
-# emp = (db.add(Employee(first_name=z[0], last_name=z[1], email=z[2])) for z in zip(user_first, user_last, email))
-
-
 
 
 def create_sudo():
@@ -85,14 +78,12 @@ def create_sudo():
         current_app.db.session.add(admin)
         current_app.db.session.commit()
 
-# Create 'admin@example.com' user with 'Admin' and 'Agent' roles
     if not User.query.filter(User.email == 'volsteads.vault@gmail.com').first() and not User.query.filter(User.username == 'g1zmo').first():
         admin_id = Employee.query.filter_by(first_name='admin').filter_by(last_name='admin').first().id
         user = User(
             username='g1zmo',
             email='volsteads.vault@gmail.com',
             email_confirmed_at=datetime.utcnow(),
-            # password_hash=bcrypt.generate_password_hash(os.getenv('VOL_ADMIN_PW')),
             employee_id=admin_id
         )
         user.set_password(os.environ.get('VOL_ADMIN_PW'))

@@ -1,12 +1,13 @@
 # coding=utf-8
 import json
-from vault.main.employee_data_controller import EmployeeDataController
 from datetime import datetime
+
+from vault.main.employee_data_controller import EmployeeDataController
 
 denominations = {x:0.0 for x in ['0.25', '1.00', '5.00', '10.00', '20.00', '50.00', '100.00']}
 
 class ShiftDataController(object):
-    def __init__(self, staff: [EmployeeDataController], shift_hours = 0.00, tip_hours=0.00, cash_tip_pool=0.00, cred_tip_pool=0.00, cash_tip_wage=0.00, cred_tip_wage=0.00, start_date=None, cash_subtotals=denominations):
+    def __init__(self,staff: [EmployeeDataController],shift_hours = 0.0,tip_hours=0.0,cash_tip_pool=0.0,cred_tip_pool=0.0,cash_tip_wage=0.0,cred_tip_wage=0.0,start_date=None,cash_subtotals=denominations):
         self._staff = staff
         self._shift_hours = shift_hours
         self._tip_hours = tip_hours
@@ -18,7 +19,6 @@ class ShiftDataController(object):
         self._cash_subtotals = cash_subtotals
 
     def serialize(self):
-
         return {
             'staff': [e.serialize() for e in self.staff],
             'shift_hours': self.shift_hours,
@@ -37,7 +37,6 @@ class ShiftDataController(object):
 
     def stringify_date(self):
         return self._start_date.strftime('%A %B %d %Y')
-
 
     def datify_string(self, date_str: str):
         self.start_date = datetime.strptime(date_str, '%A %B %d %Y')

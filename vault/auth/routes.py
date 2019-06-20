@@ -1,8 +1,11 @@
 # coding=utf-8
 
+import logging
+import sys
+
 from flask import render_template, redirect, url_for, flash, request
-from flask_login import login_user, logout_user, current_user, login_required
 from flask_babel import _
+from flask_login import login_user, logout_user, current_user, login_required
 from werkzeug.urls import url_parse
 
 from vault import db, vols_email, login as login_mgr
@@ -10,8 +13,11 @@ from vault.auth import bp
 from vault.auth.forms import LoginForm, ResetPasswordRequestForm, ResetPasswordForm, RegistrationForm
 from vault.models import User
 
-import logging
-import sys
+
+
+#=====================================================================================================================
+# LOGGING
+#=====================================================================================================================
 
 root = logging.getLogger()
 root.setLevel(logging.INFO)
@@ -22,19 +28,30 @@ handler.setFormatter(formatter)
 root.addHandler(handler)
 
 
+
+#=====================================================================================================================
+# USER LOADER
+#=====================================================================================================================
+
 @login_mgr.user_loader
 def user_loader(user_id):
     return User.query.get(user_id)
 
 
+
+#=====================================================================================================================
+# LOGIN @ /auth/login
+#=====================================================================================================================
+
 @bp.route('/login', methods=['GET', 'POST'])
 def login():
+
     if current_user.is_authenticated:
         return redirect(url_for('main.start_report'))
+
     form = LoginForm()
     if form.validate_on_submit():
         user = User.query.filter_by(username=form.username.data).first()
-
 
         if user and user.check_password(form.password.data):
             user.active = True
@@ -60,6 +77,10 @@ def login():
     return render_template('login.html', title='Sign In', form=form)
 
 
+#=====================================================================================================================
+# LOGOUT @ /auth/logout
+#=====================================================================================================================
+
 @bp.route('/logout')
 @login_required
 def logout():
@@ -72,6 +93,11 @@ def logout():
     return redirect(url_for('auth.login'))
 
 
+
+#=====================================================================================================================
+# RESET PASSWORD REQUEST @ /auth/reset_password_request
+#=====================================================================================================================
+
 @bp.route('/reset_password_request', methods=['GET', 'POST'])
 def reset_password_request():
     form = ResetPasswordRequestForm()
@@ -83,6 +109,11 @@ def reset_password_request():
         return redirect(url_for('auth.login'))
     return render_template('reset_password_request.html', title=_('Reset Password'), form=form)
 
+
+
+#=====================================================================================================================
+# RESET PASSWORD @ /auth/reset_password/<token>
+#=====================================================================================================================
 
 @bp.route('/reset_password/<token>', methods=['GET', 'POST'])
 def reset_password(token):
@@ -97,6 +128,11 @@ def reset_password(token):
         return redirect(url_for('auth.login'))
     return render_template('reset_password.html', form=form)
 
+
+
+#=====================================================================================================================
+# REGISTER @ /auth/register
+#=====================================================================================================================
 
 @bp.route('/register', methods=['GET', 'POST'])
 # @roles_required('Admin')

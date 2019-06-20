@@ -3,23 +3,17 @@ from datetime import datetime
 from hashlib import md5
 from time import time
 
-
-import jwt
 import argon2
+import jwt
 from flask import current_app
 from flask_login import UserMixin
 from sqlalchemy import CheckConstraint
 from sqlalchemy.orm import backref
-# from sqlalchemy.ext.declarative import declarative_base
-from vault import db
-# from vault.main.employee_data_controller import EmployeeDataController
-# from vault.main.shift_data_controller import ShiftDataController
 
-# Base = declarative_base()
+from vault import db
+
 ROUNDS = 5
 hasher = argon2.PasswordHasher()
-
-
 
 
 ##################################################################################################################################
@@ -42,8 +36,6 @@ class User(UserMixin, db.Model):
     employee           = db.relationship('Employee', backref=backref('user_by_employee', uselist=False), primaryjoin="Employee.id == User.employee_id")
     authorization_id   = db.Column(db.Integer(), db.ForeignKey('authorization.id'))
     authorization      = db.relationship('Authorization', backref=backref('authorization', uselist=False))
-
-
 
     def __init__(self, username, email, emp_id, active=True):
         self.username = username
@@ -74,9 +66,7 @@ class User(UserMixin, db.Model):
         return 'https://www.gravatar.com/avatar/{}?d=identicon&s={}'.format(digest, size)
 
     def get_reset_password_token(self, expires_in=600):
-        return jwt.encode(
-            {'reset_password': self.id, 'exp': time() + expires_in}, current_app.config['SECRET_KEY'], algorithm='HS256')\
-            .decode('utf-8')
+        return jwt.encode({'reset_password': self.id, 'exp': time() + expires_in}, current_app.config['SECRET_KEY'], algorithm='HS256').decode('utf-8')
 
     @staticmethod
     def verify_reset_password_token(token):
@@ -85,6 +75,7 @@ class User(UserMixin, db.Model):
         except:
             return -1
         return User.query.get(user_id)
+
 
 
 ################################################################################################################################
@@ -121,7 +112,9 @@ class ShiftReport(db.Model):
         CheckConstraint(0     < cred_tip_wage, name='check_cc_tip_wage_min'))
 
     def __repr__(self):
-        return '<Shift Report {}>'.format(self.start_date)
+        return '<Shift Report {}>'.format(
+            self.start_date
+        )
 
     @staticmethod
     def populate_fields(shift):
@@ -136,50 +129,10 @@ class ShiftReport(db.Model):
         )
 
 
-# class Employee(Base):
-#     __tablename__ = 'employee'
-#     __table_args__ = (
-#         Index(
-#             'unique_full_name',
-#             'first_name', 'last_name',
-#             unique=True
-#         ),
-#     )
-#     id = db.Column(db.Integer, db.Sequence('id_seq'), primary_key=True)
-#     first_name = db.Column(db.String(64))
-#     last_name = db.Column(db.String(64))
-#     created_at = db.Column(db.DateTime(), default=datetime.utcnow)
-#
-#     def __init__(self, first_name, last_name):
-#         self.first_name = first_name
-#         self.last_name = last_name
-#
-#     def __repr__(self):
-#         return '<Employee {} {}>'.format(
-#             self.first_name,
-#             self.last_name
-#         )
-#
-#     @property
-#     def full_name(self):
-#         return '%s %s'.format(self.first_name, self.last_name)
-#
-#     @full_name.setter
-#     def full_name(self, new_name):
-#         self.full_name = new_name
-
-
 
 ##################################################################################################################################
 ##    EMPLOYEE
 ##################################################################################################################################
-
-# class EmpRoles(db.Model):
-#
-#     __tablename__ = 'emp_roles'
-#
-#     role_id = db.Column(db.Integer, db.ForeignKey('role.id'), primary_key=True)
-#     employee_id = db.Column(db.Integer, db.ForeignKey('employee.id'), primary_key=True)
 
 
 class Employee(db.Model):
@@ -193,12 +146,6 @@ class Employee(db.Model):
     created_at       = db.Column(db.DateTime(), default=datetime.utcnow)
     role_id = db.Column(db.Integer(), db.ForeignKey('role.id'))
     role = db.relationship('Role', backref=backref('role', uselist=False))
-    # roles            = db.relationship('Role', secondary=employee_roles,
-    #                                    primaryjoin=(employee_roles.c.employee_id == id),
-    #                                    secondaryjoin=(employee_roles.c.role_id == id),
-    #                                    backref=db.backref('role', lazy='dynamic'), lazy='dynamic')
-    # roles            = db.relationship('Role', secondary='employee_role')
-    # emp_roles = db.relationship('Role', secondary='emp_roles', lazy='subquery', backref=db.backref('employees', lazy=True))
 
     # __table_args__ = (
     #     db.UniqueConstraint('first_name', 'last_name', name='first_last_uni_emp'),
@@ -212,18 +159,15 @@ class Employee(db.Model):
 
     @property
     def full_name(self):
-        return '%s %s'.format(self.first_name, self.last_name)
+        return '{} {}'.format(
+            self.first_name,
+            self.last_name
+        )
 
     @full_name.setter
     def full_name(self, new_name):
         self.full_name = new_name
 
-# class EmployeeRoles(db.Model):
-#     __tablename__ = 'employee_roles'
-#
-#     employee_id = db.Column(db.Integer, db.ForeignKey(Employee.id), primary_key=True)
-#     role_id = db.Column(db.Integer, db.ForeignKey(Role.id), primary_key=True)
-#     )
 
 
 ###################################################################################################################################
@@ -238,27 +182,9 @@ class Role(db.Model):
     name = db.Column(db.String(50), unique=True)
 
     def __repr__(self):
-        return "<Role {}".format(self.name)
-
-
-###################################################################################################################################
-##    EMPLOYEE ROLE
-##################################################################################################################################
-
-
-
-# class EmployeeRole(db.Model):
-#     __tablename__ = 'employee_role'
-#
-#     id      = db.Column(db.Integer(), primary_key=True)
-#     role_id = db.Column(db.Integer(), db.ForeignKey('role.id', ondelete='CASCADE'))
-#     employee_id = db.Column(db.Integer(), db.ForeignKey('employee.id', ondelete='CASCADE'))
-#
-#     def __repr__(self):
-#         return "<Employee Role {}>".format(self.name)
-
-
-
+        return "<Role {}".format(
+            self.name
+        )
 
 
 
@@ -312,7 +238,6 @@ class EmployeeReport(db.Model):
 
 
 
-
 ###################################################################################################################################
 ##    AUTHORIZATION
 ##################################################################################################################################
@@ -325,27 +250,7 @@ class Authorization(db.Model):
     name = db.Column(db.String(50), unique=True)
 
     def __repr__(self):
-        return '<Authorization {}>'.format(self.name)
+        return '<Authorization {}>'.format(
+            self.name
+        )
 
-
-
-
-###################################################################################################################################
-##    USER AUTHORIZATION
-###################################################################################################################################
-
-# class UserAuth(db.Model):
-#
-#     __tablename__ = 'user_auth'
-#
-#     id      = db.Column(db.Integer(), primary_key=True)
-#     auth_id = db.Column(db.Integer(), db.ForeignKey('authorization.id', ondelete='CASCADE'))
-#     user_id = db.Column(db.Integer(), db.ForeignKey('user.id', ondelete='CASCADE'))
-
-
-# user_manager = flask_user.UserManager(current_app, db, User)
-# engine = create_engine(os.environ.get('VOL_DB_LOCAL'))
-# Session = sessionmaker(bind=engine)
-# session = Session()
-# # Base.metadata.create_all(engine, Base.metadata.tables["employee"])
-# Base.metadata.create_all(engine, tables=[Employee.__table__])

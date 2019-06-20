@@ -52,7 +52,6 @@ body {
     display: flex;
 }
 
-
 h2 {
     margin: auto;
     display: block;
@@ -83,7 +82,6 @@ h2 {
     top: 0;
     margin-top: 0;
     padding-top: 0;
-
     background-image: linear-gradient(
             rgba(60, 160, 178, .02)  20%,
             rgba(60, 160, 178, .05)  40%,
@@ -93,7 +91,6 @@ h2 {
             rgba(60, 160, 178, 0.4)  90%,
             rgba(60, 160, 178, 0.5)  95%,
             rgba(60, 160, 178, 0.7) 100%
-
         /*region Alt Gradients*/
         /*background-image: linear-gradient(*/
             /*rgba(221,188,10, .02)  37%,*/
@@ -116,12 +113,6 @@ h2 {
       box-shadow: 0 0 8px 8px black inset;
     /*https://codepen.io/komejo/pen/RgwrZb*/
 }
-
-
-
-
-
-
 
 .col.report-details,
 .report-details-h2 {
@@ -150,6 +141,7 @@ h2 {
 }
 
 
+
 /*====================================================================================================================
       TABLES
 =====================================================================================================================*/
@@ -176,7 +168,6 @@ table {
 
 
 
-
 /*====================================================================================================================
       SHARED
 =====================================================================================================================*/
@@ -193,6 +184,7 @@ table {
     padding-top: 5pt;
     padding-bottom: 5pt;
 }
+
 
 
 /*=====================================================================================================================
@@ -214,17 +206,16 @@ table {
 }
 
 
+
 /*=====================================================================================================================
 REPORT PAGE
 ======================================================================================================================*/
-
 
 select,                                         /*TODO shared selector*/
 .select-hours,
 .select-hours > option {
     color: rgb(253,246,227);
 }
-
 
 div > .form-group.row.role-hours {
     border: 1pt solid rgb(253,246,227);
@@ -254,8 +245,8 @@ div > .form-group.row.role-hours {
     padding-top: 8pt;
 }
 
-#report-tips,
 #cash-tips,
+#report-tips,
 .dark-content-div {                             /*TODO shared selector*/
     padding: 8pt;
     color: rgb(253,246,227);
@@ -296,13 +287,13 @@ div > .form-group.row.role-hours {
 #report-tips::-moz-placeholder,
 #report-tips:-ms-input-placeholder,
 #report-tips::-webkit-input-placeholder {
-    opacity: 0.7;
-    padding-left: 2em;
-    font-size: smaller;
-    font-weight: lighter;
+    opacity      : 0.7;
+    padding-left : 2em;
+    font-size    : smaller;
+    font-weight  : lighter;
 }
 
-/*<editor-fold desc="Description">*/
+/*region Description*/
 /*#report-tips:-moz-placeholder {*/
     /*font-weight: lighter;*/
     /*padding-left: 2em;*/
@@ -327,7 +318,9 @@ div > .form-group.row.role-hours {
     /*font-size: smaller;*/
     /*opacity: 0.7;*/
 /*}*/
-/*</editor-fold>*/
+/*endregion*/
+
+
 
 /*=====================================================================================================================
 LOGIN PAGE
@@ -390,6 +383,7 @@ and (min-device-width: 768px) {
     }
 }
 
+/*region offcanvas*/
 /*@media screen and (max-width: 768px) {*/
 
     /*#sidebar-div {*/
@@ -427,6 +421,7 @@ and (min-device-width: 768px) {
     /*transform: translateX(-1rem); !* Account for horizontal padding on navbar *!*/
   /*}*/
 /*}*/
+/*endregion*/
 
 
 
@@ -453,13 +448,6 @@ form {
 
 
 
-
-
-
-
-
-
-
 /*=====================================================================================================================
      BUTTONS
 ======================================================================================================================*/
@@ -474,8 +462,6 @@ form {
     justify-content: center;
 }
 
-/*.btn,*/
-/*button,*/
 input[type=submit],
 .login-form input[type=submit] {
     color: rgba(253,246,227,0.9);
@@ -483,8 +469,6 @@ input[type=submit],
     border: 1pt solid rgba(52,140,156,0.70);
 }
 
-/*.btn:hover,*/
-/*button:hover,*/
 input[type=submit]:hover {
     transition: 600ms;
     color: white;
@@ -517,13 +501,6 @@ input[type=submit]:hover {
   background-image: linear-gradient(120deg, #9c4434 0%, #550D00 19%, #678f30 42%, #267240 79%, #348c9c 100%);
 }
 
-
-/*.btn-nav {*/
-    /*background-color: black;*/
-    /*border: 1pt solid black ;*/
-    /*color: rgb(253,246,227);*/
-/*}*/
-
 .btn-nav:focus,
 .btn-nav:hover {
     background-color: rgba(52,140,156,0.70);
@@ -534,25 +511,14 @@ input[type=submit]:hover {
 
 
 
-
-
-
-
 /*=====================================================================================================================
      INPUTS
 ======================================================================================================================*/
 
-
-
-/*.dark-input,*/
-/*.denom-input,*/
-/*input[type=text],*/
-/*input[type=password],*/
-/*#registration-form > input {*/
+select,
 input[type=text],
 input[type=number],
-input[type=password],
-select {
+input[type=password] {
     margin-left: 0;
     margin-right: 0;
     padding-top: 4pt;
@@ -561,15 +527,10 @@ select {
     background-color: rgba(28, 26, 24, 0.7);
 }
 
-/*.dark-input:focus,*/
-/*.denom-input:focus,*/
-/*input[type=text]:focus,*/
-/*input[type=password]:focus,*/
-/*#registration-form > input:focus,*/
-input[type=password]:focus,
+select:focus,
 input[type=text]:focus,
 input[type=number]:focus,
-select:focus {
+input[type=password]:focus {
     transition: 600ms;
     color: rgba(253,246,227,0.95);
     background-color: rgba(52,140,156,0.7);
@@ -584,16 +545,13 @@ input[type=checkbox]:checked~label~div {
     transition: 600ms;
     color: rgba(52,140,156,0.70);
     box-shadow: 0 0 3px rgba(253,246,227, 0.95);
-
 }
-
 
 .input-wrapper{
     padding: 0;
     border-collapse: collapse;
     color: rgba(253,246,227,0.95);
     background-color: rgba(28, 26, 24, 0.7);
-
 }
 
 .input-wrapper > input {
@@ -603,7 +561,6 @@ input[type=checkbox]:checked~label~div {
     border-collapse: collapse;
     color: rgba(253,246,227,0.95);
     background-color: rgba(28, 26, 24, 0.7);
-
 }
 
 ::placeholder,
@@ -628,7 +585,10 @@ input:-ms-input-placeholder,
     color: rgb(253,246,227);
 }
 
-input::-webkit-input-placeholder, #report-tips::-webkit-input-placeholder, .form-control.denom-input::-webkit-input-placeholder, ::-webkit-input-placeholder {
+::-webkit-input-placeholder,
+input::-webkit-input-placeholder,
+#report-tips::-webkit-input-placeholder,
+.form-control.denom-input::-webkit-input-placeholder {
     color: rgb(253,246,227);
     opacity: 0.7;
     padding-left: 2em;
@@ -636,7 +596,10 @@ input::-webkit-input-placeholder, #report-tips::-webkit-input-placeholder, .form
     font-size: smaller;
 }
 
-input::-moz-placeholder, #report-tips::-moz-placeholder, .form-control.denom-input::-moz-placeholder, ::-moz-placeholder {
+::-moz-placeholder
+input::-moz-placeholder,
+#report-tips::-moz-placeholder,
+.form-control.denom-input::-moz-placeholder {
     color: rgb(253,246,227);
     opacity: 1;
     padding-left: 2em;
@@ -644,13 +607,17 @@ input::-moz-placeholder, #report-tips::-moz-placeholder, .form-control.denom-inp
     font-size: smaller;
 }
 
-input:-moz-placeholder, #report-tips:-moz-placeholder, .form-control.denom-input:-moz-placeholder, :-moz-placeholder {
+:-moz-placeholder,
+input:-moz-placeholder,
+#report-tips:-moz-placeholder,
+.form-control.denom-input:-moz-placeholder {
     color: rgb(253,246,227);
     opacity: 0.7;
     padding-left: 2em;
     font-weight: lighter;
     font-size: smaller;
 }
+
 
 
 /*=====================================================================================================================
@@ -664,14 +631,6 @@ input:-moz-placeholder, #report-tips:-moz-placeholder, .form-control.denom-input
 .navbar {
     background-color: rgba(28, 26, 24, 0.7);
 }
-
-/*nav,*/
-/*.btn-nav,*/
-/*.nav-item,*/
-/*.nav-link,*/
-/*.btn.btn-block.btn-nav*/
-/*.btn-nav:link*/
-
 
 #nav-dd-btn, #nav-dd-btn:focus, #nav-dd-btn:hover {
     border: none;
@@ -704,20 +663,12 @@ input:-moz-placeholder, #report-tips:-moz-placeholder, .form-control.denom-input
 }
 
 a.nav-link, #nav-dd-btn {
-    /* CURSIVE
-    Niconne|Federo|Megrim|Codystar|Monofett|Bungee+Outline|Gugi|Poiret+One|
-
-    SANS SERIF
-    Montserrat+Subrayada|Text+Me+One|Chathura*/
     font-size: 2em;
     font-weight: bolder;
     font-family: "Megrim", cursive;
-    /*font-family: "Montserrat Subrayada", sans-serif;*/
     text-shadow: 0 1px 4px rgb(255,255,255);
     background-color: transparent;
     color: rgba(60, 160, 178,.7);
-    /*margin-left: 0;*/
-    /*padding-left: 0;*/
     -webkit-animation-name: blues;
     -webkit-animation-duration: 600ms;
 }
@@ -725,19 +676,12 @@ a.nav-link, #nav-dd-btn {
 @keyframes blues {
     from {color: rgba(1,220,230,0.9);}
     to {color: rgba(60, 160, 178,.7);}
-    /*from {text-shadow: 0 1px 12px rgb(255,255,255);}*/
-    /*to {text-shadow: 0 1px 4px rgb(255,255,255);}*/
-    /*from {background-image: radial-gradient(circle,rgba(255,255,255,0.95), rgba(255,255,255,0));}*/
-    /*to {background-image: radial-gradient(circle,rgba(255,255,255,0), rgba(255,255,255,0));}*/
 }
 
 a.dropdown-item.nav-link:focus,
 a.dropdown-item.nav-link:hover {
-
-    /*background-color: rgba(28, 26, 24, 0.7);*/
     background-color : transparent;
 }
-
 
 .dropdown-menu {
     background-color: rgba(28, 26, 24, 0.7); /*background-color: transparent;*/
@@ -757,13 +701,10 @@ a.nav-link:focus,
     -webkit-animation-name: bluer;
     -webkit-animation-duration: 600ms;
 }
+
 @keyframes bluer {
     from {color: rgba(60, 160, 178,.7);}
     to {color: rgba(1,220,230,0.9);}
-    /*from {text-shadow: 0 1px 4px rgb(255,255,255);}*/
-    /*to {text-shadow: 0 1px 12px rgb(255,255,255);}*/
-    /*from {background-image: radial-gradient(circle,rgba(255,255,255,0), rgba(255,255,255,0));}*/
-    /*to {background-image: radial-gradient(circle,rgba(255,255,255,0.95), rgba(255,255,255,0));}*/
 }
 
 #nav-username {
@@ -776,12 +717,6 @@ a.nav-link:focus,
 @keyframes reds {
     from {color: rgba(252,20,5,0.9);}
     to {color: rgba(140,20,38,.7);}
-    /*from {text-shadow: 0 1px 12px rgb(255,255,255);}*/
-    /*to {text-shadow: 0 1px 4px rgb(255,255,255);}*/
-    /*from {background-image: radial-gradient(circle,rgba(255,255,255,0.95), rgba(255,255,255,0));}*/
-    /*to {background-image: radial-gradient(circle,rgba(255,255,255,0), rgba(255,255,255,0));}*/
-
-
 }
 
 #nav-username:hover,
@@ -796,10 +731,6 @@ a.nav-link:focus,
 @keyframes redder {
     from {color: rgba(140,20,38,.7);}
     to {color: rgba(252,20,5,0.9);}
-    /*from {text-shadow: 0 1px 12px rgb(255,255,255);}*/
-    /*to {text-shadow: 0 1px 4px rgb(255,255,255);}*/
-    /*from {background-image: radial-gradient(circle,rgba(255,255,255,0), rgba(255,255,255,0));}*/
-    /*to {background-image: radial-gradient(circle,rgba(255,255,255,0.95), rgba(255,255,255,0));}*/
 }
 
 ul.flex-container {
@@ -808,8 +739,6 @@ ul.flex-container {
     margin-left:0 ;
     padding-left: 0;
 }
-
-
 
 .navbar-brand {
     font-size: 3em;
@@ -849,17 +778,12 @@ ul.flex-container {
     color                      : rgba(1,220,230,0.9);
     -webkit-animation-name     : dd-content-bluer;
     -webkit-animation-duration : 600ms;
-    /*background                 : transparent none;*/
 }
 
 @keyframes bluer {
     from {color: rgba(60,160,178,0.7)}
     to {color: rgba(1,220,230,0.9)}
 }
-
-/*.container .dropdown .dropdown-menu a:hover {*/
-    /*background : transparent none;*/
-/*}*/
 
 .navbar-toggler-icon,
 .navbar-toggler {
@@ -879,6 +803,7 @@ ul.flex-container {
 #dd-nav-item {
     padding: 0;
 }
+
 .navbar-toggler {
 
 }

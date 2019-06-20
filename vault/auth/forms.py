@@ -1,10 +1,16 @@
 
+from flask_babel import _, lazy_gettext as _1
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, BooleanField, SubmitField
 from wtforms.validators import ValidationError, DataRequired, Email, EqualTo, InputRequired
-from flask_babel import _, lazy_gettext as _1
+
 from vault.models import User
 
+
+
+#=====================================================================================================================
+# LOGIN FORM
+#=====================================================================================================================
 
 class LoginForm(FlaskForm):
 
@@ -14,7 +20,13 @@ class LoginForm(FlaskForm):
     submit = SubmitField(_1('Sign In'))
 
 
+
+#=====================================================================================================================
+# REGISTRATION FORM
+#=====================================================================================================================
+
 class RegistrationForm(FlaskForm):
+
     username = StringField(_1('Username'), validators=[DataRequired()])
     email = StringField(_1('Email'), validators=[DataRequired(), Email()])
     password = PasswordField(_1('Password'), validators=[DataRequired()])
@@ -27,7 +39,6 @@ class RegistrationForm(FlaskForm):
         if user is not None:
             raise ValidationError(_('Please use a different username.'))
 
-
     @staticmethod
     def validate_email(email):
         user = User.query.filter_by(email=email.data).first()
@@ -35,16 +46,31 @@ class RegistrationForm(FlaskForm):
             raise ValidationError(_('Please use a different email address.'))
 
 
+
+#=====================================================================================================================
+# RESET PASSWORD REQUEST FORM
+#=====================================================================================================================
+
 class ResetPasswordRequestForm(FlaskForm):
     email = StringField(_1('Email'), validators=[DataRequired(), Email()])
     submit = SubmitField(_1('Request Password Reset'))
 
+
+
+#=====================================================================================================================
+# RESET PASSWORD FORM
+#=====================================================================================================================
 
 class ResetPasswordForm(FlaskForm):
     password = PasswordField(_1('Password'), validators=[DataRequired()])
     password2 = PasswordField(_1('Repeat Password'), validators=[DataRequired(), EqualTo('password')])
     submit = SubmitField(_1('Request Password Reset'))
 
+
+
+#=====================================================================================================================
+# EDIT PROFILE FORM
+#=====================================================================================================================
 
 class EditProfileForm(FlaskForm):
     username = StringField('Username', validators=[DataRequired()])

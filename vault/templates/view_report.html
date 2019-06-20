@@ -1,44 +1,34 @@
 
 {% extends "layout.html" %}
 
-{% block styles %}{{ super() }}{% endblock %}
+{% block styles %}
+    {{ super() }}
+{% endblock %}
 
 {% block page_content %}
-
     <div class="row no-gutters" id="report-content-row">
-
         <div class="col-md-2 col-sm-1"></div>
-
         <div class="col-md-8 col-sm-10">
-
             <form action="{{ url_for('main.submit_report') }}" method="post" id="submit-report-form">
-
                 <div class="row no-gutters">
-
                     <div class="col-12" id="shift-date">
                         <h2>{{ stringify_date(shift.start_date) }}</h2>
                     </div>
-
                     <div class="col report-details">
                         <h2 class="report-details-h2">TIP HOURS: {{ shift.tip_hours|round(2) }}</h2>
                     </div>
-
                     <div class="col report-details">
                         <h2 class="report-details-h2">CASH TIP POOL: {{ shift.cash_tip_pool }}</h2>
                     </div>
-
                     <div class="col report-details">
                         <h2 class="report-details-h2">CASH TIP WAGE: {{ shift.cash_tip_wage|round(2) }}</h2>
                     </div>
-
                     <div class="col report-details">
                         <h2 class="report-details-h2">CC TIP POOL: {{ shift.cred_tip_pool }}</h2>
                     </div>
-
                     <div class="col report-details">
                         <h2 class="report-details-h2">CC TIP WAGE: {{ shift.cred_tip_wage|round(2) }}</h2>
                     </div>
-
                     <div class="col-12" id="report-tips">
                         <table class="table table-dark table-bordered table-hover">
                             <thead class="thead-light">
@@ -56,15 +46,15 @@
                               {% for emp in employees|sort(attribute='first_name') %}
                                 {% if emp.tip_hours > 0 %}
                                     <tr>
-                                        <th scope="row">{{ emp.first_name }}</th>
-                                        <td>{{ emp.shift_hours }}</td>
+                                        <th class='th-dark' scope="row">{{ emp.first_name }}</th>
+                                        <td class="td-dark">{{ emp.shift_hours }}</td>
                                         {% if emp.tip_role == 'SERVICE' %}
-                                            <td>Service (x1.00)</td>
+                                            <td class="td-dark">Service (x1.00)</td>
                                         {% elif emp.tip_role == 'SUPPORT' %}
-                                            <td>Support (x0.65)</td>
+                                            <td class="td-dark">Support (x0.65)</td>
                                         {% endif %}
-                                        <td>{{ emp.tip_hours|round(2) }}</td>
-                                        <td>{{ emp.cred_tips|round(2) }}</td>
+                                        <td class="td-dark">{{ emp.tip_hours|round(2) }}</td>
+                                        <td class="td-dark">{{ emp.cred_tips|round(2) }}</td>
                                     </tr>
                                 {% endif %}
                             {% endfor %}
@@ -87,16 +77,15 @@
                               {% for emp in employees|sort(attribute='first_name') %}
                                 {% if emp.tip_hours > 0 %}
                                     <tr>
-                                        <th scope="row">{{ emp.first_name }}</th>
-                                        <td>{{ emp.shift_hours }}</td>
-                                         {% if emp.tip_role == 'SERVICE' %}
-                                            <td>Service (x1.00)</td>
+                                        <th class='th-dark' scope="row">{{ emp.first_name }}</th>
+                                        <td class="td-dark">{{ emp.shift_hours }}</td>
+                                        {% if emp.tip_role == 'SERVICE' %}
+                                            <td class="td-dark">Service (x1.00)</td>
                                         {% elif emp.tip_role == 'SUPPORT' %}
-                                            <td>Support (x0.65)</td>
+                                            <td class="td-dark">Support (x0.65)</td>
                                         {% endif %}
-                                        <td>{{ emp.tip_hours|round(2) }}</td>
-                                        <td>{{ emp.cash_tips|round(2) }}</td>
-
+                                        <td class="td-dark">{{ emp.tip_hours|round(2) }}</td>
+                                        <td class="td-dark">{{ emp.cash_tips|round(2) }}</td>
                                     </tr>
                                 {% endif %}
                             {% endfor %}
