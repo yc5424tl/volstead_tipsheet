@@ -9,14 +9,13 @@ from flask import render_template, copy_current_request_context, url_for, reques
 from flask_login import current_user, login_required
 from flask_babel import _, get_locale
 from flask_user import roles_required
-from numpy import linspace, os
+from numpy import linspace
 from vault.main import bp
 from vault.main.employee_data_controller import EmployeeDataController
 from vault.main.shift_data_controller import ShiftDataController
 from vault import db, models
-# from vault.models import Employee, ShiftReport, EmployeeReport
 from vault.g_sheet import GoogleSheetsMgr
-from vault.models import Employee, Role
+from vault.models import Employee
 from retrying import retry
 
 
@@ -24,7 +23,6 @@ from retrying import retry
 # primary_staff = Employee.query.filter_by(==1).all()
 # primary_staff = db.Session.query(db.Employee, db.    Role).join(Role).filter(id=1).all()
 # primary_staff = db.session.query(Employee).filter(Employee.role_id==Role.id).filter(Role.id==1)
-
 # primary_staff =  Employee.query.filter_by(role_id = 1)
 # alternate_staff = Employee.query.filter_by(role_id=2)
 primary_staff = db.session.query(Employee).filter(Employee.role_id == 1)
