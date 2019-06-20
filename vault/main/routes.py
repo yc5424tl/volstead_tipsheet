@@ -190,7 +190,6 @@ def list_of_emp(emp_list) -> bool:
 @login_required
 def submit_report():
 
-
     @copy_current_request_context
     @retry(wait_exponential_multiplier=1000, wait_exponential_max=10000, stop_max_attempt_number=35)
     def write_to_g_sheets():
@@ -203,8 +202,7 @@ def submit_report():
         print('after check_previous_subtotals')
         g_sheet_mgr.end_of_period_check(shift.start_date)
         print('after end_of_period_check')
-
-        return render_template('report_archived_confirmation.html', daily_report=shift)
+        # return render_template('report_archived_confirmation.html', daily_report=shift)
 
     @copy_current_request_context
     def get_start_date():
@@ -269,6 +267,8 @@ def submit_report():
             flash(msg)
             time.sleep(301)
             write_to_g_sheets()
+
+        return render_template('report_archived_confirmation.html', daily_report=shift)
 
 
 
