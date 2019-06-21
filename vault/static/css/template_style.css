@@ -52,7 +52,8 @@ body {
     display: flex;
 }
 
-h2 {
+h2,
+h4 {
     margin: auto;
     display: block;
     background-color: rgba(52,140,156,0.80);
@@ -66,6 +67,15 @@ h2 {
     white-space: pre-wrap;
     height: 100%;
     opacity: 0.8;
+    box-shadow: 0 0 2px 2px rgb(253,246,227) inset;
+}
+
+
+
+h4 {
+    background-color: rgba(28, 26, 24, 0.7);
+    box-shadow: 0 0 8px 8px white inset;
+    border: none;
 }
 
 #banner-image {
@@ -115,14 +125,15 @@ h2 {
 }
 
 .col.report-details,
-.report-details-h2 {
+.report-details-h4 {
     margin: 0;
     padding: 0;
     text-align: center;
     justify-content: center;
+    font-size: large;
 }
 
-.report-details-h2 {
+.report-details-h4 {
     padding: 1em;
 }
 
@@ -196,13 +207,18 @@ table {
 }
 
 .error {
-    background-color: #9C1A1C;
+    background-color: rgba(156,26,28, 0.8);
     font-weight: bold;
     margin: 0 auto;
     width: 100%;
     display: block;
     color: black;
     font-size: 2em;
+}
+
+.err-msg-wrapper {
+    background-color: rgba(156,26,28, 0.8);
+    color: rgb(253,246,227);
 }
 
 
@@ -217,6 +233,8 @@ select,                                         /*TODO shared selector*/
     color: rgb(253,246,227);
 }
 
+.th-dark,
+.td-dark,
 div > .form-group.row.role-hours {
     border: 1pt solid rgb(253,246,227);
     border-collapse: collapse;
@@ -250,8 +268,11 @@ div > .form-group.row.role-hours {
 .dark-content-div {                             /*TODO shared selector*/
     padding: 8pt;
     color: rgb(253,246,227);
-    border-radius: 5pt;
-    background-color: rgba(28, 26, 24, 0.7);
+    /*border-radius: 5pt;*/
+    /*background-color: rgba(28, 26, 24, 0.7);*/
+    border: 1pt solid rgb(253,246,227);
+    background-color: rgba(60, 160, 178, 0.7);
+    box-shadow: 0 0 2px 2px rgb(253,246,227) inset;
 }
 
 #work-hours-div {
@@ -291,6 +312,17 @@ div > .form-group.row.role-hours {
     padding-left : 2em;
     font-size    : smaller;
     font-weight  : lighter;
+}
+
+.alt-staff-btn-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 1em;
+}
+
+.alt-staff-btn-wrapper > button {
+    display: inline-block;
 }
 
 /*region Description*/
@@ -502,7 +534,8 @@ input[type=submit]:hover {
 }
 
 .btn-nav:focus,
-.btn-nav:hover {
+.btn-nav:hover,
+.alt-staff-btn-wrapper > button {
     background-color: rgba(52,140,156,0.70);
     border: 1pt solid  rgb(253,246,227);
     color: black;

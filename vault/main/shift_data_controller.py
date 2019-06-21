@@ -7,8 +7,9 @@ from vault.main.employee_data_controller import EmployeeDataController
 denominations = {x:0.0 for x in ['0.25', '1.00', '5.00', '10.00', '20.00', '50.00', '100.00']}
 
 class ShiftDataController(object):
-    def __init__(self,staff: [EmployeeDataController],shift_hours = 0.0,tip_hours=0.0,cash_tip_pool=0.0,cred_tip_pool=0.0,cash_tip_wage=0.0,cred_tip_wage=0.0,start_date=None,cash_subtotals=denominations):
+    def __init__(self,staff: [EmployeeDataController], alt_staff: [EmployeeDataController], shift_hours = 0.0,tip_hours=0.0,cash_tip_pool=0.0,cred_tip_pool=0.0,cash_tip_wage=0.0,cred_tip_wage=0.0,start_date=None,cash_subtotals=denominations):
         self._staff = staff
+        self._alt_staff = alt_staff
         self._shift_hours = shift_hours
         self._tip_hours = tip_hours
         self._cash_tip_pool = cash_tip_pool
@@ -21,6 +22,7 @@ class ShiftDataController(object):
     def serialize(self):
         return {
             'staff': [e.serialize() for e in self.staff],
+            'alt_staff': [e.serialize() for e in self.alt_staff],
             'shift_hours': self.shift_hours,
             'tip_hours': self.tip_hours,
             'cash_tip_pool': self.cash_tip_pool,
@@ -92,6 +94,14 @@ class ShiftDataController(object):
     @staff.setter
     def staff(self, staff_list: [EmployeeDataController]) -> None:
         self._staff = staff_list
+
+    @property
+    def alt_staff(self) -> [EmployeeDataController]:
+        return self._alt_staff
+
+    @alt_staff.setter
+    def alt_staff(self, staff_list: [EmployeeDataController]) -> None:
+        self._alt_staff = staff_list
 
     @property
     def cred_tip_pool(self) -> float:

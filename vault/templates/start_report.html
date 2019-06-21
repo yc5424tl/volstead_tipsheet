@@ -10,7 +10,7 @@
 
     {% if error %}
         <div class="row no-gutters">
-            <div class="col">
+            <div class="col err-msg-wrapper">
                 <p class="error center-block text-center">Error: {{ error }}</p>
             </div>
         </div>
@@ -22,14 +22,14 @@
             <form action="{{ url_for('main.start_report') }}" method="post" id="shift-details-form">
                 <div class="row no-gutters">
                     <div id="work-hours-div" class="col-12">
-                        {% for emp in employees|sort(attribute='first_name') %}
-                            <div class="form-group row role-hours no-gutters" id={{ emp.first_name }}>
+                        {% for staff in shift.staff|sort(attribute='first_name') %}
+                            <div class="form-group row role-hours no-gutters" id={{ staff.first_name }}{{ staff.last_name }}>
                                 <div class="col-1"></div>
                                 <div class="col-2 text-left col-form-label emp-name">
-                                    <label for={{ emp.first_name }}-hours>{{ emp.first_name }}</label>
+                                    <label for={{ staff.first_name }}{{ staff.last_name }}-hours>{{ staff.first_name }}</label>
                                 </div>
                                 <div class="col text-center">
-                                    <select title="Tip Hours" class="select-hours" id={{ emp.first_name }}-hours name={{ emp.first_name }}-hours>
+                                    <select title="Tip Hours" class="select-hours" id={{ staff.first_name }}{{ staff.last_name }}-hours name={{ staff.first_name }}{{ staff.last_name }}-hours>
                                         {% for x in float_range[0] %}
                                             <option value={{ x }} {% if x == 0.0 %}selected{% endif %} >{{ x }}</option>
                                         {% endfor %}
@@ -37,23 +37,23 @@
                                 </div>
                                 <div class="col-1"></div>
                                 <div class="form-group col-6 center-block text-center">
-                                        {% if emp.tip_role == 'SERVICE' %}
+                                        {% if staff.tip_role == 'SERVICE' %}
                                             <div class="form-check-inline pull-left">
-                                                <label class="form-check-label" for={{ emp.first_name }}-full>
-                                                    <input class="form-check-input" name={{ emp.first_name }}-radio type="radio" id={{ emp.first_name }}-full value="SERVICE" checked>Service (x1.0)</label>
+                                                <label class="form-check-label" for={{ staff.first_name }}{{ staff.last_name }}-full>
+                                                    <input class="form-check-input tip-share-radio" name={{ staff.first_name }}{{ staff.last_name }}-radio type="radio" id={{ staff.first_name }}-full value="SERVICE" checked>Service (x1.0)</label>
                                             </div>
                                             <div class="form-check-inline center-block">
-                                                <label class="form-check-label" for={{ emp.first_name }}-partial>
-                                                    <input class="form-check-input" name={{ emp.first_name }}-radio type="radio" id={{ emp.first_name }}-partial value="SUPPORT">Support (x0.65)</label>
+                                                <label class="form-check-label" for={{ staff.first_name }}{{ staff.last_name }}-partial>
+                                                    <input class="form-check-input tip-share-radio" name={{ staff.first_name }}{{ staff.last_name }}-radio type="radio" id={{ staff.first_name }}-partial value="SUPPORT">Support (x0.65)</label>
                                             </div>
                                         {% else %}
                                             <div class="form-check-inline pull-left">
-                                                <label class="form-check-label" for={{ emp.first_name }}-full>
-                                                    <input class="form-check-input" name={{ emp.first_name }}-radio type="radio" id={{ emp.first_name }}-full value="SERVICE">Service (x1.0)</label>
+                                                <label class="form-check-label" for={{ staff.first_name }}{{ staff.last_name }}-full>
+                                                    <input class="form-check-input tip-share-radio" name={{ staff.first_name }}{{ staff.last_name }}-radio type="radio" id={{ staff.first_name }}-full value="SERVICE">Service (x1.0)</label>
                                             </div>
                                             <div class="form-check-inline center-block">
-                                                <label class="form-check-label" for={{ emp.first_name }}-partial>
-                                                    <input class="form-check-input" name={{ emp.first_name }}-radio type="radio" id={{ emp.first_name}}-partial value="SUPPORT" checked>Support (x0.65)</label>
+                                                <label class="form-check-label" for={{ staff.first_name }}{{ staff.last_name }}-partial>
+                                                    <input class="form-check-input tip-share-radio" name={{ staff.first_name }}{{ staff.last_name }}-radio type="radio" id={{ staff.first_name}}{{ staff.last_name }}-partial value="SUPPORT" checked>Support (x0.65)</label>
                                             </div>
                                         {% endif %}
                                 </div>
@@ -64,90 +64,87 @@
 
 {#============================================RINGER==============================================#}
 
-{#                    <div id="ringer-hours-div" class="col-12">#}
-{##}
-{#                    <div class="row">#}
-{#                        <div class="col-2"></div>#}
-{#                        <div class="col">#}
-{#                            <p>#}
-{#                                <button class="btn" type="button"  id="collapse-toggle" data-toggle="collapse" data-target="#collapse">Add Ringer To Shift#}
-{#                                </button>#}
-{#                            </p>#}
-{#                        </div>#}
-{#                        <div class="col-2"></div>#}
-{#                    </div>#}
+                    <div id="ringer-hours-div" class="col-12">
 
-{#                    {% for ringer in ringers|sort(attribute='first_name') %}#}
-{##}
-{#                        <div class="collapse" id="collapse">#}
-{##}
-{#                            <div class="form-group row role-hours no-gutters" id={{ ringer.first_name }}>#}
-{##}
-{#                                <div class="col-1"></div>#}
-{##}
-{#                                <div class="col-2 text-left col-form-label emp-name">#}
-{#                                    <label for={{ ringer.first_name }}-hours>{{ ringer.first_name }}</label>#}
-{#                                </div>#}
-{##}
-{#                                <div class="col text-center">#}
-{#                                    <select title="Tip Hours" class="select-hours" id={{ ringer.first_name }}-hours name={{ ringer.first_name }}-hours>#}
-{#                                        {% for x in float_range[0] %}#}
-{#                                            <option value={{ x }}#}
-{#                                                {% if x == 0.0 %}#}
-{#                                                    selected#}
-{#                                                {% endif %}#}
-{#                                            >{{ x }}</option>#}
-{#                                        {% endfor %}#}
-{#                                    </select>#}
-{#                                </div>#}
-{##}
-{#                                <div class="col-1"></div>#}
-{##}
-{#                                <div class="form-group col-6 center-block text-center">#}
-{##}
-{#                                    {% if ringer.tip_role == 'SERVICE' %}#}
-{##}
-{#                                        <div class="form-check-inline pull-left">#}
-{#                                            <label class="form-check-label" for={{ ringer.first_name }}-full>#}
-{#                                                <input class="form-check-input" name={{ ringer.first_name }}-radio type="radio" id={{ ringer.first_name }}-full value="SERVICE" checked>#}
-{#                                                Service (x1.0)#}
-{#                                            </label>#}
-{#                                        </div>#}
-{#                                        <div class="form-check-inline center-block">#}
-{#                                            <label class="form-check-label" for={{ ringer.first_name }}-partial>#}
-{#                                                <input class="form-check-input" name={{ ringer.first_name }}-radio type="radio" id={{ ringer.first_name }}-partial value="SUPPORT">#}
-{#                                                Support (x0.65)#}
-{#                                            </label>#}
-{#                                        </div>#}
-{##}
-{#                                    {% else %}#}
-{##}
-{#                                        <div class="form-check-inline pull-left">#}
-{#                                            <label class="form-check-label" for={{ ringer.first_name }}-full>#}
-{#                                                <input class="form-check-input" name={{ ringer.first_name }}-radio type="radio" id={{ ringer.first_name }}-full value="SERVICE">#}
-{#                                                Service (x1.0)#}
-{#                                            </label>#}
-{#                                        </div>#}
-{#                                        <div class="form-check-inline center-block">#}
-{#                                            <label class="form-check-label" for={{ ringer.first_name }}-partial>#}
-{#                                                <input class="form-check-input" name={{ ringer.first_name }}-radio type="radio" id={{ ringer.first_name }}-partial value="SUPPORT" checked>#}
-{#                                                Support (x0.65)#}
-{#                                            </label>#}
-{#                                        </div>#}
-{##}
-{#                                    {% endif %}#}
-{##}
-{#                                </div>#}
-{#                            </div>#}
-{#                        </div>#}
-{#                    {% endfor %}#}
-{##}
-{##}
-{#                    </div>#}
+                        <div class="row">
+                            <div class="col-2"></div>
+                            <div class="col alt-staff-btn-wrapper">
+                                <button class="btn" type="button"  id="collapse-toggle" data-toggle="collapse" data-target="#collapse">Add Ringer To Shift
+                                </button>
+                            </div>
+                            <div class="col-2"></div>
+                        </div>
+
+                        <div class="collapse" id="collapse">
+
+                            {% for alt in shift.alt_staff|sort(attribute='first_name') %}
+
+                                <div class="form-group row role-hours no-gutters" id={{ alt.first_name }}{{ alt.last_name }}>
+
+                                    <div class="col-1"></div>
+
+                                    <div class="col-2 text-left col-form-label emp-name">
+                                        <label for={{ alt.first_name }}{{ alt.last_name }}-hours>{{ alt.first_name }}</label>
+                                    </div>
+
+                                    <div class="col text-center">
+                                        <select title="Tip Hours" class="select-hours" id={{ alt.first_name }}{{ alt.last_name }}-hours name={{ alt.first_name }}{{ alt.last_name }}-hours>
+                                            {% for x in float_range[0] %}
+                                                <option value={{ x }}
+                                                    {% if x == 0.0 %}
+                                                        selected
+                                                    {% endif %}
+                                                >{{ x }}</option>
+                                            {% endfor %}
+                                        </select>
+                                    </div>
+
+                                    <div class="col-1"></div>
+
+                                    <div class="form-group col-6 center-block text-center">
+
+                                        {% if alt.tip_role == 'SERVICE' %}
+
+                                            <div class="form-check-inline pull-left">
+                                                <label class="form-check-label" for={{ alt.first_name }}{{ alt.last_name }}-full>
+                                                    <input class="form-check-input" name={{ alt.first_name }}{{ alt.last_name }}-radio type="radio" id={{ alt.first_name }}{{ alt.last_name }}-full value="SERVICE" checked>
+                                                    Service (x1.0)
+                                                </label>
+                                            </div>
+                                            <div class="form-check-inline center-block">
+                                                <label class="form-check-label" for={{ alt.first_name }}{{ alt.last_name }}-partial>
+                                                    <input class="form-check-input" name={{ alt.first_name }}{{ alt.last_name }}-radio type="radio" id={{ alt.first_name }}{{ alt.last_name }}-partial value="SUPPORT">
+                                                    Support (x0.65)
+                                                </label>
+                                            </div>
+
+                                        {% else %}
+
+                                            <div class="form-check-inline pull-left">
+                                                <label class="form-check-label" for={{ alt.first_name }}{{ alt.last_name }}-full>
+                                                    <input class="form-check-input" name={{ alt.first_name }}{{ alt.last_name }}-radio type="radio" id={{ alt.first_name }}{{ alt.last_name }}-full value="SERVICE">
+                                                    Service (x1.0)
+                                                </label>
+                                            </div>
+                                            <div class="form-check-inline center-block">
+                                                <label class="form-check-label" for={{ alt.first_name }}{{ alt.last_name }}-partial>
+                                                    <input class="form-check-input" name={{ alt.first_name }}{{ alt.last_name }}-radio type="radio" id={{ alt.first_name }}{{ alt.last_name }}-partial value="SUPPORT" checked>
+                                                    Support (x0.65)
+                                                </label>
+                                            </div>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        </div>
+
+
+
+                    </div>
 
 
                     <div id="cash-totals-input-div" class="col-12">
-                        {% for denom in denominations %}
+                        {% for denom in shift.cash_subtotals %}
                             <div class="form-group row cash-row no-gutters">
                                 <label for="{{ denom }}" class="col-4 col-form-label denom-label text-center">${{ denom }}</label>
                                 <div class="col form-control input-wrapper">

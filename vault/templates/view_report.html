@@ -15,22 +15,22 @@
                         <h2>{{ stringify_date(shift.start_date) }}</h2>
                     </div>
                     <div class="col report-details">
-                        <h2 class="report-details-h2">TIP HOURS: {{ shift.tip_hours|round(2) }}</h2>
+                        <h4 class="report-details-h4">TIP HOURS: {{ shift.tip_hours|round(2) }}</h4>
                     </div>
                     <div class="col report-details">
-                        <h2 class="report-details-h2">CASH TIP POOL: {{ shift.cash_tip_pool }}</h2>
+                        <h4 class="report-details-h4">CASH TIP POOL: {{ shift.cash_tip_pool }}</h4>
                     </div>
                     <div class="col report-details">
-                        <h2 class="report-details-h2">CASH TIP WAGE: {{ shift.cash_tip_wage|round(2) }}</h2>
+                        <h4 class="report-details-h4">CASH TIP WAGE: {{ shift.cash_tip_wage|round(2) }}</h4>
                     </div>
                     <div class="col report-details">
-                        <h2 class="report-details-h2">CC TIP POOL: {{ shift.cred_tip_pool }}</h2>
+                        <h4 class="report-details-h4">CC TIP POOL: {{ shift.cred_tip_pool }}</h4>
                     </div>
                     <div class="col report-details">
-                        <h2 class="report-details-h2">CC TIP WAGE: {{ shift.cred_tip_wage|round(2) }}</h2>
+                        <h4 class="report-details-h4">CC TIP WAGE: {{ shift.cred_tip_wage|round(2) }}</h4>
                     </div>
                     <div class="col-12" id="report-tips">
-                        <table class="table table-dark table-bordered table-hover">
+                        <table class="table table-bordered table-hover">
                             <thead class="thead-light">
                                 <tr>
                                     <th scope="row" colspan="5">CC ONLY TOTALS</th>
@@ -43,7 +43,7 @@
                                     <th class="col col-th" scope="col">TOTAL</th>
                                 </tr>
                             </thead>
-                              {% for emp in employees|sort(attribute='first_name') %}
+                              {% for emp in shift.staff|list + shift.alt_staff|list |sort(attribute='first_name') %}
                                 {% if emp.tip_hours > 0 %}
                                     <tr>
                                         <th class='th-dark' scope="row">{{ emp.first_name }}</th>
@@ -61,7 +61,7 @@
                         </table>
                     </div>
                     <div class="col-12" id="cash-tips">
-                        <table class="table table-dark table-bordered table-hover">
+                        <table class="table table-bordered table-hover">
                             <thead class="thead-light">
                                 <tr>
                                     <th scope="row" colspan="5">CASH TOTALS</th>
@@ -74,7 +74,7 @@
                                     <th class="col col-th" scope="col">TOTAL</th>
                                 </tr>
                             </thead>
-                              {% for emp in employees|sort(attribute='first_name') %}
+                              {% for emp in shift.staff|list + shift.alt_staff|list |sort(attribute='first_name') %}
                                 {% if emp.tip_hours > 0 %}
                                     <tr>
                                         <th class='th-dark' scope="row">{{ emp.first_name }}</th>
@@ -100,7 +100,7 @@
                     </div>
                 </div>
                 <input type="hidden" name="shift_data" id="shift_data" value="{{ shift }}">
-                <input type="hidden" name="emp_data" id="emp_data" value="{{ employees }}">
+                <input type="hidden" name="emp_data" id="emp_data" value="{{ shift.staff }}">
             </form>
         </div>
         <div class="col-md-2 col-sm-1"></div>
