@@ -182,12 +182,14 @@ def submit_report():
         new_shift_id = new_shift_report.id
 
         for emp_report in itertools.chain(shift.staff, shift.alt_staff):
+
             print('next lime employee report')
             print(emp_report)
-            print('{} {} {} {} {}'.format(emp_report.employee.first_name, emp_report.employee.last_name, emp_report.tip_role, emp_report.cred_tips,  emp_report.cash_tips))
+            print('{} {} {} {} {}'.format(emp_report.first_name, emp_report.last_name, emp_report.tip_role, emp_report.cred_tips,  emp_report.cash_tips))
             current_emp = models.Employee.query.filter_by(first_name=emp_report.first_name).filter_by(last_name=emp_report.last_name).first()
             new_employee_report = models.EmployeeReport.populate_fields(employee_report=emp_report, shift_id=new_shift_id, employee_id=current_emp.id)
-            db.session.add(new_employee_report)
+            if new_employee_report.shift_hours > 0.0:
+                db.session.add(new_employee_report)
 
         db.session.commit()
 
