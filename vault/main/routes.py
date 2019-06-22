@@ -151,61 +151,56 @@ def submit_report():
 
     @copy_current_request_context
     @retry(wait_exponential_multiplier=1000, wait_exponential_max=10000, stop_max_attempt_number=35)
-    def write_to_g_sheets():
+    def write_to_g_sheets(shift_ctrl):
         g_sheet_mgr = GoogleSheetsMgr()
         g_sheet_mgr.tips_sheet = g_sheet_mgr.get_worksheet()
-        g_sheet_mgr.insert_new_row_for_shift(shift)
-        g_sheet_mgr.check_previous_subtotals(shift.start_date)
-        g_sheet_mgr.end_of_period_check(shift.start_date)
+        g_sheet_mgr.insert_new_row_for_shift(shift_ctrl)
+        g_sheet_mgr.check_previous_subtotals(shift_ctrl.start_date)
+        g_sheet_mgr.end_of_period_check(shift_ctrl.start_date)
+        return render_template('report_archived_confirmation.html', daily_report=shift_ctrl)
 
     shift_data = session['shift']
 
-    emp_list = [EmployeeDataController(
-        first_name =e['first_name'],
-        last_name  =e['last_name'],
-        tip_role   =e['tip_role'],
-        shift_hours=e['shift_hours'],
-        tip_hours  =e['tip_hours'],
-        cash_tips  =e['cash_tips'],
-        cred_tips  =e['cred_tips'])
-        for e in itertools.chain(shift_data['staff'], shift_data['alt_staff'])]
-
     shift = ShiftDataController(
-        staff        =emp_list,
-        shift_hours  =shift_data['shift_hours'],
-        tip_hours    =shift_data['tip_hours'],
-        cash_tip_pool=shift_data['cash_tip_pool'],
-        cred_tip_pool=shift_data['cred_tip_pool'],
-        cash_tip_wage=shift_data['cash_tip_wage'],
-        cred_tip_wage=shift_data['cred_tip_wage'],
-        start_date   =get_shift_date())
+        staff         =[EmployeeDataController(first_name=e['first_name'], last_name=e['last_name'], tip_role=e['tip_role'], shift_hours=float(e['shift_hours']),   tip_hours=float(e['tip_hours']), cash_tips=float(e['cash_tips']), cred_tips=float(e['cred_tips'])) for e in shift_data['staff']],
+        alt_staff     =[EmployeeDataController(first_name=a['first_name'], last_name=a['last_name'], tip_role=a['tip_role'], shift_hours=float(a['shift_hours']), tip_hours=float(a['tip_hours']), cash_tips=float(a['cash_tips']), cred_tips=float(a['cred_tips'])) for a in shift_data['alt_staff']],
+        shift_hours   = float(shift_data['shift_hours']),
+        tip_hours     = float(shift_data['tip_hours']),
+        cash_tip_pool = float(shift_data['cash_tip_pool']),
+        cred_tip_pool = float(shift_data['cred_tip_pool']),
+        cash_tip_wage = float(shift_data['cash_tip_wage']),
+        cred_tip_wage = float(shift_data['cred_tip_wage']),
+        start_date    = get_shift_date())
 
     primary_staff_data = get_staff_data(role_id=1)
     alt_staff_data = get_staff_data(role_id=2)
 
-    if list_of_emp(itertools.chain(primary_staff_data, alt_staff_data)) and isinstance(shift, ShiftDataController):
+    if list_of_emp(primary_staff_data) and list_of_emp(alt_staff_data) and isinstance(shift, ShiftDataController):
         new_shift_report = models.ShiftReport.populate_fields(shift)
         db.session.add(new_shift_report)
         db.session.commit()
         new_shift_id = new_shift_report.id
 
-        for employee_report in itertools.chain(shift.staff, shift.alt_staff):
-            current_emp = models.Employee.query.filter_by(first_name=employee_report.first_name).filter_by(last_name=employee_report.last_name).first()
-            new_employee_report = models.EmployeeReport.populate_fields(employee_report=employee_report, shift_id=new_shift_id, employee_id=current_emp.id)
+        for emp_report in itertools.chain(shift.staff, shift.alt_staff):
+            print('next lime employee report')
+            print(emp_report)
+            print('{} {} {} {} {}'.format(emp_report.employee.first_name, emp_report.employee.last_name, emp_report.tip_role, emp_report.cred_tips,  emp_report.cash_tips))
+            current_emp = models.Employee.query.filter_by(first_name=emp_report.first_name).filter_by(last_name=emp_report.last_name).first()
+            new_employee_report = models.EmployeeReport.populate_fields(employee_report=emp_report, shift_id=new_shift_id, employee_id=current_emp.id)
             db.session.add(new_employee_report)
 
         db.session.commit()
 
         try:
-            write_to_g_sheets()
-
+            write_to_g_sheets(shift)
         except gspread.exceptions.APIError:
             msg = 'Resource Unavailable Temporarily, Wait 5 Minutes before navigating away from this page.'
             flash(msg)
             time.sleep(301)
-            write_to_g_sheets()
+            write_to_g_sheets(shift)
 
         return render_template('report_archived_confirmation.html', daily_report=shift)
+    return render_template('404.html')
 
 
 #=====================================================================================================================

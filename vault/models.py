@@ -219,9 +219,16 @@ class EmployeeReport(db.Model):
         CheckConstraint(0     < tip_hours,   name="check_tip_hours_min"))
 
     def __repr__(self):
-        return '<Employee Report {} {}>'.format(
+        return '<Employee Report {} {} \nrole:{} cash:{} cred:{}\n shift/hr:{} tip/hr:{} sh_id:{}>'.format(
             self.shift.start_date,
-            self.employee.full_name
+            self.employee.full_name,
+            self.tip_role,
+            self.cash_tips,
+            self.cred_tips,
+            self.shift_hours,
+            self.tip_hours,
+            self.shift_id
+
         )
 
     @staticmethod
