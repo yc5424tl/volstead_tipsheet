@@ -9,19 +9,21 @@
         <div class="col-md-2 col-sm-1"></div>
         <div class="col-md-8 col-sm-10">
             <h1 class="page-header">SHIFT DETAILS</h1>
-            <div>Cash Subtotals:
+            <div class="flexbox">Cash Subtotals:
                 {% for k in daily_report.cash_subtotals %}
-                    <p class="report-data">{{ k }} : {{ daily_report.cash_subtotals[k] }}</p>
+                    <div class="report-data">{{ k }} : {{ daily_report.cash_subtotals[k] }}</div>
                 {% endfor %}
             </div>
-            <p class="report-data">ShiftDataController Hours: {{ daily_report.shift_hours }}</p>
-            <p class="report-data">Tip Hours: {{ daily_report.tip_hours }}</p>
-            <p class="report-data">Cash Tip Wage: {{ daily_report.cash_tip_wage }}</p>
-            <p class="report-data">CC Tip Wage: {{ daily_report.cred_tip_wage }}</p>
-            <p class="report-data">Start Date: {{ daily_report.start_date }}</p>
-            <p class="report-data">Cash Tip Pool: {{ daily_report.cash_tip_pool }}</p>
-            <p class="report-data">CC Tip Pool: {{ daily_report.cred_tip_pool }}</p>
-            <div>
+            <div class="flexbox">
+                <div class="report-data">ShiftDataController Hours: {{ daily_report.shift_hours }}</div>
+                <div class="report-data">Tip Hours: {{ daily_report.tip_hours }}</div>
+                <div class="report-data">Cash Tip Wage: {{ daily_report.cash_tip_wage }}</div>
+                <div class="report-data">CC Tip Wage: {{ daily_report.cred_tip_wage }}</div>
+                <div class="report-data">Start Date: {{ daily_report.start_date }}</div>
+                <div class="report-data">Cash Tip Pool: {{ daily_report.cash_tip_pool }}</div>
+                <div class="report-data">CC Tip Pool: {{ daily_report.cred_tip_pool }}</div>
+            </div>
+            <div class="flexbox">
                 <h3 class="section-header">SHIFT SUMMARIES</h3>
                 {% for emp in daily_report.staff %}
                     <p class="report-data">{{ emp.shift_summary }}</p>

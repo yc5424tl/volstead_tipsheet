@@ -151,6 +151,13 @@ h4 {
     justify-content: space-between;
 }
 
+.flexbox {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    background-color: rgba(28, 26, 24, 0.7);
+    color: rgba(254,246,227,0.9);
+}
 
 
 /*====================================================================================================================
@@ -273,6 +280,13 @@ div > .form-group.row.role-hours {
     border: 1pt solid rgb(253,246,227);
     background-color: rgba(60, 160, 178, 0.7);
     box-shadow: 0 0 2px 2px rgb(253,246,227) inset;
+    border-collapse: collapse;
+}
+
+#report-tips,
+#cash-tips {
+    background-color: rgba(60,160,178,0.3);
+    border: none;
 }
 
 #work-hours-div {
@@ -315,10 +329,10 @@ div > .form-group.row.role-hours {
 }
 
 .alt-staff-btn-wrapper {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin: 1em;
+    display         : flex;
+    align-items     : center;
+    justify-content : center;
+
 }
 
 .alt-staff-btn-wrapper > button {
@@ -492,6 +506,19 @@ form {
     text-align: center;
     align-content: center;
     justify-content: center;
+}
+
+#collapse-toggle {
+    background-color: rgba(52,140,156,0.70);
+    color: rgba(253,246,227,0.9);
+    border: 1pt solid rgba(253,246,227,0.9);
+}
+
+#collapse-toggle:focus,
+#collapse-toggle:hover {
+    color: rgb(52,140,156);
+    border: 1pt solid rgb(52,140,156);
+    transition: 600ms;
 }
 
 input[type=submit],

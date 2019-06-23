@@ -28,7 +28,8 @@ class ShiftDataController(object):
             'cash_tip_pool': self.cash_tip_pool,
             'cred_tip_pool': self.cred_tip_pool,
             'cash_tip_wage': self.cash_tip_wage,
-            'cred_tip_wage': self.cred_tip_wage
+            'cred_tip_wage': self.cred_tip_wage,
+            'cash_subtotals': self.cash_subtotals
         }
 
     def get_cash_tip_pool(self):

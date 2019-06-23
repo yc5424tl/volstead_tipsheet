@@ -6,6 +6,7 @@ import string
 from datetime import datetime
 
 import gspread
+import itertools
 import simplejson
 from flask import current_app
 from oauth2client.service_account import ServiceAccountCredentials
@@ -111,7 +112,7 @@ class GoogleSheetsMgr(object):
         insert_pool = self.insert_shift_pool(shift_row, shift.cred_tip_pool)
         insert_date = self.insert_date_for_shift(shift_row, shift.start_date)
         if insert_pool and insert_date:
-            for emp in shift.staff:
+            for emp in itertools.chain(shift.staff, shift.alt_staff):
                 cont = self.insert_shift_for_emp(shift_row=shift_row, employee=emp)
                 if not cont:
                     return False
