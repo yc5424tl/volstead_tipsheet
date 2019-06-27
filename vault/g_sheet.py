@@ -14,6 +14,7 @@ from retrying import retry
 
 from vault.main.employee_data_controller import EmployeeDataController
 from vault.main.shift_data_controller import ShiftDataController
+from vault.models import Employee
 
 scope = ['https://spreadsheets.google.com/feeds',
          'https://www.googleapis.com/auth/spreadsheets',
@@ -169,3 +170,15 @@ class GoogleSheetsMgr(object):
         if period_index == 0:
             subtotal_row = (completed_periods * 16) + 1
             self.insert_subtotals_row(subtotal_row)
+
+
+    # def read_all_values(self):
+    #     values = self.tips_sheet.get_all_values()
+    #     for col_title in values[0][2:-2]:
+    #         name_list = col_title.split()
+    #         first_name = name_list[0]
+    #         last_name = name_list[1]
+    #         db_record = Employee.query.get(first_name=first_name, last_name=last_name)
+
+
+

@@ -142,10 +142,10 @@ class Employee(db.Model):
     id               = db.Column(db.Integer(), primary_key=True)
     first_name       = db.Column(db.String(64))
     last_name        = db.Column(db.String(64))
-    default_tip_role = db.Column(db.Enum('SERVICE', 'SUPPORT', name='TIP_ROLE'))
+    default_tip_role = db.Column(db.Enum('SERVICE', 'SUPPORT', 'MANAGEMENT', name='TIP_ROLE'))
     created_at       = db.Column(db.DateTime(), default=datetime.utcnow)
-    role_id = db.Column(db.Integer(), db.ForeignKey('role.id'))
-    role = db.relationship('Role', backref=backref('role', uselist=False))
+    role_id          = db.Column(db.Integer(), db.ForeignKey('role.id'))
+    role             = db.relationship('Role', backref=backref('role', uselist=False))
 
     # __table_args__ = (
     #     db.UniqueConstraint('first_name', 'last_name', name='first_last_uni_emp'),
@@ -182,7 +182,7 @@ class Role(db.Model):
     name = db.Column(db.String(50), unique=True)
 
     def __repr__(self):
-        return "<Role {}".format(
+        return "{} STAFF".format(
             self.name
         )
 
@@ -228,20 +228,19 @@ class EmployeeReport(db.Model):
             self.shift_hours,
             self.tip_hours,
             self.shift_id
-
         )
 
     @staticmethod
     def populate_fields(employee_report, shift_id, employee_id):
         return EmployeeReport(
-        cash_tips   = employee_report.cash_tips,
-        cred_tips   = employee_report.cred_tips,
-        tip_role    = employee_report.tip_role,
-        shift_hours = employee_report.shift_hours,
-        tip_hours   = employee_report.tip_hours,
-        shift_id    = shift_id,
-        employee_id = employee_id
-        )
+            cash_tips   = employee_report.cash_tips,
+            cred_tips   = employee_report.cred_tips,
+            tip_role    = employee_report.tip_role,
+            shift_hours = employee_report.shift_hours,
+            tip_hours   = employee_report.tip_hours,
+            shift_id    = shift_id,
+            employee_id = employee_id
+            )
 
 
 

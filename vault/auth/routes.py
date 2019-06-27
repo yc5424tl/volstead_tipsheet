@@ -40,7 +40,7 @@ def user_loader(user_id):
 
 
 #=====================================================================================================================
-# LOGIN @ /auth/login
+# LOGIN     @ /auth/login
 #=====================================================================================================================
 
 @bp.route('/login', methods=['GET', 'POST'])
@@ -53,32 +53,34 @@ def login():
     if form.validate_on_submit():
         user = User.query.filter_by(username=form.username.data).first()
 
-        if user and user.check_password(form.password.data):
-            user.active = True
-            db.session.add(user)
-            db.session.commit()
-            login_user(user, remember=form.remember_me.data)
-            return redirect(url_for('main.start_report'))
+        if request.method == 'POST':
+            if user and user.check_password(form.password.data):
+                user.active = True
+                db.session.add(user)
+                db.session.commit()
+                login_user(user, remember=form.remember_me.data)
+                return redirect(url_for('main.start_report'))
 
-        if ( user is None ) or ( not user.check_password(form.password.data) ):
-            flash('Invalid username and/or password')
-            return redirect(url_for('auth.login'))
 
-        login_mgr.login_user(user, remember=form.remember_me.data)
-        next_page = request.args.get('next')
+            if ( user is None ) or ( not user.check_password(form.password.data) ):
+                flash('Invalid username and/or password')
+                return redirect(url_for('auth.login'))
 
-        if not next_page or url_parse(next_page).netloc != '':
-            next_page = url_for('main.start_report')
+            login_mgr.login_user(user, remember=form.remember_me.data)
+            next_page = request.args.get('next')
 
-        flash('Login Successful')
-        return redirect(next_page)
+            if not next_page or url_parse(next_page).netloc != '':
+                next_page = url_for('main.start_report')
 
-    flash('There was an error processing your submission, please try again.')
+            flash('Login Successful')
+            return redirect(next_page)
+
+        flash('There was an error processing your submission, please try again.')
     return render_template('login.html', title='Sign In', form=form)
 
 
 #=====================================================================================================================
-# LOGOUT @ /auth/logout
+# LOGOUT    @ /auth/logout
 #=====================================================================================================================
 
 @bp.route('/logout')
@@ -95,7 +97,7 @@ def logout():
 
 
 #=====================================================================================================================
-# RESET PASSWORD REQUEST @ /auth/reset_password_request
+# RESET PASSWORD REQUEST    @ /auth/reset_password_request
 #=====================================================================================================================
 
 @bp.route('/reset_password_request', methods=['GET', 'POST'])
@@ -112,7 +114,7 @@ def reset_password_request():
 
 
 #=====================================================================================================================
-# RESET PASSWORD @ /auth/reset_password/<token>
+# RESET PASSWORD    @ /auth/reset_password/<token>
 #=====================================================================================================================
 
 @bp.route('/reset_password/<token>', methods=['GET', 'POST'])
@@ -131,7 +133,7 @@ def reset_password(token):
 
 
 #=====================================================================================================================
-# REGISTER @ /auth/register
+# REGISTER      @ /auth/register
 #=====================================================================================================================
 
 @bp.route('/register', methods=['GET', 'POST'])

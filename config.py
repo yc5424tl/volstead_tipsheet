@@ -48,4 +48,6 @@ class Config(object):
 
     ADMINS = ['volsteads.vault@gmail.com']
 
+    FLASK_ADMIN_SWATCH = 'cyborg'
+
     LOG_TO_STDOUT = os.environ.get('LOG_TO_STDOUT')

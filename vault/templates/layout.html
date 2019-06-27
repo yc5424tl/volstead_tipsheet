@@ -26,6 +26,21 @@
 
 
 {% block content %}
+
+    {% with messages = get_flashed_messages() %}
+        {% if messages %}
+             <div class="row" id="flash-wrapper">
+                <div class="col err-msg-wrapper center-block text-center" id="flash-parent">
+                    <ul class='flashes center-block'>
+                        {% for message in messages %}
+                            <li>{{ message }}</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+        {% endif %}
+    {% endwith %}
+
     <div class="col-12 px-0" id="image-div">
         <img class="img-fluid w-100 h-100" id="banner-image" src="{{ url_for('static', filename='img/marquee-Volstead.jpg') }}">
     </div>
@@ -81,18 +96,13 @@
         </div>
     </nav>
 
-    {% with messages = get_flashed_messages() %}
-        {% if messages %}
-            <ul class=flashes>
-                {% for message in messages %}
-                    <li>{{ message }}</li>
-                {% endfor %}
-            </ul>
-        {% endif %}
-    {% endwith %}
+
 
     <div class="content col-12 flex-container" id="layout-content-div">
-        {% block page_content %}{% endblock %}
+{#        <img class="content-image" src="../static/img/vol_lib_port.jpg">#}
+{#        <div class="content-wrapper">#}
+            {% block page_content %}{% endblock %}
+{#        </div>#}
     </div>
 
 {% endblock %}

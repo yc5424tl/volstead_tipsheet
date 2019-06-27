@@ -7,15 +7,15 @@
 
 {% block page_content %}
     <div class="row">
-        <div class="col"></div>
-        <div class="col-9">
-            <h1 class="page-header">{{ _('Sign In') }}</h1>
+        <div class="col-lg-2 col-md-2 col-sm-1"></div>
+        <div class="col-lg-8 col-md-8 col-sm-10">
+            <h1 class="page-header">{{ _('SIGN IN') }}</h1>
         </div>
         <div class="col"></div>
     </div>
     <div class="row">
         <div class="col"></div>
-        <div class="col-8 dark-content-div">
+        <div class="col-8 dark-content-div form-wrapper">
             {{ wtf.quick_form(form, extra_classes="login-form")}}
         </div>
         <div class="col"></div>

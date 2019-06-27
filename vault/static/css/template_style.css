@@ -97,9 +97,9 @@ h4 {
             rgba(60, 160, 178, .05)  40%,
             rgba(60, 160, 178, 0.1)  60%,
             rgba(60, 160, 178, 0.2)  80%,
-            rgba(60, 160, 178, 0.3)  85%,
-            rgba(60, 160, 178, 0.4)  90%,
-            rgba(60, 160, 178, 0.5)  95%,
+            rgba(60, 160, 178, 0.3)  88%,
+            rgba(60, 160, 178, 0.4)  92%,
+            rgba(60, 160, 178, 0.5)  96%,
             rgba(60, 160, 178, 0.7) 100%
         /*region Alt Gradients*/
         /*background-image: linear-gradient(*/
@@ -138,18 +138,34 @@ h4 {
 }
 
 #layout-content-div {
+
     height: 100%;
-    background-size: contain;
+    background-size: cover;
     background: url("../img/vol_lib_port.jpg") no-repeat;
-    box-shadow: 0 0 8px 8px black inset;
-    width: 100%;
-    min-height: 80vh;
-    margin: 0;
-    bottom: 0;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
+    box-shadow      : 0 0 8px 8px black inset;
+    width           : 1024px;
+    height          : 684px;
+    min-height      : 80vh;
+    margin          : 0;
+    bottom          : 0;
+    display         : flex;
+    flex-direction  : column;
+    justify-content : space-between;
+
 }
+
+/*.img.content-image {*/
+    /*!*display: block;*!*/
+    /*!*width: 100%;*!*/
+    /*!*height: auto;*!*/
+/*}*/
+
+/*.content-wrapper {*/
+    /*position: absolute;*/
+    /*width: 100%;*/
+    /*top: 0;*/
+    /*color: #000000;*/
+/*}*/
 
 .flexbox {
     display: flex;
@@ -224,8 +240,17 @@ table {
 }
 
 .err-msg-wrapper {
-    background-color: rgba(156,26,28, 0.8);
+    background-color: rgba(252,20,5,0.6);
     color: rgb(253,246,227);
+    padding-top: 3pt;
+    padding-bottom: 0;
+    align-content: center;
+    text-align: center;
+    justify-content: center;
+}
+
+.flashes {
+    list-style: none;
 }
 
 
@@ -277,10 +302,17 @@ div > .form-group.row.role-hours {
     color: rgb(253,246,227);
     /*border-radius: 5pt;*/
     /*background-color: rgba(28, 26, 24, 0.7);*/
-    border: 1pt solid rgb(253,246,227);
-    background-color: rgba(60, 160, 178, 0.7);
-    box-shadow: 0 0 2px 2px rgb(253,246,227) inset;
+    /*border: 1pt solid rgb(253,246,227);*/
+    border: 1pt solid  rgba(60,160,178,0.3);
+    /*background-color: rgba(60, 160, 178, 0.7);*/
+    background-color: rgba(28, 26, 24, 0.7);
+    box-shadow: 0 0 1px 1px rgba(253,246,227, 0.9) inset;
+    /*box-shadow: 0 0 2px 2px  rgba(60,160,178,0.3);*/
     border-collapse: collapse;
+}
+
+.form-wrapper {
+    border-radius: 5pt;
 }
 
 #report-tips,
@@ -376,14 +408,14 @@ LOGIN PAGE
     flex-grow: 1;
 }
 
-.login-form input[type=submit] {
+.login-form input[type=submit],
+.req-pw-reset-form input[type=submit],
+.pw-reset-form input[type=submit] {
     display: block;
     margin: 0 auto;
 }
 
-.login-form {
-    margin: 0;
-}
+
 
 .login-footer {
     min-width: 100%;
@@ -404,10 +436,14 @@ and (orientation: landscape)
 and (min-device-width: 375px)
 and (max-device-width: 667px)
 and (-webkit-min-device-pixel-ratio: 2) {
-    .login-form {
+    .login-form,
+    .pw-reset-form,
+    .req-pw-reset-form {
         display: inline-flex;
     }
-    .login-form > input {
+    .login-form > input,
+    .pw-reset-form > input,
+    .req-pw-reset-form > input {
         display: inline-table;
     }
 }
@@ -417,7 +453,9 @@ and (orientation: portrait)
 and (min-device-width: 375px)
 and (max-device-width: 667px)
 and (-webkit-min-device-pixel-ratio: 2) {
-    .login-form {
+    .login-form,
+    .pw-reset-form,
+    .req-pw-reset-form {
         display: inherit;
     }
 }
@@ -475,6 +513,12 @@ and (min-device-width: 768px) {
      FORMS
 ======================================================================================================================*/
 
+.login-form,
+.pw-reset-form,
+.req-pw-reset-form {
+    margin: 0;
+}
+
 form {
     color: rgb(253,246,227);
 }
@@ -492,6 +536,34 @@ form {
     padding: 2em;
 }
 
+#req-pw-reset-form {
+    padding-top: 0;
+    width: 100%;
+    justify-content: space-around;
+    text-align: center;
+}
+
+#req-pw-reset-form-wrapper {
+    top: 0;
+    margin-bottom: 100%;
+    /*padding-bottom: 5pt;*/
+    height: 100%;
+}
+
+#req-pw-reset-form > input {
+    min-width: 100%;
+    text-align: right;
+    display: inline;
+    /*padding-left: 10em;*/
+    /*margin-left: 20em;*/
+}
+
+#req-pw-reset-form > label {
+    min-width: 100%;
+    justify-content: center;
+    text-align: left;
+    display:inline;
+}
 
 
 /*=====================================================================================================================
@@ -512,10 +584,12 @@ form {
     background-color: rgba(52,140,156,0.70);
     color: rgba(253,246,227,0.9);
     border: 1pt solid rgba(253,246,227,0.9);
+    margin-top: 2em;
 }
 
 #collapse-toggle:focus,
 #collapse-toggle:hover {
+    background-color: rgba(253,246,227,0.9);
     color: rgb(52,140,156);
     border: 1pt solid rgb(52,140,156);
     transition: 600ms;
@@ -524,15 +598,15 @@ form {
 input[type=submit],
 .login-form input[type=submit] {
     color: rgba(253,246,227,0.9);
-    background-color: rgba(52,140,156,0.70);
-    border: 1pt solid rgba(52,140,156,0.70);
+    background-color: rgba(28, 26, 24, 0.5);
+    border: 1pt solid white;
 }
 
 input[type=submit]:hover {
     transition: 600ms;
-    color: white;
-    background-color: transparent;
-    border: 1pt solid white;
+    background-color: rgba(52,140,156, 0.9);
+    color: rgba(253,246,227,0.9);
+    border: 1pt solid rgba(253,246,227,0.9);
 }
 
 #submit-button,
@@ -692,7 +766,9 @@ input:-moz-placeholder,
     background-color: rgba(28, 26, 24, 0.7);
 }
 
-#nav-dd-btn, #nav-dd-btn:focus, #nav-dd-btn:hover {
+#nav-dd-btn,
+#nav-dd-btn:focus,
+#nav-dd-btn:hover {
     border: none;
 }
 
@@ -722,7 +798,8 @@ input:-moz-placeholder,
     to {box-shadow: 0 1px 4px rgba(1,220,230,0.9)}
 }
 
-a.nav-link, #nav-dd-btn {
+a.nav-link,
+#nav-dd-btn {
     font-size: 2em;
     font-weight: bolder;
     font-family: "Megrim", cursive;

@@ -1,26 +1,30 @@
 
 import logging
 import os
+from datetime import datetime
 from logging.handlers import SMTPHandler, RotatingFileHandler
-from flask import Flask
+from flask import Flask, Blueprint
+
 from flask_babel import Babel, lazy_gettext as _1
 from flask_bootstrap import Bootstrap
 from flask_login import LoginManager, current_user
 from flask_mail import Mail
 from flask_migrate import Migrate
 from flask_sqlalchemy import SQLAlchemy
-from config import Config
+from sqlalchemy import and_, between
 
+from config import Config
+from vault.admin import CustomAdminView
 
 db = SQLAlchemy()
 migrate = Migrate()
 login = LoginManager()
 login.login_view = 'auth.login'
 login.login_message = _1('Authorized Users Must Log In To Access This Page')
-
 mail = Mail()
 bootstrap = Bootstrap()
 babel = Babel()
+
 
 
 def create_app(config_class=Config):
@@ -29,7 +33,7 @@ def create_app(config_class=Config):
     app.app_context().push()
 
     db.init_app(app)
-    db.create_all()
+    #db.create_all()
 
     migrate.init_app(app, db)
     login.init_app(app)
@@ -64,6 +68,47 @@ def create_app(config_class=Config):
 
         from vault.main import bp as main_bp
         app.register_blueprint(main_bp)
+
+        from vault import models
+        from vault.models import User, Employee, EmployeeReport, ShiftReport, Authorization, Role
+        from vault.admin import Admin, AuthorizationView, EmployeeView, EmployeeReportView, RoleView, ShiftReportView, UserView
+        from flask_admin.contrib.sqla import ModelView
+        # admin_ctrl = Admin(app, name="Volstead's Vault", index_view=AdminView(ShiftReportView, db.session, url='/admin', endpoint='admin'))
+        # admin.init_app(app=app)
+
+        # admin_ctrl.add_view(AdminView(Authorization, db.session))
+        # admin_ctrl.add_view(AdminView(Employee, db.session))
+        # admin_ctrl.add_view(AdminView(EmployeeReport, db.session))
+        # admin_ctrl.add_view(AdminView(Role, db.session))
+        # admin_ctrl.add_view(AdminView(User, db.session))
+
+
+
+
+
+        # admin_bp = Blueprint('admin', __name__, static_folder='static', template_folder='templates')
+
+        # BELOW DID NOT WORK - MISSING SOME INTEGRATION BETWEEN ITSELF AND BLUEPRINTS IT SEEMS
+        # admin.add_view(view=AuthorizationView)
+        # admin.add_view(view=EmployeeView)
+        # admin.add_view(view=EmployeeReportView)
+        # admin.add_view(view=RoleView)
+        # admin.add_view(view=ShiftReportView)
+        # admin.add_view(view=UserView)
+
+        # BELOW WORKED - how to customize?
+        admin_ctrl = Admin(app, index_view=CustomAdminView())
+        admin_ctrl.add_view(ModelView(Authorization, db.session))
+        admin_ctrl.add_view(ModelView(Employee, db.session))
+        admin_ctrl.add_view(ModelView(EmployeeReport, db.session))
+        admin_ctrl.add_view(ModelView(Role, db.session))
+        admin_ctrl.add_view(view=ModelView(name='Shift Reports', model=ShiftReport, session=db.session))
+        admin_ctrl.add_view(view=ModelView(name='Users', model=User, session=db.session))
+
+        # admin.add_view(ModelView(User, db.session))
+
+
+
 
         if not app.debug and not app.testing:
 
@@ -106,12 +151,38 @@ def create_app(config_class=Config):
             app.logger.setLevel(logging.INFO)
             app.logger.info("Volstead's Vault startup")
 
-        from vault import models
-        from vault.models import User, Employee
+        # from vault import models
+        # from vault.models import User, Employee, EmployeeReport, ShiftReport, Authorization, Role
 
         @login.user_loader
         def load_user(user_id):
             return User.query.get(int(user_id))
+
+        def earnings_for_year(emp: Employee, year: int):
+
+            # shift_range_start = datetime.strptime(f'12/31/{str(year-1)}', '%m/%d/%Y')
+            shift_range_start = datetime.strptime(f'6/20/{str(year)}', '%m/%d/%Y')
+            shift_range_end = datetime.strptime(f'12/30/{str(year)}', '%m/%d/%Y')
+
+            # EmployeeReport.query.filter_by(employee_id=emp.id).join(ShiftReport, and_(EmployeeReport.c.shift_id == shift.c.id, shift_range_start < ShiftReport.c.start_date < shift_range_end))
+
+            # return EmployeeReport.query.join(ShiftReport, EmployeeReport.shift_id == ShiftReport.id).filter_by(employee_id=11)
+            # return ShiftReport.query.join(EmployeeReport, EmployeeReport.shift_id == ShiftReport.id).filter_by(employee_id=11)
+                # .filter_by( ShiftReport.start_date < shift_range_end).all()
+                # .filter_by(EmployeeReport.id == emp.id).sum(EmployeeReport.cred_tips)
+            # return EmployeeReport.query.filter_by(employee_id=emp.id).join(ShiftReport, EmployeeReport.shift_id==ShiftReport.id).filter_by(shift_range_start < ShiftReport.start_date < shift_range_end)
+            return db.session.query(EmployeeReport).join(ShiftReport).\
+                filter(EmployeeReport.employee_id==emp.id).filter(ShiftReport.start_date.between(shift_range_start, shift_range_end))
+
+        emp = Employee.query.filter_by(last_name='BOLINE').first()
+        print('emp -> ')
+        print(emp)
+        print('before earnings_for_year()')
+        reports = earnings_for_year(emp, 2019)
+        for report in reports:
+            print(report)
+        print('after earnings_for_year()')
+        # admin = Admin.init_app(app)
 
         return app
 
