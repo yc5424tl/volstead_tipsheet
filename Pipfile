@@ -96,6 +96,7 @@ Bootstrap-Flask = "==1.0.10"
 Django = "==1.8.19"
 Flask-BabelEx = "==0.9.3"
 Flask-Session = "==0.3.1"
+flask-admin = "*"
 
 [requires]
 python_version = "3.7"
